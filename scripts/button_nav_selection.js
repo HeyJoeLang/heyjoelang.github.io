@@ -58,8 +58,11 @@ document.addEventListener('DOMContentLoaded', function()
     
     for (let i = 0; i < ContentNames.length; ++i) 
     {
-        console.log(document.getElementById(ContentNames[i] + "-Button"))
 		buttons.push(document.getElementById(ContentNames[i] + "-Button")); /* Add all relevant buttons to array. */
+    }
+    for(let i = 0; i < buttons.entries.length; i++)
+    {
+        console.warn(buttons[i].id)
     }
     
     /* Add event listener to buttons for click events */
