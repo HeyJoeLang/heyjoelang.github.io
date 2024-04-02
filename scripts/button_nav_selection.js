@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function()
     
     for (let i = 0; i < ContentNames.length; ++i) 
     {
+        console.log(document.getElementById(ContentNames[i] + "-Button"))
 		buttons.push(document.getElementById(ContentNames[i] + "-Button")); /* Add all relevant buttons to array. */
     }
     
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function()
     {
         buttons[i].addEventListener("click", function() 
         {
-            debug(buttons[i])
+            console.log(buttons[i])
             if (!buttonLock) 
             {
                 if (lastButtonIndex >= 0) 
