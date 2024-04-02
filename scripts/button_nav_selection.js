@@ -4,10 +4,11 @@
 
 const ContentNames = 
 [
-    "projects",
-    "career",
-    "skills",
-    "research"
+    "plugins",
+    "healthcare",
+    "community",
+    "education",
+    "awards"
 ];
 
 const TextAreaMinHeightExtended = "200px";
