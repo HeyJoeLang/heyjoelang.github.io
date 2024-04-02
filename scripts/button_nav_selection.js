@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function()
     {
         buttons[i].addEventListener("click", function() 
         {
+            debug(buttons[i])
             if (!buttonLock) 
             {
                 if (lastButtonIndex >= 0) 
