@@ -5,7 +5,6 @@
 const ContentNames = 
 [
     "plugins",
-    "medical",
     "futures",
     "experience",
     "skills",
