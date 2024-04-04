@@ -6,7 +6,7 @@ const CareerNames =
 [
     "education",
     "work",
-    "medical_1"
+    "medical1"
 ]
 
 let CareerText = [];
