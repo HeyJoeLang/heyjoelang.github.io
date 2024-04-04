@@ -5,8 +5,8 @@
 const ContentNames = 
 [
     "plugins",
-    "xr",
-    "games",
+    "vr",
+    "ar",
     "skills",
     "awards"
 ];
