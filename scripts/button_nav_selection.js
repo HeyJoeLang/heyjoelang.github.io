@@ -8,6 +8,8 @@ const ContentNames =
     "medical",
     "community",
     "futures",
+    "experience",
+    "skills",
     "awards"
 ];
 
