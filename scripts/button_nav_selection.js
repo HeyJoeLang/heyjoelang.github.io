@@ -7,8 +7,8 @@ const ContentNames =
     "plugins",
     "vr",
     "ar",
-    "skills",
-    "awards"
+    "other",
+    "skills_awards"
 ];
 
 const TextAreaMinHeightExtended = "200px";
