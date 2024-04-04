@@ -4,8 +4,8 @@
 
 const CareerNames = 
 [
-    "education",
-    "work"
+    "coding",
+    "leadership"
 ]
 
 let CareerText = [];
