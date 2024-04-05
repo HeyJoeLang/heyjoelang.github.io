@@ -75,7 +75,7 @@ ul
     display: flex;
     flex-direction: column;
     list-style-type: none;
-    align-self:center;
+    align-self:left;
     width: max-content; /* Takes up full width of screen */
     border: 0px solid rgb(255, 102, 0);
     padding: 0;
@@ -93,7 +93,7 @@ ul li
 
 ul li a 
 {
-    align-self:center;
+    align-self:left;
 
     --fill-color: #ffffff;
     --fill-color_outer: #ffffff;
