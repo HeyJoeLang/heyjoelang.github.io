@@ -32,14 +32,14 @@ for(let i = 0; i < ContentNames.length; ++i)
 
 function revealIncludeText(textArea, i) 
 {
-    if (textArea.style.opacity == 0) /* Case: Not currently displaying anything in this text area */
-    {
+    //if (textArea.style.opacity == 0) /* Case: Not currently displaying anything in this text area */
+    //{
         document.body.style.height = "200vh";
         textArea.innerHTML = IncludeText[i];
         textArea.style.opacity = 1;
-	}
-    else  /* Case where area is already displayed some data */
-    {
+	//}
+    //else  /* Case where area is already displayed some data */
+    /*{
         textArea.style.opacity = 0; 
         setTimeout(function()
         {
@@ -47,7 +47,7 @@ function revealIncludeText(textArea, i)
 			textArea.style.opacity = 1;
 		}, TransitionDuration / 2);
     }
-    
+    */
 }
 
 /* Called when the DOM content is loaded. */

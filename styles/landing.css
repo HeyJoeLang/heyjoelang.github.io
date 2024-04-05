@@ -84,7 +84,7 @@ ul
 
 ul li 
 {
-    align-self:center;
+    align-self:left;
     border: 0px solid rgba(92, 250, 0, 0.938);
 
     /* display: block; */
