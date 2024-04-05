@@ -11,10 +11,13 @@
     </div>
     <div id="pt">
     <br>
-    
+    Problem: Leia Unity SDK only supported default rendering, blocking content from working on our displays.
     <br>
     <br>
-    I added support for all Unity rendering possibilities to Leia's Unity plugin.
+    My Solution: I restructured our SDK to add catches and hooks into Post Processing, URP, and HDRP renderinf pipelines.
+    <br>
+    <br>
+    The Result: Leia Displays work out of the box with all rendering techniques.
     <br>
 </div>
 <br>
@@ -30,10 +33,19 @@
     </div>
     <div id="pt">
     <br>
-    
+    Problem: Leia's Unity plugin releases were ad-hock, breaking changes were commonly thrown into release update, and bugs were not caught prior to releases.
     <br>
     <br>
-    I built up a workflow that standardized our PR process, linked task tickets to code updates, triggered CD builds, and allowed for easier testing workflow.
+    My Solution: I standardized our workflow: 
+    <li>Daily standups were introduced to review tickets and status.</li>
+    <li>Jira tickets were tethered to branches and Pull Requests, making context and code changes easy to navigate.</li>
+    <li>Pull request workflow was standardized, ensuring team collaboration.</li>
+    <li>CI generated test builds to verify PR's did not brak core functionality.</li>
+    <li>I mapped out our release process an announcement process so anyone on the team can launch an update</li>
+    <br>
+    <br>
+    The Result: The workflow for the entire team was smoother, bugs were caught sooner, and the SDK was matured.
+    <br>
     <br>
 </div>
 <br>
