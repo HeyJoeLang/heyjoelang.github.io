@@ -73,35 +73,17 @@ document.addEventListener('DOMContentLoaded', function()
                 {
 					buttons[lastButtonIndex].class = "kd-button";
 				}
-               // if (i != lastButtonIndex) 
-               // {
-					buttons[i].class = "kd-button";
-                    for (let j = 0; j < buttons.length; ++j) 
-                    {
-						buttons[j].class = j != i ? "kd-button-idle" : buttons[j].class;
-					}
-					revealIncludeText(textArea, i);
-					lastButtonIndex = i;
-                    if (textArea.style.minHeight == TextAreaMinHeightClosed || textArea.style.minHeight == "") 
-                    {
-						textArea.style.minHeight = TextAreaMinHeightExtended;
-					}
-				/*}
-                else 
+                buttons[i].class = "kd-button";
+                for (let j = 0; j < buttons.length; ++j) 
                 {
-                    for (let j = 0; j < buttons.length; ++j) 
-                    {
-						buttons[j].class = "kd-button";
-					}
-					textArea.innerHTML = "";
-					lastButtonIndex = -1;
-                    setTimeout(function() 
-                    {
-                        textArea.style.minHeight = TextAreaMinHeightClosed;
-                        textArea.style.opacity = 0;
-					}, TransitionDuration / 2);
-				}
-                */
+                    buttons[j].class = j != i ? "kd-button-idle" : buttons[j].class;
+                }
+                revealIncludeText(textArea, i);
+                lastButtonIndex = i;
+                if (textArea.style.minHeight == TextAreaMinHeightClosed || textArea.style.minHeight == "") 
+                {
+                    textArea.style.minHeight = TextAreaMinHeightExtended;
+                }
 				buttonLock = true;
                 setTimeout(function() 
                 {
