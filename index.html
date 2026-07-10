@@ -5,11 +5,38 @@
         <meta charset="utf-8">
         
         <!-- Mobile Specific Metas -->
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-        <meta name="keywords" content="programmer, coding, console, cv, java, haskell, OpenGL, c, c#, games developer, software developer, virtual reality, augmented reailty, unity3d, unity, " />
-        <meta name="description" content="Games developer and team lead specialized in Unity3D." />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="Joe Lang, Unity developer, Unity3D, C#, C++, XR developer, virtual reality, augmented reality, VR, AR, Unity plugin lead, team lead, game developer" />
+        <meta name="description" content="Joseph Lang &ndash; Senior Unity XR Developer and team lead with 10+ years building VR, AR, and Unity plugin products." />
+        <link rel="canonical" href="https://heyjoelang.github.io/">
 
-        <title>Joe Lang</title>
+        <title>Joe Lang &ndash; Senior Unity XR Developer</title>
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Joseph Lang",
+            "url": "https://heyjoelang.github.io/",
+            "jobTitle": "Senior Software Engineer",
+            "description": "Experienced Unity XR Developer with 10+ years in AR/VR, adept in project leadership and coding.",
+            "image": "https://heyjoelang.github.io/Data/images/portrait.png",
+            "email": "mailto:heyjoelang@gmail.com",
+            "sameAs": [
+                "https://www.linkedin.com/in/heyjoelang/"
+            ],
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Mursion",
+                "url": "https://www.mursion.com/"
+            },
+            "alumniOf": {
+                "@type": "CollegeOrUniversity",
+                "name": "DeVry University"
+            },
+            "knowsAbout": ["Unity3D", "C#", "C++", "Virtual Reality", "Augmented Reality", "System Architecture", "Team Leadership", "CICD"]
+        }
+        </script>
 
 
         <!-- External file links for this html page  -->
@@ -20,15 +47,8 @@
         <link rel="stylesheet" type="text/css" href="styles/career.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <!-- Project related css files --> 
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/mirage.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/exalted.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/15_puzzle.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/game_tech.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/vpa.css"/>
-
         <!-- Icon -->
-        <link rel="icon" type="image/png" href="./data/images/icon_trans.png">
+        <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
 
         <!-- Scripts -->
         <script src="scripts/quick_links.js"></script>
@@ -38,45 +58,44 @@
     </head>
 
     <!-- Add a custom container class implementation here.... -->
-    <body id="top">  
-        <div class="container" style="margin-top: 1%" align="center">   
-            <div id="title">Joe Lang</div>            
-            <img class="landing_logo" src="./Data/images/portrait.png" alt="Portrait">
+    <body id="top">
+        <header class="container" style="margin-top: 1%" align="center">
+            <h1 id="title">Joe Lang</h1>
+            <img class="landing_logo" src="./Data/images/portrait.png" alt="Portrait of Joe Lang">
             <div id="quick_links">
                 <!-- <p id ="tooltip">Quick Links</p> -->
-                <a href="./Data/cv/JosephLangCV.pdf" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
-                <a href="mailto:heyjoelang@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
+                <a href="./Data/cv/JosephLangCV.pdf" target="_blank" aria-label="Download resume PDF"><i class="fa fa-file-pdf-o"></i></a>
+                <a href="mailto:heyjoelang@gmail.com" target="_blank" aria-label="Email Joe Lang"><i class="fa fa-envelope"></i></a>
                 <!--<a href="https://github.com/Kney-Delach" target="_blank"><i class="fa fa-github"></i></a> -->
-                <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank"><i class="fa fa-linkedin"></i></a>
+                <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" aria-label="Joe Lang on LinkedIn"><i class="fa fa-linkedin"></i></a>
                 <!--<<a href="https://www.youtube.com/channel/UCxb2vCV-1go3d0T8kUQSXbA" target="_blank"><i class="fa fa-youtube"></i></a>-->
                 <!--<<a href="https://www.instagram.com/ori_lazar_ig/" target="_blank"><i class="fa fa-instagram"></i></a>-->
             </div>
             <hr>
-            <div id="about_me">Senior Unity Developer and Team Lead <br> Plugins, VR, AR, Games</div>
+            <p id="about_me">Senior Unity Developer and Team Lead <br> Plugins, VR, AR, Games</p>
             <hr>
 
-            <section class="buttons">
+            <nav class="buttons" aria-label="Site sections">
                 <div class="button_container">
-                    <div id="plugins-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Plugins</div> 
-                    <div id="vr-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">VR</div> 
+                    <div id="experience-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Experience</div>
+                    <div id="plugins-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Plugins</div>
+                    <div id="vr-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">VR</div>
                     <div id="ar-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">AR</div>
-                    <div id="other-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Other</div> 
-                    <div id="skills_awards-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Skills, Awards</div>  
+                    <div id="other-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Other</div>
+                    <div id="skills_awards-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Skills, Awards</div>
                 </div>
-            </section>
-        </div>
+            </nav>
+        </header>
 
         <!-- Scripts used in top body -->
         <script src="scripts/text_animation.js"></script>
+
+        <main id="bottom">
+            <!-- Data_Labels -->
+            <div id="data_selection_area" class="container kd-selection-content" style="opacity: 0;"></div>
+            <div id="project_data_area" class="container kd-selection-content" style="opacity: 0;"></div>
+            <script src="scripts/button_nav_selection.js"></script>
+            <script src="scripts/button_nav_career.js"></script>
+        </main>
     </body>
-
-    <div id="bottom">
-        <!-- Data_Labels -->
-        <div id="data_selection_area" class="container kd-selection-content" style="opacity: 0;"></div>
-        <div id="project_data_area" class="container kd-selection-content" style="opacity: 0;"></div>
-        <script src="scripts/button_nav_selection.js"></script>
-        <script src="scripts/button_nav_proj.js"></script>
-        <script src="scripts/button_nav_career.js"></script>
-
-    </div>
 </html>

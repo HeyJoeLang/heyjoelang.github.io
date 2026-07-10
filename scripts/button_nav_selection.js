@@ -2,8 +2,9 @@
     This script handles the navigation selection between the main content buttons.
 */
 
-const ContentNames = 
+const ContentNames =
 [
+    "experience",
     "plugins",
     "vr",
     "ar",
@@ -23,7 +24,7 @@ let buttonLock = false;
 for(let i = 0; i < ContentNames.length; ++i)
 {
     IncludeText.push("");
-    fetch("./Data/pages/" + ContentNames[i] + ".html")
+    fetch("./Data/pages/" + ContentNames[i] + ".html", { cache: "no-cache" })
     .then( r => r.text() )
     .then( t => IncludeText[i] = t )
 }

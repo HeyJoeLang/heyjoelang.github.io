@@ -55,8 +55,9 @@ h5 { font-size: 1.8rem; line-height: 1.5;  letter-spacing: -.05rem; }
 {
     color: rgba(255, 255, 255, 255);
     font-family: 'cascadia', 'monospace';
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
     letter-spacing: -.05rem;
+    margin: 0;
 }
 
 /* An image encapsulating the full width of a page */
@@ -231,12 +232,16 @@ letter.initial
     }
   }
   
-  p {
+  /* Unused hero-button caption styling from the original template.
+     Scoped to .cta-caption (instead of the bare `p` selector) since
+     the site now uses real <p> tags for body copy and would otherwise
+     collide with this rule. */
+  .cta-caption {
     color: #fff;
     font-size: 12px;
   }
   @media (min-width: 600px) {
-    p {
+    .cta-caption {
       left: 50%;
       position: absolute;
       -webkit-transform: translate(-50%, 0);
@@ -245,7 +250,7 @@ letter.initial
     }
   }
   @media (max-height: 500px) {
-    p {
+    .cta-caption {
       left: 0;
       position: relative;
       top: 0;
@@ -253,7 +258,7 @@ letter.initial
               transform: translate(0, 0);
     }
   }
-  p a {
+  .cta-caption a {
     background: rgba(255, 255, 255, 0);
     border-bottom: 1px solid;
     color: #fff;
@@ -262,7 +267,7 @@ letter.initial
     min-width: 100px;
     text-decoration: none;
   }
-  p a:hover {
+  .cta-caption a:hover {
     background: white;
     color: #E1332D;
   }
@@ -321,13 +326,75 @@ letter.initial
 	vertical-align: middle;
 }
 
-#pt
+.pt
 {
   color: rgba(255, 255, 255, 255);
   font-family: 'cascadia', 'monospace';
-  font-size: 1.8rem; 
+  font-size: 1.8rem;
   letter-spacing: -.05rem;
   text-align: center;
+  margin: 0;
+}
+
+.pt img
+{
+  max-width: 100%;
+  height: auto;
+}
+
+.pt-title
+{
+  color: rgba(255, 255, 255, 255);
+  font-family: 'cascadia', 'monospace';
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: -.05rem;
+  text-align: center;
+  margin: 0;
+}
+
+.pt-list
+{
+  color: rgba(255, 255, 255, 255);
+  font-family: 'cascadia', 'monospace';
+  font-size: 1.8rem;
+  letter-spacing: -.05rem;
+  display: block;
+  list-style-type: disc;
+  text-align: left;
+  padding-left: 1.5rem;
+  width: auto;
+}
+
+.pt-list li
+{
+  display: list-item;
+  width: auto;
+}
+
+.skills-list
+{
+  color: rgba(255, 255, 255, 255);
+  font-family: 'cascadia', 'monospace';
+  font-size: 1.8rem;
+  letter-spacing: -.05rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.skills-list li
+{
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  padding: 0.15em 0.6em;
 }
 
 .proj-button
@@ -398,13 +465,14 @@ letter.initial
 
 /****************** Skills section *********************/
 
-#skill-chart-title
+.skill-chart-title
 {
   color: rgba(255, 255, 255, 255);
-  text-align: center; 
+  text-align: center;
   font-family: 'VT323', monospace;
-  font-size: 3.5rem; 
+  font-size: 3.5rem;
   letter-spacing: -.05rem;
+  margin: 0;
 }
 
 /* ---------------------------------------------------- */

@@ -16,7 +16,7 @@ let careerTextArea = document.getElementById("project_data_area");
 for(let i = 0; i < CareerNames.length; ++i)
 {
     CareerText.push("");
-    fetch("./Data/pages/careers/" + CareerNames[i] + ".html")
+    fetch("./Data/pages/careers/" + CareerNames[i] + ".html", { cache: "no-cache" })
     .then( r => r.text() )
     .then( t => CareerText[i] = t )
 
