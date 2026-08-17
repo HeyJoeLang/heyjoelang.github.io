@@ -3,84 +3,629 @@
     <head>
         <!-- Metadata -->
         <meta charset="utf-8">
-        
+
         <!-- Mobile Specific Metas -->
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-        <meta name="keywords" content="programmer, coding, console, cv, java, haskell, OpenGL, c, c#, games developer, software developer, virtual reality, augmented reailty, unity3d, unity, " />
-        <meta name="description" content="Games developer and team lead specialized in Unity3D." />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="Joe Lang, Unity developer, Unity3D, C#, C++, XR developer, virtual reality, augmented reality, VR, AR, Unity plugin lead, team lead, game developer" />
+        <meta name="description" content="Joseph Lang &ndash; Senior Unity XR Developer and team lead with 10+ years building VR, AR, and Unity plugin products." />
+        <link rel="canonical" href="https://heyjoelang.github.io/">
 
-        <title>Joe Lang</title>
+        <title>Joe Lang &ndash; Senior Unity XR Developer</title>
 
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Joseph Lang",
+            "url": "https://heyjoelang.github.io/",
+            "jobTitle": "Senior Unity XR Developer",
+            "description": "Experienced Unity XR Developer with 10+ years in AR/VR, adept in project leadership and coding.",
+            "image": "https://heyjoelang.github.io/Data/images/portrait.png",
+            "email": "mailto:heyjoelang@gmail.com",
+            "sameAs": [
+                "https://www.linkedin.com/in/heyjoelang/"
+            ],
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Mursion",
+                "url": "https://www.mursion.com/"
+            },
+            "alumniOf": {
+                "@type": "CollegeOrUniversity",
+                "name": "DeVry University"
+            },
+            "knowsAbout": ["Unity3D", "C#", "C++", "Virtual Reality", "Augmented Reality", "System Architecture", "Team Leadership", "CICD"]
+        }
+        </script>
 
-        <!-- External file links for this html page  -->
-        
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/skeleton.css">
-        <link rel="stylesheet" type="text/css" href="styles/landing.css">
-        <link rel="stylesheet" type="text/css" href="styles/career.css">
+        <link rel="stylesheet" type="text/css" href="styles/site.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <!-- Project related css files --> 
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/mirage.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/exalted.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/15_puzzle.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/game_tech.css"/>
-        <link rel="stylesheet" type="text/css" href="./styles/project_styles/vpa.css"/>
-
         <!-- Icon -->
-        <link rel="icon" type="image/png" href="./data/images/icon_trans.png">
+        <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
 
-        <!-- Scripts -->
-        <script src="scripts/quick_links.js"></script>
-
-        <!-- Add google analytics data -->
-
+        <script src="scripts/site.js" defer></script>
     </head>
 
-    <!-- Add a custom container class implementation here.... -->
-    <body id="top">  
-        <div class="container" style="margin-top: 1%" align="center">   
-            <div id="title">Joe Lang</div>            
-            <img class="landing_logo" src="./Data/images/portrait.png" alt="Portrait">
-            <div id="quick_links">
-                <!-- <p id ="tooltip">Quick Links</p> -->
-                <a href="./Data/cv/JosephLangCV.pdf" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
-                <a href="mailto:heyjoelang@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
-                <!--<a href="https://github.com/Kney-Delach" target="_blank"><i class="fa fa-github"></i></a> -->
-                <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank"><i class="fa fa-linkedin"></i></a>
-                <!--<<a href="https://www.youtube.com/channel/UCxb2vCV-1go3d0T8kUQSXbA" target="_blank"><i class="fa fa-youtube"></i></a>-->
-                <!--<<a href="https://www.instagram.com/ori_lazar_ig/" target="_blank"><i class="fa fa-instagram"></i></a>-->
+    <body>
+        <nav id="site-nav" aria-label="Site sections">
+            <div class="wrap">
+                <a href="#hero" class="nav-logo">Joe Lang</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#plugins">Plugins</a></li>
+                    <li><a href="#vr">VR</a></li>
+                    <li><a href="#ar">AR</a></li>
+                    <li><a href="#other">Other</a></li>
+                    <li><a href="#awards">Awards</a></li>
+                    <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="nav-cta"><i class="fa fa-file-pdf-o"></i> Resume</a></li>
+                </ul>
+                <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <i class="fa fa-bars"></i> Menu
+                </button>
             </div>
-            <hr>
-            <div id="about_me">Senior Unity Developer and Team Lead <br> Plugins, VR, AR, Games</div>
-            <hr>
+        </nav>
 
-            <section class="buttons">
-                <div class="button_container">
-                    <div id="plugins-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Plugins</div> 
-                    <div id="vr-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">VR</div> 
-                    <div id="ar-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">AR</div>
-                    <div id="other-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Other</div> 
-                    <div id="skills_awards-Button" class="btn btn-5 kd-button" onClick="document.getElementById('project_data_area').style.opacity = 0;">Skills, Awards</div>  
+        <div id="mobile-nav">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#plugins">Plugins</a></li>
+                <li><a href="#vr">VR</a></li>
+                <li><a href="#ar">AR</a></li>
+                <li><a href="#other">Other</a></li>
+                <li><a href="#awards">Awards</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank"><i class="fa fa-file-pdf-o"></i> Resume</a></li>
+            </ul>
+        </div>
+
+        <header id="hero">
+            <div class="wrap hero-grid">
+                <div>
+                    <span class="hero-eyebrow"><span class="dot"></span> Open to new opportunities</span>
+                    <h1>Joe Lang</h1>
+                    <p class="hero-role">Senior Unity Developer &amp; XR Team Lead</p>
+                    <p class="hero-blurb">10+ years building VR, AR, and Unity plugin products &mdash; from indie game studios to enterprise 3D display SDKs. I lead engineering teams, ship cross-platform Unity/Unreal plugins, and build immersive training, medical, and art experiences.</p>
+                    <div class="hero-badges">
+                        <span class="badge"><i class="fa fa-map-marker"></i> Beacon, NY &middot; Remote</span>
+                        <span class="badge"><i class="fa fa-briefcase"></i> Currently at Mursion</span>
+                    </div>
+                    <div class="hero-ctas">
+                        <a href="#experience" class="btn btn-primary">View Experience</a>
+                        <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><i class="fa fa-file-pdf-o"></i> Resume</a>
+                        <a href="#contact" class="btn btn-ghost">Contact</a>
+                    </div>
+                </div>
+                <div class="hero-portrait">
+                    <img src="./Data/images/portrait.png" alt="Portrait of Joe Lang">
+                </div>
+            </div>
+            <div class="wrap">
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-num">10+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">25+</div>
+                        <div class="stat-label">Projects &amp; Case Studies</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">4</div>
+                        <div class="stat-label">Focus Areas: Plugins, VR, AR, Games</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- ============================= ABOUT ============================= -->
+            <section id="about" class="content">
+                <div class="wrap about-grid">
+                    <div class="about-text">
+                        <span class="eyebrow">About</span>
+                        <h2>Building XR products &amp; leading the teams behind them</h2>
+                        <p>I'm a Senior Unity Developer and XR team lead with 10+ years in AR/VR, adept in project leadership and coding. Most recently at Mursion, I'm a key engineer on AI-powered immersive management training software built with Unity 3D, Node.js, and TypeScript.</p>
+                        <p>Before that, I spent 5 years as Engines Plugin Lead at Leia Inc, leading a team of 3 Unity plugin developers, redesigning the plugin architecture from 30+ classes down to 8, and leading the technical side of a company merger. Earlier in my career I founded Gamehearts LLC and built interactive AR/VR content for Stanford University's Dept. of Clinical Anatomy &mdash; including a stress-reduction game later featured on NBC and in a Super Bowl commercial.</p>
+                        <p>I have a proven track record of delivering groundbreaking projects and optimizing workflows, and I'm a passionate mentor and active community contributor.</p>
+                    </div>
+                    <div class="edu-card">
+                        <h3>Education</h3>
+                        <p><strong>DeVry University</strong></p>
+                        <p>Bachelor's Degree, Game and Simulation Programming</p>
+                        <p><time datetime="2009-07">Jul 2009</time> &ndash; <time datetime="2012-07">Jul 2012</time></p>
+                    </div>
                 </div>
             </section>
-        </div>
-        <!-- Scripts used in top body -->
-        <script src="scripts/text_animation.js"></script>
-        <script>
-            window.onload = function() {
-                document.getElementById('plugins-Button').click();
-            };
-        </script>
+
+            <!-- ============================= SKILLS ============================= -->
+            <section id="skills" class="content alt">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Skills</span>
+                        <h2>What I bring to a team</h2>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <h3>Engineering</h3>
+                            <div class="chip-row">
+                                <span class="chip">Unity3D</span>
+                                <span class="chip">C#</span>
+                                <span class="chip">C++</span>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <h3>Systems &amp; Process</h3>
+                            <div class="chip-row">
+                                <span class="chip">System Architecture</span>
+                                <span class="chip">CICD</span>
+                                <span class="chip">Rapid Prototyping</span>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <h3>Leadership &amp; Product</h3>
+                            <div class="chip-row">
+                                <span class="chip">Team Leadership</span>
+                                <span class="chip">Client Relations</span>
+                                <span class="chip">XR UX/UI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= EXPERIENCE ============================= -->
+            <section id="experience" class="content">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Experience</span>
+                        <h2>Work History</h2>
+                    </div>
+                    <div class="timeline">
+
+                        <article class="timeline-item">
+                            <h3 class="timeline-role">Senior Software Engineer</h3>
+                            <p class="timeline-meta"><a href="https://www.mursion.com/">Mursion</a> &middot; <time datetime="2024-10">Oct 2024</time> &ndash; Present</p>
+                            <p class="timeline-summary">From concept to scaled product launch: Key engineer on AI-powered immersive management training software using Unity 3D, Node.js, and TypeScript.</p>
+                            <ul>
+                                <li>Restructured AI speech-to-text pipeline, reducing per-response latency by 0.75s, improving responsiveness</li>
+                                <li>Built 3D geometry pipeline API for asset bundles and Unity Addressables to streamline asset management</li>
+                                <li>Led accessibility integration with iFrame video and audio streaming partners to enable keyboard accessibility</li>
+                                <li>Designed a bug-reporting and feedback pipeline integrating APIs with Jira, a video library backend, and AI logging to accelerate troubleshooting and developer-driven issue resolution</li>
+                            </ul>
+                        </article>
+
+                        <article class="timeline-item">
+                            <h3 class="timeline-role">Engines Plugin Lead</h3>
+                            <p class="timeline-meta"><a href="https://www.leiainc.com/">Leia Inc</a> &middot; <time datetime="2019-07">Jul 2019</time> &ndash; <time datetime="2024-03">Mar 2024</time></p>
+                            <ul>
+                                <li>Led a team of 3 Unity plugin developers, driving project milestones and timelines</li>
+                                <li>Redesigned the Unity plugin architecture, reducing complexity from 30+ classes to 8, improving maintainability and performance</li>
+                                <li>Led the technical side of a company merger, building one plugin that worked across both Windows and Android APIs</li>
+                                <li>Added Post Processing, URP, and HDRP support in Unity; built the Unreal release pipeline and UE5 support</li>
+                                <li>Served as the primary liaison with industry partners and the developer community</li>
+                            </ul>
+                            <p class="timeline-summary">See the <a href="#plugins">Plugins section</a> below for detailed case studies from this role.</p>
+                        </article>
+
+                        <article class="timeline-item">
+                            <h3 class="timeline-role">Founder / Developer</h3>
+                            <p class="timeline-meta">Gamehearts LLC &middot; <time datetime="2016-07">Jul 2016</time> &ndash; <time datetime="2019-07">Jul 2019</time></p>
+                            <ul>
+                                <li>Mahalo Digital: built an AR Stamp Card for the Dell Technologies World Expo in Las Vegas</li>
+                                <li>Valeo: brought a VR teleportation experience from a rough technical demo to a polished presentation in 5 weeks</li>
+                                <li>Lucile Packard Children's Hospital: led a team of artists and voice actors to build anesthesia stress-reduction games, featured in NBC and Super Bowl commercials</li>
+                                <li>Sonder: created cinematic pipeline tools for one of the first animated films rendered in Unity</li>
+                            </ul>
+                        </article>
+
+                        <article class="timeline-item">
+                            <h3 class="timeline-role">Content Solutions Developer</h3>
+                            <p class="timeline-meta">Stanford University Dept. of Clinical Anatomy &middot; <time datetime="2013-10">Oct 2013</time> &ndash; <time datetime="2016-07">Jul 2016</time></p>
+                            <ul>
+                                <li>Inside Rodin's Hands: created a holographic art exhibit, featured on Al Jazeera America</li>
+                                <li>Inside Human Body: built 4 interactive VR anatomy lectures</li>
+                                <li>Ported an iOS educational app to Windows, ZSpace, and Oculus</li>
+                                <li>Led the ongoing shift of clinical anatomy content from textbooks to interactive AR/VR media</li>
+                            </ul>
+                        </article>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= PLUGINS ============================= -->
+            <section id="plugins" class="content alt">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Plugins</span>
+                        <h2>5 Years Leading the Leia Unity Plugin</h2>
+                        <p><a href="https://www.leiainc.com/">Leia Inc</a> makes 3D displays that work without the need for glasses. Here are case studies from my 5 years leading the Unity plugin team.</p>
+                    </div>
+
+                    <figure class="proj-card" style="margin-bottom:2.5rem;">
+                        <div class="thumb"><img src="./Data/images/leia_intro.png" alt="Leia Inc glasses-free 3D display devices"></div>
+                    </figure>
+
+                    <h3 class="subsection-title">Coding Highlights</h3>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_simple_architecture.png" alt="Diagram of the Leia Unity plugin architecture simplified from 40 classes to 8"></div>
+                        <div class="case-body">
+                            <h3>Simplified Architecture</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>As Leia grew over the years, the Unity Plugin became increasingly more complicated to handle old requirements and new.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I simplified our Unity plugin logic from 40 classes to 8 without breaking core functionality. Additional features were then prioritized and mapped for integration.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>We now had a plugin that was simple enough to reshape for future needs without the overhead of old assumptions and tech debt.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_cross_compatible.png" alt="Diagram of the Leia plugin working across Windows and Android devices"></div>
+                        <div class="case-body">
+                            <h3>Cross Compatible Plugin</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>After Leia acquired Dimenco, we needed one plugin that could work across all displays on Windows and Android.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>With our new simplified plugin structure, I was able to abstract out all device logic and set two streams for firmware communication.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>We now have one logic flow that worked on all supported devices, Android or Windows. Later, when we added features, no code needed to be duplicated.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_release_pipeline.png" alt="Diagram of the standardized Leia Unity plugin release pipeline"></div>
+                        <div class="case-body">
+                            <h3>Release Pipeline</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Leia's Unity plugin releases were ad-hoc, breaking changes were commonly thrown into release updates, and bugs were not caught prior to releases.</p></div>
+                            <div class="case-block">
+                                <ul>
+                                    <li>Daily standups were introduced to review tickets and status</li>
+                                    <li>Jira tickets were connected to branches and Pull Requests, making context and code changes easy to navigate</li>
+                                    <li>Pull request workflow was standardized, encouraging team collaboration</li>
+                                    <li>CI generated test builds to verify PRs did not break core functionality</li>
+                                    <li>I mapped out our release process and announcement process so anyone on the team can launch an update</li>
+                                </ul>
+                            </div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>The workflow for the entire team was smoother, bugs were caught sooner, and the SDK was matured.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_conti_prototype.png" alt="Prototype build running on experimental automotive display hardware"></div>
+                        <div class="case-body">
+                            <h3>Prototyping Experimental Automotive Devices</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Our automotive partners needed to test rendering possibilities on experimental displays.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I built a process for pulling display configuration data with configurable JSON files. With that data, I could make builds for these displays without official firmware updates.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>I was able to make demos for our automotive partner's experimental hardware and support them with internal projects.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_urp_hdrp.png" alt="Leia display content rendered with URP and HDRP post-processing pipelines"></div>
+                        <div class="case-body">
+                            <h3>URP, HDRP, Post Processing Support</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Leia Unity SDK only supported default rendering, blocking content from working on our displays.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I restructured our SDK to add catches and hooks into Post Processing, URP, and HDRP rendering pipelines.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>Leia Displays work out of the box with all rendering techniques.</p></div>
+                        </div>
+                    </article>
+
+                    <h3 class="subsection-title">Leadership Highlights</h3>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_team_lead.png" alt="Joe leading the Leia Unity SDK plugin team"></div>
+                        <div class="case-body">
+                            <h3>Unity SDK Team Lead</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Our plugins were facing several critical issues that were affecting customer satisfaction and hindering the adoption of our technology.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I led a team of three engineers to address and resolve these issues promptly. Our goals were to fix existing bugs reported by users, introduce new features requested by our clients, and manage the release of internal content related to the Unity Plugin to ensure it met our quality standards and user expectations.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>Our team successfully resolved all identified bugs within the projected timelines, and we introduced several key features that significantly enhanced the functionality and user experience of the Unity plugin.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_continental.png" alt="Leia display prototype built for an automotive industry partner"></div>
+                        <div class="case-body">
+                            <h3>Business Partner Point Of Contact</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Industry partners and business stakeholders needed to showcase demos with various devices not available on the market, including experimental automotive hardware.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I was the go-to liaison who scoped the needs of the project and unblocked any barriers to creating content.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>Leia was able to foster stronger relationships in various industries and continue support for experimental devices.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_community.png" alt="Leia developer community engagement activity"></div>
+                        <div class="case-body">
+                            <h3>Developer Community Management</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Leia did not have a standardized communication process for letting developers know about updates.</p></div>
+                            <div class="case-block">
+                                <span class="case-label">My Solution</span>
+                                <ul>
+                                    <li>Worked closely with the marketing team to develop clear, informative content about the new features</li>
+                                    <li>Forum Engagement: dedicated a portion of my daily schedule to actively monitor and engage in our developer forums</li>
+                                    <li>Feedback Loop: established a systematic approach to gather and categorize feedback from the forums, including bug reports and feature requests</li>
+                                    <li>Update Turnover: set up regular meetings with our development team to discuss the community's feedback and prioritize actions</li>
+                                </ul>
+                            </div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>This process encouraged active community engagement in driving product success and customer satisfaction.</p></div>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <div class="thumb"><img src="./Data/images/leia_port.png" alt="Leia marketstore game library ported across 40+ titles"></div>
+                        <div class="case-body">
+                            <h3>Managed Porting of Over 40 Games</h3>
+                            <div class="case-block"><span class="case-label">Problem</span><p>Leia embarked on an ambitious project to launch our marketstore with over 40 games. These games varied in complexity and audience, requiring a nuanced approach to porting, testing, and launching to ensure they met our high-quality standards.</p></div>
+                            <div class="case-block">
+                                <span class="case-label">My Solution</span>
+                                <ul>
+                                    <li>Project Management: developed a detailed project plan outlining key milestones and deadlines for each game, using project management software to track progress, assign tasks, and manage resources</li>
+                                    <li>Communication: established clear lines of communication with our publishing partners via regular update meetings</li>
+                                    <li>Quality Assurance Collaboration: worked closely with our QA team to develop a rigorous testing protocol for each game</li>
+                                    <li>Feedback Loops: created a structured process for sending update requests and bug reports to our publishing partners</li>
+                                    <li>Launch Coordination: coordinated with publishers to ensure a smooth launch as games passed QA</li>
+                                </ul>
+                            </div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>This comprehensive approach led to the successful porting, testing, and launching of all 40 games within the projected timeline.</p></div>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- ============================= VR ============================= -->
+            <section id="vr" class="content">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Virtual Reality</span>
+                        <h2>VR Projects</h2>
+                    </div>
+                    <div class="card-grid cols-3">
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_valeo.png" alt="Valeo Voyage XR VR teleportation experience in a self-driving car"></div>
+                            <div class="proj-body">
+                                <h3>Valeo Voyage XR</h3>
+                                <p>Adapts self-driving car technology &mdash; cameras, motion sensors, and AI software &mdash; to create a VR passenger teleportation experience. I brought this from a rough technical demo to a polished client presentation in 5 weeks.</p>
+                                <a class="proj-link" href="https://bench.epicnpoc.com/voyage-xr-valeo/">Project Overview &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/medical_neuroexplorer.png" alt="NeuroExplorer VR educational neuroscience experience"></div>
+                            <div class="proj-body">
+                                <h3>NeuroExplorer VR</h3>
+                                <p>A 2018 Oculus Launchpad Award-winning VR experience that teaches neuroscience concepts to anyone, regardless of prior background. Developed within a cross-disciplinary team of artists, sound engineers, and production specialists.</p>
+                                <a class="proj-link" href="https://www.meta.com/experiences/pcvr/1697976126910722/">Find it on the Oculus Store &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_simtainer.png" alt="Simtainer VR experience showing a repurposed shipping container"></div>
+                            <div class="proj-body">
+                                <h3>Simtainer</h3>
+                                <p>A VR experience that explores different repurposes for shipping containers &mdash; housing, medical bays, and urban farming. I built and programmed the application, using Unity's Timeline tool to author several simulation narratives.</p>
+                                <a class="proj-link" href="https://vimeo.com/216507798">Project Overview &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_smart_city.png" alt="Smart City Futures Edmonton VR community engagement tool"></div>
+                            <div class="proj-body">
+                                <h3>Smart City Futures Edmonton</h3>
+                                <p>A community engagement VR tool for the City of Edmonton, visualizing the possibilities of smart city infrastructure. I programmed the application and coordinated with city planners and designers.</p>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/medical_anatomy.png" alt="Interactive VR anatomy lecture built for Stanford Clinical Anatomy"></div>
+                            <div class="proj-body">
+                                <h3>Stanford VR Lectures</h3>
+                                <p>Three interactive VR anatomy lectures built for Stanford Clinical Anatomy, designed to replace static textbook content with spatial, explorable 3D environments. I designed and developed these lectures end-to-end.</p>
+                                <a class="proj-link" href="https://med.stanford.edu/anatomy/innovation.html">Stanford Clinical Anatomy &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/community_blaze_of_trust.png" alt="Blaze Of Trust Burning Man VR art project"></div>
+                            <div class="proj-body">
+                                <h3>Blaze Of Trust VR Project</h3>
+                                <p>A Burning Man art project exploring vulnerability and trust through a combination of virtual reality and live interactive exercises. I was the sole developer &mdash; responsible for all Unity development, hardware setup, and on-site deployment.</p>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= AR ============================= -->
+            <section id="ar" class="content alt">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Augmented Reality</span>
+                        <h2>AR Projects</h2>
+                    </div>
+                    <div class="card-grid cols-3">
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/medical_rodin.png" alt="Inside Rodin's Hands holographic AR exhibit at the Cantor Museum"></div>
+                            <div class="proj-body">
+                                <h3>Inside Rodin's Hands</h3>
+                                <p>A groundbreaking AR exhibit at Stanford's Cantor Museum blurring the lines between art, anatomy, and technology. Using image-based tracking, visitors get an X-ray view into Rodin's sculptures.</p>
+                                <a class="proj-link" href="https://www.youtube.com/watch?v=IeNTcoGGPoE">News report &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_avatar_medic.png" alt="Avatar Medic AR disaster relief training application"></div>
+                            <div class="proj-body">
+                                <h3>Avatar Medic</h3>
+                                <p>An AR training app that teaches non-medical personnel how to administer disaster relief intervention, built with the IBM Watson toolset. Won the hackathon award for Best Use of IBM Watson.</p>
+                                <a class="proj-link" href="https://devpost.com/software/avatarrescue#updates">Project Overview &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_dance_hall.png" alt="IFTF Future 50 Hologram Dance Hall 3D scanned dancer"></div>
+                            <div class="proj-body">
+                                <h3>IFTF Future 50: Hologram Dance Hall</h3>
+                                <p>Guests were 3D scanned on-site, then rigged, animated, and composited into a music video played live at the event. I built this pipeline end-to-end within the event's live timeline.</p>
+                                <a class="proj-link" href="https://vimeo.com/216507798">IFTF Emerging Media Lab &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_wallabe.png" alt="Wallabe Sky AR customizable furniture viewer"></div>
+                            <div class="proj-body">
+                                <h3>Wallabe Sky</h3>
+                                <p>A cross-platform AR furniture viewer for Neumatic Digital, letting users see customizable furniture in their real space &mdash; running on HoloLens, ARKit, and WebGL from a single codebase.</p>
+                                <a class="proj-link" href="https://www.neumatic.com/portfolio/wallabe-smart-wall-ar-app/">Project Overview &rarr;</a>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= OTHER ============================= -->
+            <section id="other" class="content">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Other</span>
+                        <h2>Development Projects &amp; Community Programs</h2>
+                    </div>
+
+                    <h3 class="subsection-title">Development Projects</h3>
+                    <div class="card-grid cols-3">
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/medical_sevo.png" alt="Sevo The Dragon pre-surgery anxiety reduction game character"></div>
+                            <div class="proj-body">
+                                <h3>Sevo The Dragon</h3>
+                                <p>A stress-reduction game for Stanford Medicine Children's Health, helping pediatric patients stay calm before surgery. Later featured in an NBC report and a Super Bowl commercial. I handled programming, art sourcing, music integration, and owned the full project timeline.</p>
+                                <a class="proj-link" href="https://youtu.be/JjOgOOuhNYQ?si=86R6EPypbx-7S3Sv">Super Bowl commercial &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/futures_sonder.png" alt="Sonder, one of the first animated films rendered in Unity"></div>
+                            <div class="proj-body">
+                                <h3>Sonder</h3>
+                                <p>One of the first animated films rendered in Unity. I consulted in the early R&amp;D phase &mdash; prototyping Unity's pre-alpha Timeline tool and giving structured feedback that shaped its development direction.</p>
+                                <a class="proj-link" href="https://unity.com/madewith/sonder">Project Overview &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/medical_anatomy_tool.png" alt="Stanford Anatomy Visualization Tool showing an interactive 3D viewer"></div>
+                            <div class="proj-body">
+                                <h3>Stanford Anatomy Visualization Tool</h3>
+                                <p>An anatomy viewer app designed around the specific workflows of anatomy professors &mdash; built to replace static slide decks with a real-time 3D exploration tool. Designed and developed end-to-end.</p>
+                                <a class="proj-link" href="https://med.stanford.edu/anatomy/innovation.html">Stanford Clinical Anatomy &rarr;</a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <h3 class="subsection-title">Community Programs</h3>
+                    <div class="card-grid cols-3">
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/community_armory.png" alt="Students in the Newburgh Armory Unity Center VR class"></div>
+                            <div class="proj-body">
+                                <h3>VR Class: Newburgh Armory Unity Center</h3>
+                                <p>The Newburgh Armory Unity Center's "Prosperity Through Education" program offers free Saturday enrichment classes for the community. I created and continue to teach an introductory Unity3D and VR development class.</p>
+                                <a class="proj-link" href="https://youtu.be/trEZS3WTLB0?si=tHC6ARJ74oCCmBVk">Class Overview &rarr;</a>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/community_xr_edu.png" alt="XR EDU Bay Area education technology event"></div>
+                            <div class="proj-body">
+                                <h3>XR EDU</h3>
+                                <p>A series of Bay Area events at the intersection of emerging XR technology and local education. I co-created and ran several events with teacher and tech advocate Azine Davoudzadeh.</p>
+                            </div>
+                        </article>
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/community_satu_steam.png" alt="SATU STEAM summer program students in West Oakland"></div>
+                            <div class="proj-body">
+                                <h3>SATU STEAM Summer Program</h3>
+                                <p>A summer program preparing underserved West Oakland youth for careers in technology and innovation. I created the program and coordinated guest mentors from the tech industry each week.</p>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= AWARDS ============================= -->
+            <section id="awards" class="content alt">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Awards</span>
+                        <h2>Recognition</h2>
+                    </div>
+                    <div class="card-grid cols-3">
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_coyote.png" alt="Coyote Automobile Awards trophy">
+                            <figcaption>Valeo Voyage XR &ndash; Techno Innovation 3rd Place</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_ibm_watson.png" alt="IBM Watson Award badge">
+                            <figcaption>Avatar Medic &ndash; Best Use of IBM Watson</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_oculus_launchpad.png" alt="Oculus Launchpad Award badge">
+                            <figcaption>NeuroExplorer VR &ndash; Oculus Launchpad Winner</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_project_tango.png" alt="Project Tango Award badge">
+                            <figcaption>Dino Labs &ndash; Most Useful Application</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_zspace.png" alt="ZSpace Award badge">
+                            <figcaption>Escape! &ndash; Winner</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_high_fidelity.png" alt="High Fidelity Award badge">
+                            <figcaption>Attack On Titan VR Showdown &ndash; 2nd Place</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_microsoft_hololens.png" alt="Microsoft Hololens Award badge">
+                            <figcaption>Connect 4 &ndash; 2nd Place</figcaption>
+                        </figure>
+
+                        <figure class="award-card">
+                            <img src="./Data/images/awards_devry.png" alt="DeVry University Award badge">
+                            <figcaption>TrakKart &ndash; Planning, Technical Merit, Best Presentation, Judges Choice</figcaption>
+                        </figure>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ============================= CONTACT ============================= -->
+        <section id="contact">
+            <div class="wrap">
+                <h2>Let's Connect</h2>
+                <p>I'm always interested in discussing new opportunities, immersive tech projects, or connecting with fellow XR developers.</p>
+                <div class="contact-ctas">
+                    <a href="mailto:heyjoelang@gmail.com" class="btn btn-primary"><i class="fa fa-envelope"></i> Email</a>
+                    <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="btn btn-ghost"><i class="fa fa-linkedin"></i> LinkedIn</a>
+                    <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><i class="fa fa-file-pdf-o"></i> Resume</a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            &copy; <span id="year">2026</span> Joe Lang
+        </footer>
     </body>
-
-    <div id="bottom">
-        <!-- Data_Labels -->
-        <div id="data_selection_area" class="container kd-selection-content" style="opacity: 0;"></div>
-        <div id="project_data_area" class="container kd-selection-content" style="opacity: 0;"></div>
-        <script src="scripts/button_nav_selection.js"></script>
-        <script src="scripts/button_nav_proj.js"></script>
-        <script src="scripts/button_nav_career.js"></script>
-
-    </div>
 </html>
