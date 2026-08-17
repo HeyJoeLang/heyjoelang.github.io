@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This site currently loads all sections (Experience, Plugins, VR, AR, Other,
+  Skills & Awards) into one page via client-side JS with no per-section URLs,
+  so there is only one crawlable page today. Once individual sections get
+  their own routes/URLs, add them here as separate <url> entries.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://heyjoelang.github.io/</loc>
+    </url>
+</urlset>
