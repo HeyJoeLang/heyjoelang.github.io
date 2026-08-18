@@ -777,8 +777,8 @@ section.content.alt { background: var(--surface-alt); }
     align-items: center;
     text-align: center;
     gap: 0.6rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: linear-gradient(160deg, var(--hero-bg) 0%, var(--hero-bg-alt) 100%);
+    border: 1px solid var(--hero-border);
     border-radius: var(--radius-md);
     padding: 1.3rem 1rem;
     box-shadow: var(--shadow);
@@ -786,7 +786,7 @@ section.content.alt { background: var(--surface-alt); }
 
 .award-card img { max-height: 90px; width: auto; margin: 0 auto; }
 
-.award-card figcaption { font-size: 0.85rem; color: var(--ink-soft); }
+.award-card figcaption { font-size: 0.85rem; color: var(--hero-ink-soft); }
 
 /* ---------------------------- Contact ---------------------------- */
 
