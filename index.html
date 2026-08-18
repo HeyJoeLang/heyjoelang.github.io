@@ -55,6 +55,7 @@
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
                     <li><a href="#experience">Experience</a></li>
+                    <li><a href="#mursion">Mursion</a></li>
                     <li><a href="#plugins">Plugins</a></li>
                     <li><a href="#vr">VR</a></li>
                     <li><a href="#ar">AR</a></li>
@@ -72,6 +73,7 @@
             <ul>
                 <li><a href="#about">About</a></li>
                 <li><a href="#experience">Experience</a></li>
+                <li><a href="#mursion">Mursion</a></li>
                 <li><a href="#plugins">Plugins</a></li>
                 <li><a href="#vr">VR</a></li>
                 <li><a href="#ar">AR</a></li>
@@ -92,7 +94,7 @@
                     <span class="hero-eyebrow"><span class="dot"></span> Open to new opportunities</span>
                     <h1>Joe Lang</h1>
                     <p class="hero-role">Senior Software Engineer: XR Artificial Intelligence Integration</p>
-                    <p class="hero-blurb">10+ years building VR, AR, and Unity plugin products &mdash; from indie game studios to enterprise 3D display SDKs. I lead engineering teams, ship cross-platform Unity/Unreal plugins, and build immersive training, medical, and art experiences.</p>
+                    <p class="hero-blurb">Games Engineer | Unity, Unreal, C#, C++, VR/AR, AI Development | Led projects from concept to launch, shipping 40 mobile games and programming award-winning XR training simulations.</p>
                     <div class="hero-ctas">
                         <a href="#experience" class="btn btn-primary">View Experience</a>
                         <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><i class="fa fa-file-pdf-o"></i> Resume</a>
@@ -207,6 +209,7 @@
                                 <li>Led accessibility work with iFrame video and audio streaming partners to implement keyboard accessibility</li>
                                 <li>Built bug-reporting and triage pipeline with API information retrieval from Jira and video-library backend</li>
                             </ul>
+                            <p class="timeline-summary">See the <a href="#mursion">Mursion section</a> below for detailed case studies from this role.</p>
                         </article>
 
                         <article class="timeline-item">
@@ -248,45 +251,93 @@
                 </div>
             </section>
 
+            <!-- ============================= MURSION ============================= -->
+            <section id="mursion" class="content alt">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Mursion</span>
+                        <h2>Building AI-Driven Simulations at Mursion</h2>
+                        <p><a href="https://www.mursion.com/">Mursion</a> builds AI-powered immersive training simulations. Here are case studies from my work as a key engineer on the platform.</p>
+                    </div>
+
+                    <figure class="proj-card" style="margin-bottom:2.5rem;">
+                        <div class="thumb"><video src="./Data/images/AI-PoweredImmersiveUpskillingPlatformMursion.mp4" autoplay loop muted playsinline aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
+                    </figure>
+
+                    <h3 class="subsection-title">Engineering Highlights</h3>
+
+                    <details class="case-card">
+                        <summary class="case-summary">AI Driven Simulations</summary>
+                        <div class="thumb"><img src="./Data/images/placeholder.png" alt="On-demand AI-driven simulation product"></div>
+                        <div class="case-body">
+                            <div class="case-block"><span class="case-label">Problem</span><p>Mursion's simulation delivery was historically dependent on live actors, which limited scalability and prevented the offering of a true on-demand, 24/7 solution for clients.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I architected and built the first on-demand, AI-driven simulation product, integrating real-time avatar responsiveness with automated logic to remove the requirement for live human intervention.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>AI-driven simulations have become the primary standard for sales demonstrations and are now a core product offering delivered across our global customer base.</p></div>
+                        </div>
+                    </details>
+
+                    <details class="case-card">
+                        <summary class="case-summary">Keyboard Accessibility</summary>
+                        <div class="thumb"><img src="./Data/images/placeholder.png" alt="Keyboard-accessible simulation streaming"></div>
+                        <div class="case-body">
+                            <div class="case-block"><span class="case-label">Problem</span><p>Mursion's simulation streaming architecture was not WCAG compliant, as the streaming layer created a security barrier that prevented standard browser keyboard inputs from reaching the simulation.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I collaborated with our streaming partner to prototype and deploy a new API that bridged browser security standards, then implemented the frontend logic required to capture and pass keyboard events to the simulation.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>Our simulation delivery platform is now keyboard accessible, meeting critical WCAG standards and allowing users to navigate the experience without a mouse.</p></div>
+                        </div>
+                    </details>
+
+                    <details class="case-card">
+                        <summary class="case-summary">More Responsive AI Avatars</summary>
+                        <div class="thumb"><img src="./Data/images/placeholder.png" alt="Reduced-latency AI avatar response pipeline"></div>
+                        <div class="case-body">
+                            <div class="case-block"><span class="case-label">Problem</span><p>Our on-demand simulations exhibited a significant latency gap between the user's speech and the AI avatar's response, which degraded the sense of immersion and conversational flow.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I analyzed timestamped logs to identify a 1.2-second delay caused by Voice Activity Detection (VAD) settings; I initially optimized this to 0.5 seconds before migrating our Speech-to-Text (STT) stack to Deepgram Flux to leverage integrated VAD.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>We achieved a total response time reduction of approximately 1.5 seconds, resulting in a consistently more responsive and immersive simulation experience for end-users.</p></div>
+                        </div>
+                    </details>
+
+                </div>
+            </section>
+
             <!-- ============================= PLUGINS ============================= -->
             <section id="plugins" class="content alt">
                 <div class="wrap">
                     <div class="section-head">
                         <span class="eyebrow">Plugins</span>
-                        <h2>5 Years Leading the Leia Unity Plugin</h2>
+                        <h2>5 Years Leading the Leia (Now Immersity) Unity Plugin</h2>
                         <p><a href="https://www.leiainc.com/">Leia Inc</a> makes 3D displays that work without the need for glasses. Here are case studies from my 5 years leading the Unity plugin team.</p>
                     </div>
 
                     <figure class="proj-card" style="margin-bottom:2.5rem;">
-                        <div class="thumb"><img src="./Data/images/leia_intro.png" alt="Leia Inc glasses-free 3D display devices"></div>
+                        <div class="thumb"><video src="./Data/images/Hardware_Desktop_compressed.mp4" autoplay loop muted playsinline aria-label="Leia Inc glasses-free 3D display devices"></video></div>
                     </figure>
 
                     <h3 class="subsection-title">Coding Highlights</h3>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Simplified Architecture</summary>
                         <div class="thumb"><img src="./Data/images/leia_simple_architecture.png" alt="Diagram of the Leia Unity plugin architecture simplified from 40 classes to 8"></div>
                         <div class="case-body">
-                            <h3>Simplified Architecture</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>As Leia grew over the years, the Unity Plugin became increasingly more complicated to handle old requirements and new.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>I simplified our Unity plugin logic from 40 classes to 8 without breaking core functionality. Additional features were then prioritized and mapped for integration.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>We now had a plugin that was simple enough to reshape for future needs without the overhead of old assumptions and tech debt.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Cross Compatible Plugin</summary>
                         <div class="thumb"><img src="./Data/images/leia_cross_compatible.png" alt="Diagram of the Leia plugin working across Windows and Android devices"></div>
                         <div class="case-body">
-                            <h3>Cross Compatible Plugin</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>After Leia acquired Dimenco, we needed one plugin that could work across all displays on Windows and Android.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>With our new simplified plugin structure, I was able to abstract out all device logic and set two streams for firmware communication.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>We now have one logic flow that worked on all supported devices, Android or Windows. Later, when we added features, no code needed to be duplicated.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Release Pipeline</summary>
                         <div class="thumb"><img src="./Data/images/leia_release_pipeline.png" alt="Diagram of the standardized Leia Unity plugin release pipeline"></div>
                         <div class="case-body">
-                            <h3>Release Pipeline</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Leia's Unity plugin releases were ad-hoc, breaking changes were commonly thrown into release updates, and bugs were not caught prior to releases.</p></div>
                             <div class="case-block">
                                 <ul>
@@ -299,54 +350,54 @@
                             </div>
                             <div class="case-block"><span class="case-label">The Result</span><p>The workflow for the entire team was smoother, bugs were caught sooner, and the SDK was matured.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Prototyping Experimental Automotive Devices</summary>
                         <div class="thumb"><img src="./Data/images/leia_conti_prototype.png" alt="Prototype build running on experimental automotive display hardware"></div>
                         <div class="case-body">
-                            <h3>Prototyping Experimental Automotive Devices</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Our automotive partners needed to test rendering possibilities on experimental displays.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>I built a process for pulling display configuration data with configurable JSON files. With that data, I could make builds for these displays without official firmware updates.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>I was able to make demos for our automotive partner's experimental hardware and support them with internal projects.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">URP, HDRP, Post Processing Support</summary>
                         <div class="thumb"><img src="./Data/images/leia_urp_hdrp.png" alt="Leia display content rendered with URP and HDRP post-processing pipelines"></div>
                         <div class="case-body">
-                            <h3>URP, HDRP, Post Processing Support</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Leia Unity SDK only supported default rendering, blocking content from working on our displays.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>I restructured our SDK to add catches and hooks into Post Processing, URP, and HDRP rendering pipelines.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>Leia Displays work out of the box with all rendering techniques.</p></div>
                         </div>
-                    </article>
+                    </details>
 
                     <h3 class="subsection-title">Leadership Highlights</h3>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Unity SDK Team Lead</summary>
                         <div class="thumb"><img src="./Data/images/leia_team_lead.png" alt="Joe leading the Leia Unity SDK plugin team"></div>
                         <div class="case-body">
-                            <h3>Unity SDK Team Lead</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Our plugins were facing several critical issues that were affecting customer satisfaction and hindering the adoption of our technology.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>I led a team of three engineers to address and resolve these issues promptly. Our goals were to fix existing bugs reported by users, introduce new features requested by our clients, and manage the release of internal content related to the Unity Plugin to ensure it met our quality standards and user expectations.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>Our team successfully resolved all identified bugs within the projected timelines, and we introduced several key features that significantly enhanced the functionality and user experience of the Unity plugin.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Business Partner Point Of Contact</summary>
                         <div class="thumb"><img src="./Data/images/leia_continental.png" alt="Leia display prototype built for an automotive industry partner"></div>
                         <div class="case-body">
-                            <h3>Business Partner Point Of Contact</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Industry partners and business stakeholders needed to showcase demos with various devices not available on the market, including experimental automotive hardware.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>I was the go-to liaison who scoped the needs of the project and unblocked any barriers to creating content.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>Leia was able to foster stronger relationships in various industries and continue support for experimental devices.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Developer Community Management</summary>
                         <div class="thumb"><img src="./Data/images/leia_community.png" alt="Leia developer community engagement activity"></div>
                         <div class="case-body">
-                            <h3>Developer Community Management</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Leia did not have a standardized communication process for letting developers know about updates.</p></div>
                             <div class="case-block">
                                 <span class="case-label">My Solution</span>
@@ -359,12 +410,12 @@
                             </div>
                             <div class="case-block"><span class="case-label">The Result</span><p>This process encouraged active community engagement in driving product success and customer satisfaction.</p></div>
                         </div>
-                    </article>
+                    </details>
 
-                    <article class="case-card">
+                    <details class="case-card">
+                        <summary class="case-summary">Managed Porting of Over 40 Games</summary>
                         <div class="thumb"><img src="./Data/images/leia_port.png" alt="Leia marketstore game library ported across 40+ titles"></div>
                         <div class="case-body">
-                            <h3>Managed Porting of Over 40 Games</h3>
                             <div class="case-block"><span class="case-label">Problem</span><p>Leia embarked on an ambitious project to launch our marketstore with over 40 games. These games varied in complexity and audience, requiring a nuanced approach to porting, testing, and launching to ensure they met our high-quality standards.</p></div>
                             <div class="case-block">
                                 <span class="case-label">My Solution</span>
@@ -378,7 +429,7 @@
                             </div>
                             <div class="case-block"><span class="case-label">The Result</span><p>This comprehensive approach led to the successful porting, testing, and launching of all 40 games within the projected timeline.</p></div>
                         </div>
-                    </article>
+                    </details>
 
                 </div>
             </section>
@@ -493,21 +544,6 @@
                             </div>
                         </article>
 
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============================= OTHER ============================= -->
-            <section id="other" class="content">
-                <div class="wrap">
-                    <div class="section-head">
-                        <span class="eyebrow">Other</span>
-                        <h2>Development Projects &amp; Community Programs</h2>
-                    </div>
-
-                    <h3 class="subsection-title">Development Projects</h3>
-                    <div class="card-grid cols-3">
-
                         <article class="proj-card">
                             <div class="thumb"><img src="./Data/images/medical_sevo.png" alt="Sevo The Dragon pre-surgery anxiety reduction game character"></div>
                             <div class="proj-body">
@@ -516,6 +552,55 @@
                                 <a class="proj-link" href="https://youtu.be/JjOgOOuhNYQ?si=86R6EPypbx-7S3Sv">Super Bowl commercial &rarr;</a>
                             </div>
                         </article>
+                        
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= Community ============================= -->
+            <section id="community" class="content">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Community</span>
+                        <h2>Community Programs</h2>
+                    </div>
+
+                    <h3 class="subsection-title">Community Programs</h3>
+                    <div class="card-grid cols-3">
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/community_armory.png" alt="Students in the Newburgh Armory Unity Center VR class"></div>
+                            <div class="proj-body">
+                                <h3>VR Class: Newburgh Armory Unity Center</h3>
+                                <p>The Newburgh Armory Unity Center's "Prosperity Through Education" program offers free Saturday enrichment classes for the community. I created and continue to teach an introductory Unity3D and VR development class.</p>
+                                <a class="proj-link" href="https://youtu.be/trEZS3WTLB0?si=tHC6ARJ74oCCmBVk">Class Overview &rarr;</a>
+                            </div>
+                        </article>
+
+
+                        <article class="proj-card">
+                            <div class="thumb"><img src="./Data/images/community_satu_steam.png" alt="SATU STEAM summer program students in West Oakland"></div>
+                            <div class="proj-body">
+                                <h3>SATU STEAM Summer Program</h3>
+                                <p>A summer program preparing underserved West Oakland youth for careers in technology and innovation. I created the program and coordinated guest mentors from the tech industry each week.</p>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= Other ============================= -->
+            <section id="other" class="content">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Other</span>
+                        <h2>Other Projects</h2>
+                    </div>
+
+                    <h3 class="subsection-title">Other Projects</h3>
+                    <div class="card-grid cols-3">
 
                         <article class="proj-card">
                             <div class="thumb"><img src="./Data/images/futures_sonder.png" alt="Sonder, one of the first animated films rendered in Unity"></div>
@@ -534,40 +619,11 @@
                                 <a class="proj-link" href="https://med.stanford.edu/anatomy/innovation.html">Stanford Clinical Anatomy &rarr;</a>
                             </div>
                         </article>
-                    </div>
-
-                    <h3 class="subsection-title">Community Programs</h3>
-                    <div class="card-grid cols-3">
-
-                        <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/community_armory.png" alt="Students in the Newburgh Armory Unity Center VR class"></div>
-                            <div class="proj-body">
-                                <h3>VR Class: Newburgh Armory Unity Center</h3>
-                                <p>The Newburgh Armory Unity Center's "Prosperity Through Education" program offers free Saturday enrichment classes for the community. I created and continue to teach an introductory Unity3D and VR development class.</p>
-                                <a class="proj-link" href="https://youtu.be/trEZS3WTLB0?si=tHC6ARJ74oCCmBVk">Class Overview &rarr;</a>
-                            </div>
-                        </article>
-
-                        <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/community_xr_edu.png" alt="XR EDU Bay Area education technology event"></div>
-                            <div class="proj-body">
-                                <h3>XR EDU</h3>
-                                <p>A series of Bay Area events at the intersection of emerging XR technology and local education. I co-created and ran several events with teacher and tech advocate Azine Davoudzadeh.</p>
-                            </div>
-                        </article>
-
-                        <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/community_satu_steam.png" alt="SATU STEAM summer program students in West Oakland"></div>
-                            <div class="proj-body">
-                                <h3>SATU STEAM Summer Program</h3>
-                                <p>A summer program preparing underserved West Oakland youth for careers in technology and innovation. I created the program and coordinated guest mentors from the tech industry each week.</p>
-                            </div>
-                        </article>
 
                     </div>
+
                 </div>
             </section>
-
             <!-- ============================= AWARDS ============================= -->
             <section id="awards" class="content alt">
                 <div class="wrap">

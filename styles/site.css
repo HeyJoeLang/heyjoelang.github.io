@@ -241,7 +241,7 @@ a:hover { color: var(--accent-ink); }
 
 .hero-blurb {
     color: var(--hero-ink-soft);
-    max-width: 46ch;
+    max-width: 80ch;
     margin: 0 0 1.6rem;
     font-size: 1rem;
 }
@@ -305,7 +305,7 @@ a:hover { color: var(--accent-ink); }
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
-    max-width: 480px;
+    max-width: 960px;
     margin: 1.4rem auto 0;
 }
 
@@ -314,12 +314,12 @@ a:hover { color: var(--accent-ink); }
 }
 
 .mini-arcade img {
-    width: 104px;
-    height: 70px;
+    width: 200px;
+    height: 134px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.06);
-    border: 2px solid var(--arcade-color);
+    border: 3px solid var(--arcade-color);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
     transition: transform 0.2s ease;
 }
@@ -664,7 +664,8 @@ section.content.alt { background: var(--surface-alt); }
     overflow: hidden;
 }
 
-.proj-card .thumb img {
+.proj-card .thumb img,
+.proj-card .thumb video {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -699,8 +700,36 @@ section.content.alt { background: var(--surface-alt); }
     border-radius: var(--radius-md);
     box-shadow: var(--shadow);
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
 }
+
+.case-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.6rem;
+    cursor: pointer;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--ink);
+    list-style: none;
+}
+
+.case-summary::-webkit-details-marker { display: none; }
+
+.case-summary::after {
+    content: '+';
+    flex: none;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+}
+
+.case-card[open] .case-summary::after { transform: rotate(45deg); }
+
+.case-card[open] .case-summary { border-bottom: 1px solid var(--border); }
 
 .case-card .thumb {
     aspect-ratio: 21 / 9;
@@ -715,8 +744,6 @@ section.content.alt { background: var(--surface-alt); }
 }
 
 .case-body { padding: 1.4rem 1.6rem; }
-
-.case-body h3 { margin: 0 0 0.9rem; font-size: 1.08rem; font-weight: 700; }
 
 .case-block { margin-bottom: 0.85rem; }
 .case-block:last-child { margin-bottom: 0; }
