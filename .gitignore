@@ -6,3 +6,6 @@ _site
 node_modules
 npm-debug.log
 .vscode/
+
+# Raw gif captures — only the optimized Data/gifs/mini/ versions are used on the site
+Data/gifs/*.gif
