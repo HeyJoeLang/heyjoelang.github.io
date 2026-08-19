@@ -261,40 +261,50 @@
                     </div>
 
                     <figure class="proj-card" style="margin-bottom:2.5rem;">
-                        <div class="thumb"><video src="./Data/images/AI-PoweredImmersiveUpskillingPlatformMursion.mp4" autoplay loop muted playsinline aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
+                        <div class="thumb"><video src="./Data/images/MuursionOverview.mp4" autoplay loop muted playsinline aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
                     </figure>
 
                     <h3 class="subsection-title">Engineering Highlights</h3>
-
                     <details class="case-card">
-                        <summary class="case-summary">AI Driven Simulations</summary>
-                        <div class="thumb"><img src="./Data/images/placeholder.png" alt="On-demand AI-driven simulation product"></div>
-                        <div class="case-body">
-                            <div class="case-block"><span class="case-label">Problem</span><p>Mursion's simulation delivery was historically dependent on live actors, which limited scalability and prevented the offering of a true on-demand, 24/7 solution for clients.</p></div>
-                            <div class="case-block"><span class="case-label">My Solution</span><p>I architected and built the first on-demand, AI-driven simulation product, integrating real-time avatar responsiveness with automated logic to remove the requirement for live human intervention.</p></div>
-                            <div class="case-block"><span class="case-label">The Result</span><p>AI-driven simulations have become the primary standard for sales demonstrations and are now a core product offering delivered across our global customer base.</p></div>
-                        </div>
-                    </details>
-
-                    <details class="case-card">
-                        <summary class="case-summary">Keyboard Accessibility</summary>
-                        <div class="thumb"><img src="./Data/images/placeholder.png" alt="Keyboard-accessible simulation streaming"></div>
-                        <div class="case-body">
-                            <div class="case-block"><span class="case-label">Problem</span><p>Mursion's simulation streaming architecture was not WCAG compliant, as the streaming layer created a security barrier that prevented standard browser keyboard inputs from reaching the simulation.</p></div>
-                            <div class="case-block"><span class="case-label">My Solution</span><p>I collaborated with our streaming partner to prototype and deploy a new API that bridged browser security standards, then implemented the frontend logic required to capture and pass keyboard events to the simulation.</p></div>
-                            <div class="case-block"><span class="case-label">The Result</span><p>Our simulation delivery platform is now keyboard accessible, meeting critical WCAG standards and allowing users to navigate the experience without a mouse.</p></div>
-                        </div>
-                    </details>
-
-                    <details class="case-card">
-                        <summary class="case-summary">More Responsive AI Avatars</summary>
-                        <div class="thumb"><img src="./Data/images/placeholder.png" alt="Reduced-latency AI avatar response pipeline"></div>
+                        <summary class="case-summary">Greatly Reduced Latency In AI Avatars</summary>
+                        <div class="thumb"><img src="./Data/images/MursionLatency.png" alt="Reduced-latency AI avatar response pipeline"></div>
                         <div class="case-body">
                             <div class="case-block"><span class="case-label">Problem</span><p>Our on-demand simulations exhibited a significant latency gap between the user's speech and the AI avatar's response, which degraded the sense of immersion and conversational flow.</p></div>
                             <div class="case-block"><span class="case-label">My Solution</span><p>I analyzed timestamped logs to identify a 1.2-second delay caused by Voice Activity Detection (VAD) settings; I initially optimized this to 0.5 seconds before migrating our Speech-to-Text (STT) stack to Deepgram Flux to leverage integrated VAD.</p></div>
                             <div class="case-block"><span class="case-label">The Result</span><p>We achieved a total response time reduction of approximately 1.5 seconds, resulting in a consistently more responsive and immersive simulation experience for end-users.</p></div>
                         </div>
                     </details>
+                    <details class="case-card">
+                        <summary class="case-summary">AI Driven Simulations</summary>
+                        <div class="thumb"><img src="./Data/images/Mursion_AI_Simulations.png.png" alt="On-demand AI-driven simulation product"></div>
+                        <div class="case-body">
+                            <div class="case-block"><span class="case-label">Problem</span><p>Mursion’s simulation platform was built around live, human-led experiences. To expand the product into true 24/7, on-demand delivery, we needed a new technical architecture capable of running realistic simulations autonomously—while complementing the company’s existing human-led offering.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>Working closely with an AI engineer, we architected and built Mursion’s first on-demand AI simulation platform, integrating real-time speech, generative AI, automated simulation logic, and responsive 3D avatars into a production system. I led the technical work required to connect these components into a low-latency experience that could operate without a live facilitator.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>The platform created a new 24/7 delivery model alongside Mursion’s human-led simulations. AI simulations became the standard experience used in sales demonstrations and grew into a core product offering delivered to customers globally.</p></div>
+                        </div>
+                    </details>
+
+                    <details class="case-card">
+                        <summary class="case-summary">Keyboard Accessibility</summary>
+                        <div class="thumb"><img src="./Data/images/Mursion_Accessibility.png.png" alt="Keyboard-accessible simulation streaming"></div>
+                        <div class="case-body">
+                            <div class="case-block"><span class="case-label">Problem</span><p>Mursion’s streaming architecture created a browser security boundary that prevented keyboard input from reaching the simulation, blocking keyboard-only navigation and creating a significant accessibility gap.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I partnered with our streaming provider to design and prototype a new API for securely forwarding keyboard input across the streaming boundary, then implemented the client-side integration to capture, transmit, and process those events within the simulation.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>The solution enabled keyboard-only interaction across our streamed simulations, removing a key accessibility barrier and bringing the platform into alignment with keyboard accessibility requirements under WCAG 2.1.</p></div>
+                        </div>
+                    </details>
+
+                    <details class="case-card">
+                        <summary class="case-summary">Scaling AI Simulations with Quality</summary>
+                        <div class="thumb"><img src="./Data/images/Mursion_QA.png" alt="In-simulation Jira reporting pipeline for AI simulation quality"></div>
+                        <div class="case-body">
+                            <div class="case-block"><span class="case-label">Problem</span><p>As our AI simulations moved beyond the prototype stage, issues with conversation quality, animation, latency, and simulation logic became increasingly difficult to reproduce and diagnose. We lacked a systematic way to connect user-reported problems with the AI logs, video, and runtime data engineers needed to identify the root cause.</p></div>
+                            <div class="case-block"><span class="case-label">My Solution</span><p>I designed and built an in-simulation Jira reporting pipeline that captured the context needed to investigate each issue and trace it back to the underlying system behavior. I automated the collection and attachment of simulation video, AI logs, and diagnostic data, creating an end-to-end workflow from issue report to engineering investigation. I owned and evolved the pipeline until it was mature enough to transition to QA for ongoing operation.</p></div>
+                            <div class="case-block"><span class="case-label">The Result</span><p>The system gave engineering and QA a repeatable way to capture, reproduce, diagnose, and resolve issues across our AI simulations. This feedback loop helped move the product from an early prototype toward a reliable, scalable offering while giving QA the tooling to independently manage AI simulation quality.</p></div>
+                        </div>
+                    </details>
+
+
 
                 </div>
             </section>
