@@ -524,30 +524,55 @@ section.content.alt { background: var(--surface-alt); }
 
 /* ---------------------------- About ---------------------------- */
 
-.about-grid {
+/* Education now lives in its own section, so About is a single column.
+   Cap the measure so prose stays readable at wide viewports. */
+/* Body copy reads easiest at 60-70 characters per line. 78ch was landing at
+   ~82, which is what made this section feel like work. Contrast was never the
+   problem (7.3:1 on white, already AAA), so the fix is measure + type size. */
+section.content .wrap.about-single { max-width: 68ch; }
+
+.about-text p {
+    /* Slightly darker than --ink-soft: on the grey panel that token measures
+       6.48:1 (AA but not AAA). This lands at 7.45:1 without reading heavier. */
+    color: #434e5e;
+    margin: 0 0 1.15rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* The opening sentence is the whole positioning claim — give it lead-paragraph
+   weight so a 10-second scan lands there first. */
+.about-text p:first-of-type {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--ink);
+    font-weight: 500;
+}
+
+/* ---------------------------- Education ---------------------------- */
+
+.edu-grid {
     display: grid;
-    gap: 2rem;
+    gap: 1.25rem;
     grid-template-columns: 1fr;
+    max-width: 640px;
+    margin: 0 auto;
 }
-
-@media (min-width: 780px) {
-    .about-grid { grid-template-columns: 1.5fr 1fr; }
-}
-
-.about-text p { color: var(--ink-soft); margin: 0 0 1rem; }
 
 .edu-card {
     background: var(--surface);
     border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
     border-radius: var(--radius-md);
-    padding: 1.4rem 1.5rem;
+    padding: 1.4rem 1.6rem;
     box-shadow: var(--shadow);
 }
 
 .edu-card h3 {
-    margin: 0 0 0.3rem;
-    font-size: 1rem;
+    margin: 0 0 0.35rem;
+    font-size: 1.02rem;
     font-weight: 700;
+    color: var(--ink);
 }
 
 .edu-card p {
@@ -555,6 +580,9 @@ section.content.alt { background: var(--surface-alt); }
     color: var(--ink-soft);
     font-size: 0.92rem;
 }
+
+.edu-card .edu-school { font-weight: 600; color: var(--ink); }
+.edu-card .edu-dates { color: var(--ink-faint); font-size: 0.88rem; }
 
 /* ---------------------------- Skills ---------------------------- */
 

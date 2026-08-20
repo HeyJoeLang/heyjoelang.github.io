@@ -51,14 +51,14 @@
         </script>
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=2">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=7">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Icon -->
         <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=2" defer></script>
+        <script src="scripts/site.js?v=3" defer></script>
     </head>
 
     <body>
@@ -71,6 +71,7 @@
                     <li><a href="#work">Work</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#skills">Skills</a></li>
+                    <li><a href="#education">Education</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="https://github.com/HeyJoeLang/" target="_blank" class="nav-icon" aria-label="GitHub profile"><i class="fa fa-github"></i></a></li>
@@ -90,6 +91,7 @@
                 <li><a href="#work">Featured Work</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Technical Skills</a></li>
+                <li><a href="#education">Education</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="https://github.com/HeyJoeLang/" target="_blank"><i class="fa fa-github"></i> GitHub</a></li>
@@ -155,8 +157,8 @@
 
         <main>
             <!-- ============================= ABOUT ============================= -->
-            <section id="about" class="content">
-                <div class="wrap about-grid">
+            <section id="about" class="content alt">
+                <div class="wrap about-single">
                     <div class="about-text">
                         <span class="eyebrow">About</span>
                         <h2>Practical, scalable solutions to real business problems</h2>
@@ -165,17 +167,11 @@
                         <p>I've worked across client architecture, AI integration, real-time communication, developer tooling, CI/CD, systems integration, and production infrastructure. I'm comfortable moving between unfamiliar problems, collaborating across disciplines, and taking projects from early prototypes through production and scale.</p>
                         <p>I do my best work in fast-moving environments where engineers are expected to take ownership, make sound technical decisions, and turn ambiguous business needs into systems that are maintainable, scalable, and useful.</p>
                     </div>
-                    <div class="edu-card">
-                        <h3>Education</h3>
-                        <p><strong>DeVry University</strong></p>
-                        <p>Bachelor's Degree, Game and Simulation Programming</p>
-                        <p><time datetime="2009-07">Jul 2009</time> &ndash; <time datetime="2012-07">Jul 2012</time></p>
-                    </div>
                 </div>
             </section>
 
             <!-- ============================= WHAT I DO ============================= -->
-            <section id="what-i-do" class="content alt">
+            <section id="what-i-do" class="content">
                 <div class="wrap">
                     <div class="section-head">
                         <span class="eyebrow">What I Do</span>
@@ -721,8 +717,25 @@
                 </div>
             </section>
 
+            <!-- ============================= EDUCATION ============================= -->
+            <section id="education" class="content alt">
+                <div class="wrap">
+                    <div class="section-head">
+                        <span class="eyebrow">Background</span>
+                        <h2>Education</h2>
+                    </div>
+                    <div class="edu-grid">
+                        <div class="edu-card">
+                            <h3>Bachelor's Degree, Game and Simulation Programming</h3>
+                            <p class="edu-school">DeVry University</p>
+                            <p class="edu-dates"><time datetime="2009-07">Jul 2009</time> &ndash; <time datetime="2012-07">Jul 2012</time></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- ============================= EXPERIENCE ============================= -->
-            <section id="experience" class="content alt">
+            <section id="experience" class="content">
                 <div class="wrap">
                     <div class="section-head">
                         <span class="eyebrow">Experience</span>
