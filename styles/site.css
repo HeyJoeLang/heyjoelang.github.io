@@ -818,6 +818,10 @@ section.content.alt { background: var(--surface-alt); }
 
 .case-card[open] .case-summary::after { transform: rotate(45deg); }
 
+/* While the close animation runs the card is still [open]; flip the marker
+   back right away so it tracks the click rather than the animation end. */
+.case-card.is-closing .case-summary::after { transform: none; }
+
 .case-card[open] .case-summary { border-bottom: 1px solid var(--border); }
 
 .case-card .thumb {

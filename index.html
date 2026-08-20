@@ -51,13 +51,14 @@
         </script>
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=2">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Icon -->
         <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
 
-        <script src="scripts/site.js" defer></script>
+        <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
+        <script src="scripts/site.js?v=2" defer></script>
     </head>
 
     <body>
@@ -234,7 +235,7 @@
                         </figure>
 
                         <!-- Possible additional case study: the WebRTC -> LiveKit streaming migration. Worth its own card if Joe owned or led that work (what drove the move, what it improved). Not written up here because his role in it is unconfirmed. -->
-                        <details class="case-card" open>
+                        <details class="case-card">
                             <summary class="case-summary">Architected an On-Demand AI Simulation Platform</summary>
                             <div class="thumb"><img src="./Data/images/Mursion_AI_Simulations.png" alt="On-demand AI-driven simulation product"></div>
                             <div class="case-body">
@@ -246,7 +247,7 @@
                             </div>
                         </details>
 
-                        <details class="case-card" open>
+                        <details class="case-card">
                             <summary class="case-summary">Diagnosed and Cut ~1.5s of AI Response Latency</summary>
                             <div class="thumb"><img src="./Data/images/MursionLatency.png" alt="Reduced-latency AI avatar response pipeline"></div>
                             <div class="case-body">
@@ -258,7 +259,7 @@
                             </div>
                         </details>
 
-                        <details class="case-card" open>
+                        <details class="case-card">
                             <summary class="case-summary">Closed a WCAG Accessibility Gap Across a Streaming Boundary</summary>
                             <div class="thumb"><img src="./Data/images/Mursion_Accessibility.png" alt="Keyboard-accessible simulation streaming"></div>
                             <div class="case-body">
@@ -271,7 +272,7 @@
                         </details>
 
                         <!-- Potential metric: issue-resolution time before/after the pipeline, or number of simulation issues triaged per month through it -->
-                        <details class="case-card" open>
+                        <details class="case-card">
                             <summary class="case-summary">Automated the Path from Reported Issue to Root Cause</summary>
                             <div class="thumb"><img src="./Data/images/Mursion_QA.png" alt="In-simulation Jira reporting pipeline for AI simulation quality"></div>
                             <div class="case-body">
