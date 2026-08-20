@@ -334,6 +334,9 @@ a:hover { color: var(--accent-ink); }
 .mini-arcade img:nth-child(6) { --arcade-color: #ec4899; }
 .mini-arcade img:nth-child(7) { --arcade-color: #eab308; }
 .mini-arcade img:nth-child(8) { --arcade-color: #ef4444; }
+.mini-arcade img:nth-child(9) { --arcade-color: #6366f1; }
+
+.mini-arcade img.fit-contain { object-fit: contain; }
 
 .hero-portrait {
     order: 1;
