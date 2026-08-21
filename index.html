@@ -50,6 +50,27 @@
         }
         </script>
 
+        <!-- Theme, resolved before first paint. This one script is deliberately
+             inline and blocking: loaded from a file it would run after the page
+             had already painted, and a dark-mode visitor would see a white
+             flash. An explicit past choice wins; otherwise follow the OS. -->
+        <script>
+            (function () {
+                var dark = false;
+                try {
+                    var stored = localStorage.getItem("theme");
+                    dark = stored
+                        ? stored === "dark"
+                        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+                } catch (e) {
+                    // Storage blocked (private mode); fall back to the OS hint.
+                    dark = window.matchMedia
+                        && window.matchMedia("(prefers-color-scheme: dark)").matches;
+                }
+                document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+            })();
+        </script>
+
         <!-- Fonts: preconnect so the handshake overlaps parsing, and load via
              <link> rather than an @import inside site.css, which would add a
              round trip to the critical path. -->
@@ -58,13 +79,13 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=12">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=19">
 
         <!-- Icon -->
         <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=6" defer></script>
+        <script src="scripts/site.js?v=11" defer></script>
     </head>
 
     <body>
@@ -83,6 +104,8 @@
             <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
             <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-2.1c-3.2.7-3.88-1.44-3.88-1.44-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></symbol>
             <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM2.4 21.5h5.16V9.5H2.4v12zM10 9.5h4.95v1.64h.07c.69-1.2 2.37-2.14 4.2-2.14 3.5 0 4.78 2.13 4.78 5.9v6.6h-5.16v-5.85c0-1.47-.53-2.47-1.85-2.47-1.01 0-1.6.68-1.87 1.34-.1.24-.12.57-.12.9v6.08H10V9.5z"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.8A8.6 8.6 0 1 1 9.2 3.5a6.9 6.9 0 0 0 11.3 11.3z"/></symbol>
         </svg>
 
         <nav id="site-nav" aria-label="Site sections">
@@ -101,9 +124,18 @@
                     <li><a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="nav-icon" aria-label="LinkedIn profile"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg></a></li>
                     <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="nav-cta"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a></li>
                 </ul>
+                <div class="nav-actions">
+                    <button id="theme-toggle" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode">
+                        <span class="theme-toggle-track">
+                            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sun"></use></svg>
+                            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg>
+                            <span class="theme-toggle-knob"></span>
+                        </span>
+                    </button>
                 <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                     <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-bars"></use></svg> Menu
                 </button>
+                </div>
             </div>
         </nav>
 
@@ -478,7 +510,7 @@
                                 <h3>Sonder</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Tooling</span><span class="chip chip-sm">Pipeline R&amp;D</span></div>
                                 <p>One of the first animated films rendered in Unity. I consulted during early R&amp;D &mdash; building cinematic pipeline tools, prototyping Unity's pre-alpha Timeline system, and giving structured feedback that shaped its development direction.</p>
-                                <a class="proj-link" href="https://unity.com/madewith/sonder">Project Overview &rarr;</a>
+                                <a class="proj-link" href="https://blog.syncsketch.com/creator-stories/production-spotlight-sonder/">Project Overview &rarr;</a>
                             </div>
                         </article>
 
@@ -498,7 +530,7 @@
                                 <h3>Stanford Anatomy Visualization Tool</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Real-Time 3D</span><span class="chip chip-sm">End-to-End Ownership</span></div>
                                 <p>An anatomy viewer built around the actual workflows of anatomy professors, replacing static slide decks with a real-time 3D exploration tool. Designed and developed end to end.</p>
-                                <a class="proj-link" href="https://med.stanford.edu/anatomy/innovation.html">Stanford Clinical Anatomy &rarr;</a>
+                                <a class="proj-link" href="https://med.stanford.edu/anatomy.html">Stanford Clinical Anatomy &rarr;</a>
                             </div>
                         </article>
 
@@ -518,7 +550,7 @@
                                 <h3>Stanford VR Lectures</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Real-Time 3D</span><span class="chip chip-sm">End-to-End Ownership</span></div>
                                 <p>Interactive VR anatomy lectures built for Stanford Clinical Anatomy, replacing static textbook content with spatial, explorable 3D environments. Designed and developed end to end.</p>
-                                <a class="proj-link" href="https://med.stanford.edu/anatomy/innovation.html">Stanford Clinical Anatomy &rarr;</a>
+                                <a class="proj-link" href="https://med.stanford.edu/anatomy.html">Stanford Clinical Anatomy &rarr;</a>
                             </div>
                         </article>
 
@@ -589,6 +621,7 @@
                                 <h3>Game Creators Hudson Valley</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Organizer</span><span class="chip chip-sm">Community Building</span></div>
                                 <p>I run Game Creators Hudson Valley, a community for game developers, artists, and enthusiasts across the Hudson Valley &mdash; a place to meet collaborators, learn new skills, and build games together. Open to all skill levels, from students and hobbyists through working professionals, with talks, demos, game jams, and networking.</p>
+                                <a class="proj-link" href="https://gamecreatorshudsonvalley.github.io/">Community Site &rarr;</a>
                             </div>
                         </article>
 
@@ -859,6 +892,8 @@
 
         <footer>
             &copy; <span id="year">2026</span> Joe Lang
+            <span class="footer-sep" aria-hidden="true">&middot;</span>
+            Design inspired by <a href="https://georgeerol.github.io/" target="_blank">George Erol Fouch&eacute;</a>
         </footer>
     </body>
 </html>

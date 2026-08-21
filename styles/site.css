@@ -32,6 +32,59 @@
     --shadow-lg: 0 8px 24px rgba(16, 24, 40, 0.08);
     --max-width: 1400px;
     --panel-gap: 1.75rem;
+
+    /* Tokens that exist purely so the dark theme has something to reassign.
+       Each one replaced a hard-coded colour that would otherwise have been
+       stranded at its light value. */
+    --nav-bg: rgba(11, 17, 32, 0.92);
+    --accent-on: #fff;          /* text and icons sitting on an --accent fill */
+    --ink-prose: #434e5e;       /* body copy on --surface-alt; see .about-text p */
+    --sweep-tint: rgba(47, 95, 224, 0.14);
+}
+
+/* ================================================================
+   Dark theme
+   Set by the inline script in index.html before first paint, from either
+   a stored choice or the OS preference. Only colours change here; every
+   geometry token above is shared.
+
+   Two things worth knowing if you tune these:
+     - The dark bands (--hero-*) are deliberately LIGHTER than --bg, so the
+       page still reads as sections. In light mode they are darker. The
+       rhythm inverts rather than collapsing.
+     - --accent gets lighter, not darker. That flips what "stronger accent"
+       means, so --accent-ink lightens too, and --accent-on has to go dark:
+       white on #6f9bff is only 2.69:1.
+   ================================================================ */
+
+:root[data-theme="dark"] {
+    --bg: #070b14;
+    --surface: #111a2e;
+    --surface-alt: #18233c;
+    --ink: #e9edf6;
+    --ink-soft: #a8b4c8;
+    --ink-faint: #7a8699;
+    --border: #24304a;
+    --accent: #6f9bff;
+    --accent-ink: #a8c4ff;
+    --accent-soft: rgba(111, 155, 255, 0.14);
+    --accent-2: #3ddc9a;
+
+    /* Elevated above --bg rather than sunk below it. */
+    --hero-bg: #101a30;
+    --hero-bg-alt: #17223c;
+    --hero-ink: #eef1f8;
+    --hero-ink-soft: #a7b2c6;
+    --hero-border: rgba(255, 255, 255, 0.14);
+
+    /* Needs more spread to register against a dark ground. */
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.55);
+
+    --nav-bg: rgba(16, 26, 48, 0.92);
+    --accent-on: #0b1120;
+    --ink-prose: #b7c2d4;
+    --sweep-tint: rgba(111, 155, 255, 0.10);
 }
 
 * { box-sizing: border-box; }
@@ -91,7 +144,8 @@ a:hover { color: var(--accent-ink); }
 #mobile-nav :focus-visible,
 #hero :focus-visible,
 #contact :focus-visible,
-.award-card :focus-visible {
+.award-card :focus-visible,
+footer :focus-visible {
     outline-color: #fff;
 }
 
@@ -103,13 +157,29 @@ a:hover { color: var(--accent-ink); }
 
 .mono { font-family: 'JetBrains Mono', 'Consolas', monospace; }
 
+/* Cross-fade the palette during a theme switch only. site.js adds this class
+   for ~320ms; a permanent global transition would tax every hover on the page.
+   Gated on no-preference rather than overridden later: `.theme-switching *`
+   outweighs the `*` selector in the reduced-motion block, so an !important
+   there would lose to it. */
+@media (prefers-reduced-motion: no-preference) {
+    .theme-switching,
+    .theme-switching *,
+    .theme-switching *::before,
+    .theme-switching *::after {
+        transition: background-color 0.3s ease, border-color 0.3s ease,
+                    color 0.3s ease, box-shadow 0.3s ease, fill 0.3s ease,
+                    stroke 0.3s ease !important;
+    }
+}
+
 /* ---------------------------- Nav ---------------------------- */
 
 #site-nav {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(11, 17, 32, 0.92);
+    background: var(--nav-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--hero-border);
 }
@@ -161,14 +231,14 @@ a:hover { color: var(--accent-ink); }
     align-items: center;
     gap: 0.4rem;
     background: var(--accent);
-    color: #fff !important;
+    color: var(--accent-on) !important;
     padding: 0.5rem 0.95rem;
     border-radius: var(--radius-sm);
     font-size: 0.88rem;
     font-weight: 600;
 }
 
-.nav-cta:hover { background: var(--accent-ink); color: #fff !important; }
+.nav-cta:hover { background: var(--accent-ink); color: var(--accent-on) !important; }
 
 .nav-icon {
     display: inline-flex;
@@ -199,10 +269,78 @@ a:hover { color: var(--accent-ink); }
     cursor: pointer;
 }
 
-@media (min-width: 940px) {
-    .nav-links { display: flex; }
-    .nav-toggle { display: none; }
+/* Holds the theme switch and the hamburger. The switch has to stay reachable
+   at every width, so it lives here rather than inside .nav-links, which is
+   hidden on narrow screens. */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
 }
+
+@media (min-width: 940px) {
+    .nav-links { display: flex; margin-left: auto; }
+    .nav-toggle { display: none; }
+    /* Keeps the links hugging the switch instead of being spread by
+       space-between once there are three flex children. */
+    .nav-actions { margin-left: 0.85rem; }
+}
+
+/* Theme switch: a pill track, a sliding knob, and the two icons showing which
+   way it goes. The knob position is driven purely by [data-theme], so the
+   control can never disagree with the applied theme. */
+.theme-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 1px solid var(--hero-border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.theme-toggle-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.3rem;
+    width: 52px;
+    height: 26px;
+    padding: 0 0.32rem;
+    font-size: 0.78rem;
+    color: var(--hero-ink-soft);
+}
+
+.theme-toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--hero-ink);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+:root[data-theme="dark"] .theme-toggle-knob { transform: translateX(24px); }
+
+/* Dim whichever icon the knob is not sitting on. */
+.theme-toggle .icon { position: relative; z-index: 1; transition: opacity 0.25s ease; }
+.theme-toggle .icon:first-of-type { opacity: 1; }
+.theme-toggle .icon:last-of-type { opacity: 0.45; }
+:root[data-theme="dark"] .theme-toggle .icon:first-of-type { opacity: 0.45; }
+:root[data-theme="dark"] .theme-toggle .icon:last-of-type { opacity: 1; }
 
 #mobile-nav {
     display: none;
@@ -363,8 +501,8 @@ a:hover { color: var(--accent-ink); }
 
 .btn:hover::after { left: 120%; }
 
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent-ink); color: #fff; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn-primary { background: var(--accent); color: var(--accent-on); }
+.btn-primary:hover { background: var(--accent-ink); color: var(--accent-on); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 
 .btn-ghost {
     background: transparent;
@@ -576,7 +714,7 @@ section.content .wrap.about-single { max-width: 68ch; }
 .about-text p {
     /* Slightly darker than --ink-soft: on the grey panel that token measures
        6.48:1 (AA but not AAA). This lands at 7.45:1 without reading heavier. */
-    color: #434e5e;
+    color: var(--ink-prose);
     margin: 0 0 1.15rem;
     font-size: 1.05rem;
     line-height: 1.7;
@@ -941,12 +1079,13 @@ section.content .wrap.about-single { max-width: 68ch; }
 /* Expand affordance.
 
    Collapsed case cards read as flat headings, so nothing told a visitor there
-   was anything behind them. Three layered cues, cheapest first:
+   was anything behind them. Two layered cues:
      1. hover / keyboard focus — accent border, lift, an accent spine, and a
         "Read" label that fades in beside the marker
-     2. a staggered nudge of the + marker the first time a card scrolls into
-        view, retired the moment the visitor opens anything
-     3. reduced-motion visitors get the same cues in color only, no movement */
+     2. a cascade across each group of cards as it scrolls into view, using the
+        same gestures as the hover state so it previews them; see "Cascade cue"
+        below. Replays each time the group is scrolled back to.
+   Reduced-motion visitors get cue 1 in color only, and never see cue 2. */
 
 .case-card:hover,
 .case-card:focus-within {
@@ -1019,24 +1158,19 @@ section.content .wrap.about-single { max-width: 68ch; }
 /* Resting attention cue: the marker hops and deepens in color, twice, then
    leaves the card alone. --hint-delay is set per card in site.js to stagger a
    group as it comes into view. */
-@keyframes case-hint-nudge {
-    0%, 14%, 100% { transform: none; color: var(--accent); }
-    34%           { transform: translateY(-4px) scale(1.25); color: var(--accent-ink); }
-    54%           { transform: translateY(0) scale(1); color: var(--accent); }
-    70%           { transform: translateY(-2px) scale(1.12); color: var(--accent-ink); }
-}
+/* Cascade cue.
 
-.case-card.hint-nudge:not([open]):not(:hover) > .case-summary::after {
-    animation: case-hint-nudge 1.6s ease var(--hint-delay, 0s) 2;
-}
+   One cue, run across a whole card group. Each time a group scrolls into view,
+   site.js stamps each of its cards with a --cascade-delay and they fire in
+   sequence: a light sweep across the summary and a spine that grows and
+   retracts. Each pass is 0.85s against a 0.34s stagger, so about two and a
+   half cards are in flight at any moment. The ratio matters more than either
+   number: at 4:1 a short group had every card animating together and read as
+   one fast flash instead of a wave.
 
-/* Dwell cue. The nudge above fires once per card and is then spent, so a
-   reader who stops on a card has nothing telling them it opens. site.js marks
-   whichever single card sits nearest the middle of the viewport, and it gets a
-   light sweep plus a spine that grows and retracts — a preview of the hover
-   state rather than a new visual idea. One card at a time, two cycles, then it
-   rests. Suppressed while the card is hovered, focused, open, or still
-   nudging, so the cues never overlap. */
+   Deliberately the same gestures the hover state uses, so the cue is
+   previewing what hovering will do rather than inventing a new signal.
+   Suppressed on any card that is already hovered, focused, or open. */
 
 .case-card::after {
     content: '';
@@ -1045,29 +1179,31 @@ section.content .wrap.about-single { max-width: 68ch; }
     bottom: 0;
     left: 0;
     width: 45%;
-    background: linear-gradient(100deg, transparent, rgba(47, 95, 224, 0.14), transparent);
+    background: linear-gradient(100deg, transparent, var(--sweep-tint), transparent);
     transform: translateX(-120%);
     pointer-events: none;
     z-index: 1;
 }
 
-@keyframes case-dwell-sweep {
+@keyframes case-cascade-sweep {
     0%   { transform: translateX(-120%); }
     100% { transform: translateX(240%); }
 }
 
-/* Runs the spine up to full and back down, on the same clock as the sweep. */
-@keyframes case-dwell-spine {
+/* Spine runs up to full and back down, on the same clock as the sweep. */
+@keyframes case-cascade-spine {
     0%, 100% { transform: scaleY(0); }
     50%      { transform: scaleY(1); }
 }
 
-.case-card.is-dwelling:not([open]):not(:hover):not(:focus-within):not(.hint-nudge)::after {
-    animation: case-dwell-sweep 1.9s ease-in-out 2;
+/* One pass each. Two would have every card in the group animating twice over,
+   which stops reading as a wave. */
+.case-card.cascade:not([open]):not(:hover):not(:focus-within)::after {
+    animation: case-cascade-sweep 0.85s ease-in-out var(--cascade-delay, 0s) 1;
 }
 
-.case-card.is-dwelling:not([open]):not(:hover):not(:focus-within):not(.hint-nudge)::before {
-    animation: case-dwell-spine 1.9s ease-in-out 2;
+.case-card.cascade:not([open]):not(:hover):not(:focus-within)::before {
+    animation: case-cascade-spine 0.85s ease-in-out var(--cascade-delay, 0s) 1;
 }
 
 @media (max-width: 620px) {
@@ -1085,11 +1221,9 @@ section.content .wrap.about-single { max-width: 68ch; }
 
     .case-card:hover { transform: none; }
 
-    .case-card.hint-nudge:not([open]):not(:hover) > .case-summary::after { animation: none; }
-
-    /* site.js never applies .is-dwelling under this preference; belt and braces. */
-    .case-card.is-dwelling::before,
-    .case-card.is-dwelling::after { animation: none; }
+    /* site.js never applies .cascade under this preference; belt and braces. */
+    .case-card.cascade::before,
+    .case-card.cascade::after { animation: none; }
     .case-card::after { display: none; }
 
     /* Trade the wipe and the slide for a straight appearance. */
@@ -1159,6 +1293,24 @@ footer {
     font-size: 0.82rem;
     background: var(--hero-bg);
 }
+
+/* The footer sits on a dark band in both themes, so the credit link uses the
+   hero token family rather than --accent, which is too dark on it in light
+   mode. Brighter than the surrounding --ink-faint so it reads as a link. */
+footer a {
+    color: var(--hero-ink-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--hero-border);
+    text-underline-offset: 2px;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+footer a:hover {
+    color: var(--hero-ink);
+    text-decoration-color: currentColor;
+}
+
+.footer-sep { opacity: 0.45; margin: 0 0.4rem; }
 
 /* ================================================================
    Reduced motion

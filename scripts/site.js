@@ -15,6 +15,12 @@ document.addEventListener("DOMContentLoaded", function ()
     if (toggle && mobileNav) initMobileNav(toggle, mobileNav);
 
     /*
+        Light/dark switch. The theme itself is already applied by the inline
+        script in the document head; this only wires the control up.
+    */
+    initThemeToggle();
+
+    /*
         Case-study cards are native <details>, which jump open/closed with no
         transition. Animate their height with the Web Animations API instead.
         Progressive enhancement: if this never runs, the browser's own toggle
@@ -24,10 +30,10 @@ document.addEventListener("DOMContentLoaded", function ()
 
     /*
         Collapsed cards look like plain headings, so visitors miss that there's
-        a case study behind each one. Nudge the +/- marker as a group scrolls
-        into view — see the "Expand affordance" block in site.css.
+        a case study behind each one. Run a cue across each group of cards as
+        it arrives — see the "Cascade cue" block in site.css.
     */
-    initCaseCardHints();
+    initCaseCardCascade();
 
     const sections = Array.from(document.querySelectorAll("main section[id]"));
     const navLinks = Array.from(document.querySelectorAll(".nav-links a, #mobile-nav a"));
@@ -77,6 +83,60 @@ document.addEventListener("DOMContentLoaded", function ()
 
     sections.forEach(function (section) { observer.observe(section); });
 });
+
+/*
+    Theme switch.
+
+    The head script has already put data-theme on <html>, so there is nothing
+    to apply on load — this just reflects that state into the control and
+    handles clicks. Storage is only written once the visitor actually picks a
+    side; until then the OS preference stays in charge and keeps tracking.
+*/
+function initThemeToggle()
+{
+    const control = document.getElementById("theme-toggle");
+    if (!control) return;
+
+    const root = document.documentElement;
+
+    function stored()
+    {
+        try { return localStorage.getItem("theme"); }
+        catch (e) { return null; }
+    }
+
+    function apply(isDark, remember)
+    {
+        // Paint the swap rather than snapping it, but only for the switch
+        // itself — a permanent global transition would be far too costly.
+        root.classList.add("theme-switching");
+        window.setTimeout(function () { root.classList.remove("theme-switching"); }, 320);
+
+        root.setAttribute("data-theme", isDark ? "dark" : "light");
+        control.setAttribute("aria-checked", isDark ? "true" : "false");
+
+        if (remember)
+        {
+            try { localStorage.setItem("theme", isDark ? "dark" : "light"); }
+            catch (e) { /* private mode: the choice just won't outlive the tab */ }
+        }
+    }
+
+    // Reflect whatever the head script decided.
+    control.setAttribute("aria-checked", root.getAttribute("data-theme") === "dark" ? "true" : "false");
+
+    control.addEventListener("click", function ()
+    {
+        apply(root.getAttribute("data-theme") !== "dark", true);
+    });
+
+    // Keep following the OS, but only while the visitor has no stated opinion.
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onOsChange = function (event) { if (!stored()) apply(event.matches, false); };
+
+    if (typeof media.addEventListener === "function") media.addEventListener("change", onOsChange);
+    else if (typeof media.addListener === "function") media.addListener(onOsChange);
+}
 
 /*
     The mobile menu used to snap between display:none and display:block. Tween
@@ -235,7 +295,15 @@ function initCaseCardAnimation()
     });
 }
 
-function initCaseCardHints()
+/*
+    Cascade cue.
+
+    When a group of case cards scrolls into view, every card in that group gets
+    the cue, staggered so neighbours overlap and it reads as one wave down the
+    list. Fires once per group, and stops for good the moment the visitor opens
+    anything — by then they know the cards open.
+*/
+function initCaseCardCascade()
 {
     const cards = Array.from(document.querySelectorAll("details.case-card"));
     if (!cards.length) return;
@@ -243,103 +311,97 @@ function initCaseCardHints()
     if (typeof IntersectionObserver !== "function") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    // Once the visitor opens anything they've understood the pattern, so every
-    // remaining hint is just noise. Hover and focus styling carries on.
-    let retired = false;
+    // Roughly the 0.85s pass divided by 2.5, so about two and a half cards are
+    // ever in flight. At a 4:1 ratio a short group (Mursion has four cards
+    // spanning 285px) had every card animating at once, which reads as one
+    // fast flash rather than a wave.
+    const STAGGER = 0.34;
 
-    const observer = new IntersectionObserver(function (entries)
-    {
-        // Cards in one viewport arrive in a single callback, so index within
-        // the batch to stagger them rather than firing thirteen at once.
-        let position = 0;
-
-        entries.forEach(function (entry)
-        {
-            if (!entry.isIntersecting) return;
-
-            observer.unobserve(entry.target);
-            if (retired) return;
-
-            const card = entry.target;
-            card.style.setProperty("--hint-delay", (position * 0.11).toFixed(2) + "s");
-            card.classList.add("hint-nudge");
-            position += 1;
-        });
-    }, { threshold: 0.9 });
-
-    /*
-        Second cue: the nudge above is spent after one showing, so a reader who
-        settles on a card gets nothing further. Track whichever card sits
-        nearest the middle of the viewport and mark just that one, so at most a
-        single card is ever animating.
-    */
-    const filled = new Map();
-    let dwelling = null;
-
-    const dwellObserver = new IntersectionObserver(function (entries)
-    {
-        entries.forEach(function (entry)
-        {
-            if (entry.isIntersecting) filled.set(entry.target, entry.intersectionRect.height);
-            else filled.delete(entry.target);
-        });
-
-        // Same tie-break as the scroll-spy: most of the band wins, and walking
-        // in document order sends a tie to the higher card.
-        let winner = null;
-        let mostFilled = 0;
-
-        cards.forEach(function (card)
-        {
-            const height = filled.get(card);
-            if (height === undefined || height <= mostFilled) return;
-
-            winner = card;
-            mostFilled = height;
-        });
-
-        setDwelling(winner);
-    }, { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.5, 1] });
-
-    function setDwelling(card)
-    {
-        if (retired || card === dwelling) return;
-
-        if (dwelling) dwelling.classList.remove("is-dwelling");
-        dwelling = card;
-        if (card) card.classList.add("is-dwelling");
-    }
+    // The two case-study sections each hold their own run of cards, and each
+    // should cascade when it arrives rather than both firing together. Group
+    // by parent so this keeps working if a third section is added.
+    const groups = new Map();
 
     cards.forEach(function (card)
     {
-        observer.observe(card);
-        dwellObserver.observe(card);
-        card.addEventListener("toggle", retireHints);
-
-        // Drop the class once the animation is done so a later hover or an
-        // open/close never fights a lingering animated transform. Clearing the
-        // dwell class also keeps a hover in and out of the card from replaying
-        // the sweep, while a genuine return to the middle re-adds it.
-        card.addEventListener("animationend", function (event)
-        {
-            if (event.animationName === "case-hint-nudge") card.classList.remove("hint-nudge");
-            if (event.animationName === "case-dwell-sweep") card.classList.remove("is-dwelling");
-        });
+        const parent = card.parentElement;
+        if (!groups.has(parent)) groups.set(parent, []);
+        groups.get(parent).push(card);
     });
 
-    function retireHints()
+    /*
+        Watch each group's FIRST CARD, not the group container. Both containers
+        open with a heading, a video and intro copy, so their top edge sits
+        ~700px above their first card — observing the container fired the whole
+        wave while it was still well below the fold. Keying off the first card
+        means the wave starts exactly when the reader can see where it starts.
+    */
+    const leaders = new Map();
+    const armed = new Map();
+
+    groups.forEach(function (list)
     {
-        if (retired) return;
-        retired = true;
+        leaders.set(list[0], list);
+        armed.set(list[0], true);
+    });
 
-        observer.disconnect();
-        dwellObserver.disconnect();
-        dwelling = null;
-
-        cards.forEach(function (card)
+    const observer = new IntersectionObserver(function (entries)
+    {
+        entries.forEach(function (entry)
         {
-            card.classList.remove("hint-nudge");
-            card.classList.remove("is-dwelling");
+            const leader = entry.target;
+
+            /*
+                Two thresholds give the re-fire some hysteresis: a group plays
+                once its first card is properly in view, and only becomes
+                eligible again after that card has left the viewport entirely.
+                Firing and re-arming on the same boundary would let a few
+                pixels of scroll jitter restart the wave continuously.
+            */
+            if (!entry.isIntersecting)
+            {
+                armed.set(leader, true);
+                return;
+            }
+
+            if (entry.intersectionRatio < 0.85) return;
+            if (!armed.get(leader)) return;
+
+            armed.set(leader, false);
+            play(leaders.get(leader) || []);
+        });
+    }, { threshold: [0, 0.85], rootMargin: "0px 0px -12% 0px" });
+
+    leaders.forEach(function (_list, firstCard) { observer.observe(firstCard); });
+
+    function play(list)
+    {
+        /*
+            Clear the class off the whole group first. A card whose turn came
+            while it was hovered never ran its animation, so animationend never
+            fired and it still carries the class — re-adding it would be a
+            no-op and that card would sit the wave out.
+        */
+        list.forEach(function (card) { card.classList.remove("cascade"); });
+
+        // Force the removal to land before re-adding, or the browser coalesces
+        // both mutations into one style pass and the animation never restarts.
+        void list[0].offsetWidth;
+
+        list.forEach(function (card, index)
+        {
+            card.style.setProperty("--cascade-delay", (index * STAGGER).toFixed(2) + "s");
+            card.classList.add("cascade");
         });
     }
+
+    // Drop the class once a card's pass is done, so a later hover or open/close
+    // never fights a lingering animated transform.
+    cards.forEach(function (card)
+    {
+        card.addEventListener("animationend", function (event)
+        {
+            if (event.animationName === "case-cascade-sweep") card.classList.remove("cascade");
+        });
+    });
 }
