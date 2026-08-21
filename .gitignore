@@ -7,5 +7,6 @@ node_modules
 npm-debug.log
 .vscode/
 
-# Raw gif captures — only the optimized Data/gifs/mini/ versions are used on the site
-Data/gifs/*.gif
+# Raw gif captures are versioned through Git LFS (see .gitattributes) rather
+# than ignored, so they survive a lost machine without pushing 250 MB of
+# blobs into regular git objects. Only Data/gifs/mini/ is used on the site.

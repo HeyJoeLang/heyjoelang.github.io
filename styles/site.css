@@ -4,7 +4,9 @@
    card grids for projects/awards, dark contact band.
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+/* Fonts are loaded from <link> tags in index.html, not @import. An @import
+   here would chain HTML -> site.css -> fonts.css -> font files, costing an
+   extra round trip of unstyled text before anything renders. */
 
 :root {
     --bg: #f7f8fa;
@@ -34,7 +36,11 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+/* Smooth scrolling is opt-out: every nav link jumps the whole viewport, which
+   is a common vestibular trigger. Only enable it when no preference is set. */
+@media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+}
 
 /* Keep deep-linked targets clear of the sticky nav */
 section[id], #mursion, #plugins { scroll-margin-top: 80px; }
@@ -50,8 +56,44 @@ body {
 
 img { max-width: 100%; display: block; }
 
+/* Inline SVG icons (sprite lives at the top of index.html). Sized in em so
+   they track whatever font-size the surrounding text or wrapper sets, the way
+   the old icon font did. */
+.icon {
+    width: 1em;
+    height: 1em;
+    flex: none;
+    vertical-align: -0.125em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Brand marks and the bolt are solid glyphs rather than line art. */
+.icon-solid { fill: currentColor; stroke: none; }
+
 a { color: var(--accent); text-decoration: none; }
 a:hover { color: var(--accent-ink); }
+
+/* Keyboard focus ring. The browser default is close to invisible against the
+   dark nav and the contact band, and this page has ~50 tab stops. :focus-visible
+   keeps it off mouse clicks. */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* On the dark surfaces the blue ring has too little contrast; go light. */
+#site-nav :focus-visible,
+#mobile-nav :focus-visible,
+#hero :focus-visible,
+#contact :focus-visible,
+.award-card :focus-visible {
+    outline-color: #fff;
+}
 
 .wrap {
     max-width: var(--max-width);
@@ -1071,4 +1113,38 @@ footer {
     color: var(--ink-faint);
     font-size: 0.82rem;
     background: var(--hero-bg);
+}
+
+/* ================================================================
+   Reduced motion
+   Applies across the whole page. Durations collapse rather than being
+   removed outright, so transitionend/animationend still fire for any
+   script depending on them. Transforms are then cancelled individually
+   so hover and focus states keep their color and border cues and only
+   lose the movement. site.js checks the same query and skips both the
+   tweened <details> height and the marker nudge.
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Cancel the lifts. Color, border, and shadow changes are left intact. */
+    .nav-links a:hover,
+    .nav-links a.active,
+    .btn-primary:hover,
+    .btn-ghost:hover,
+    .capability-card:hover,
+    .skill-card:hover,
+    .proj-card:hover,
+    .mini-arcade img:hover { transform: none; }
+
+    /* Purely decorative sweep across buttons. */
+    .btn::after { display: none; }
 }

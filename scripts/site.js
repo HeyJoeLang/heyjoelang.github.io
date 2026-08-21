@@ -12,23 +12,7 @@ document.addEventListener("DOMContentLoaded", function ()
     const toggle = document.getElementById("nav-toggle");
     const mobileNav = document.getElementById("mobile-nav");
 
-    if (toggle && mobileNav)
-    {
-        toggle.addEventListener("click", function ()
-        {
-            const isOpen = mobileNav.classList.toggle("open");
-            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
-
-        mobileNav.querySelectorAll("a").forEach(function (link)
-        {
-            link.addEventListener("click", function ()
-            {
-                mobileNav.classList.remove("open");
-                toggle.setAttribute("aria-expanded", "false");
-            });
-        });
-    }
+    if (toggle && mobileNav) initMobileNav(toggle, mobileNav);
 
     /*
         Case-study cards are native <details>, which jump open/closed with no
@@ -58,19 +42,104 @@ document.addEventListener("DOMContentLoaded", function ()
         });
     }
 
+    /*
+        The root margin leaves a narrow band across the middle of the viewport.
+        More than one section can straddle it at once, and entry order is not
+        document order — so rather than letting whichever entry happens to come
+        last win (which made the highlight flicker between two links), track how
+        much of the band each section fills and pick the leader outright.
+    */
+    const filled = new Map();
+
     const observer = new IntersectionObserver(function (entries)
     {
         entries.forEach(function (entry)
         {
-            if (entry.isIntersecting)
-            {
-                setActive(entry.target.id);
-            }
+            if (entry.isIntersecting) filled.set(entry.target, entry.intersectionRect.height);
+            else filled.delete(entry.target);
         });
-    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+
+        let winner = null;
+        let mostFilled = 0;
+
+        // Walk in document order so a tie resolves to the higher section.
+        sections.forEach(function (section)
+        {
+            const height = filled.get(section);
+            if (height === undefined || height <= mostFilled) return;
+
+            winner = section;
+            mostFilled = height;
+        });
+
+        if (winner) setActive(winner.id);
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] });
 
     sections.forEach(function (section) { observer.observe(section); });
 });
+
+/*
+    The mobile menu used to snap between display:none and display:block. Tween
+    its height instead, the same way the case cards do. Falls back to the
+    instant toggle where Web Animations is missing or motion is unwelcome.
+*/
+function initMobileNav(toggle, nav)
+{
+    const DURATION = 240;
+    const EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
+
+    const canAnimate = typeof Element.prototype.animate === "function"
+        && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let animation = null;
+    let isOpen = false;
+
+    function setOpen(next)
+    {
+        if (next === isOpen) return;
+
+        isOpen = next;
+        toggle.setAttribute("aria-expanded", next ? "true" : "false");
+
+        if (!canAnimate)
+        {
+            nav.classList.toggle("open", next);
+            return;
+        }
+
+        // Read the current height before cancelling, so reversing mid-tween
+        // starts from where the panel actually is rather than snapping.
+        const from = nav.classList.contains("open") ? nav.offsetHeight : 0;
+        if (animation) animation.cancel();
+
+        // Lay the panel out so its content height can be measured.
+        nav.classList.add("open");
+        nav.style.overflow = "hidden";
+        nav.style.height = from + "px";
+
+        const to = next ? nav.scrollHeight : 0;
+
+        animation = nav.animate(
+            { height: [from + "px", to + "px"] },
+            { duration: DURATION, easing: EASING }
+        );
+
+        animation.onfinish = function ()
+        {
+            if (!next) nav.classList.remove("open");
+            nav.style.height = "";
+            nav.style.overflow = "";
+            animation = null;
+        };
+    }
+
+    toggle.addEventListener("click", function () { setOpen(!isOpen); });
+
+    nav.querySelectorAll("a").forEach(function (link)
+    {
+        link.addEventListener("click", function () { setOpen(false); });
+    });
+}
 
 function initCaseCardAnimation()
 {

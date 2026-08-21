@@ -50,18 +50,41 @@
         }
         </script>
 
+        <!-- Fonts: preconnect so the handshake overlaps parsing, and load via
+             <link> rather than an @import inside site.css, which would add a
+             round trip to the critical path. -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=10">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=11">
 
         <!-- Icon -->
         <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=4" defer></script>
+        <script src="scripts/site.js?v=5" defer></script>
     </head>
 
     <body>
+        <!-- Icon sprite: replaces the render-blocking FontAwesome CDN.
+             Stroked symbols inherit stroke/fill from .icon in site.css. -->
+        <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+            <symbol id="i-bars" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+            <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M2 12h20"/></symbol>
+            <symbol id="i-cogs" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></symbol>
+            <symbol id="i-envelope" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6.5 9 7 9-7"/></symbol>
+            <symbol id="i-file-pdf-o" viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></symbol>
+            <symbol id="i-map-marker" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+            <symbol id="i-sitemap" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6.5M5 17v-3.5h14V17"/></symbol>
+            <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m7 9.5 2.5 2.5L7 14.5M13 15h4"/></symbol>
+            <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7" r="3.5"/><path d="M17 4.2a3.5 3.5 0 0 1 0 6.6M22 20v-1.5a4 4 0 0 0-3-3.8"/></symbol>
+            <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+            <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-2.1c-3.2.7-3.88-1.44-3.88-1.44-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></symbol>
+            <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM2.4 21.5h5.16V9.5H2.4v12zM10 9.5h4.95v1.64h.07c.69-1.2 2.37-2.14 4.2-2.14 3.5 0 4.78 2.13 4.78 5.9v6.6h-5.16v-5.85c0-1.47-.53-2.47-1.85-2.47-1.01 0-1.6.68-1.87 1.34-.1.24-.12.57-.12.9v6.08H10V9.5z"/></symbol>
+        </svg>
+
         <nav id="site-nav" aria-label="Site sections">
             <div class="wrap">
                 <a href="#hero" class="nav-logo">Joe Lang</a>
@@ -74,12 +97,12 @@
                     <li><a href="#education">Education</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    <li><a href="https://github.com/HeyJoeLang/" target="_blank" class="nav-icon" aria-label="GitHub profile"><i class="fa fa-github"></i></a></li>
-                    <li><a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="nav-icon" aria-label="LinkedIn profile"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="nav-cta"><i class="fa fa-file-pdf-o"></i> Resume</a></li>
+                    <li><a href="https://github.com/HeyJoeLang/" target="_blank" class="nav-icon" aria-label="GitHub profile"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-github"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="nav-icon" aria-label="LinkedIn profile"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg></a></li>
+                    <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="nav-cta"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a></li>
                 </ul>
                 <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <i class="fa fa-bars"></i> Menu
+                    <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-bars"></use></svg> Menu
                 </button>
             </div>
         </nav>
@@ -94,9 +117,9 @@
                 <li><a href="#education">Education</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="https://github.com/HeyJoeLang/" target="_blank"><i class="fa fa-github"></i> GitHub</a></li>
-                <li><a href="https://www.linkedin.com/in/heyjoelang/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
-                <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank"><i class="fa fa-file-pdf-o"></i> Resume</a></li>
+                <li><a href="https://github.com/HeyJoeLang/" target="_blank"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-github"></use></svg> GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/heyjoelang/" target="_blank"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg> LinkedIn</a></li>
+                <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a></li>
             </ul>
         </div>
 
@@ -114,9 +137,9 @@
                     <p class="hero-blurb">I take ambiguous, technically demanding problems from first investigation through production &mdash; across real-time systems, AI integration, and infrastructure &mdash; and build solutions that scale.</p>
                     <div class="hero-ctas">
                         <a href="#work" class="btn btn-primary">View My Work</a>
-                        <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><i class="fa fa-file-pdf-o"></i> Resume</a>
-                        <a href="https://github.com/HeyJoeLang/" target="_blank" class="btn btn-ghost"><i class="fa fa-github"></i> GitHub</a>
-                        <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="btn btn-ghost"><i class="fa fa-linkedin"></i> LinkedIn</a>
+                        <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a>
+                        <a href="https://github.com/HeyJoeLang/" target="_blank" class="btn btn-ghost"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-github"></use></svg> GitHub</a>
+                        <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="btn btn-ghost"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg> LinkedIn</a>
                         <a href="#contact" class="btn btn-ghost">Contact</a>
                     </div>
                     <div class="mini-arcade" aria-label="Motion previews of past work">
@@ -134,8 +157,8 @@
 
                 <div class="hero-side">
                     <div class="status-card">
-                        <p class="current-role"><i class="fa fa-briefcase"></i> Open To New Opportunities</p>
-                        <p class="location"><i class="fa fa-map-marker"></i> NYC, New York</p>
+                        <p class="current-role"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-briefcase"></use></svg> Open To New Opportunities</p>
+                        <p class="location"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-map-marker"></use></svg> NYC, New York</p>
                     </div>
                     <div class="hero-stats">
                         <div class="stat">
@@ -180,31 +203,31 @@
                     <div class="capability-grid">
 
                         <div class="capability-card">
-                            <div class="cap-icon"><i class="fa fa-sitemap"></i></div>
+                            <div class="cap-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sitemap"></use></svg></div>
                             <h3>Systems Architecture</h3>
                             <p>Designing systems that scale from early prototype through production, with maintainability built in from the start.</p>
                         </div>
 
                         <div class="capability-card">
-                            <div class="cap-icon"><i class="fa fa-bolt"></i></div>
+                            <div class="cap-icon"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-bolt"></use></svg></div>
                             <h3>Real-Time Systems</h3>
                             <p>Game engines, WebRTC streaming, audio and video pipelines, networking, and low-latency application design.</p>
                         </div>
 
                         <div class="capability-card">
-                            <div class="cap-icon"><i class="fa fa-cogs"></i></div>
+                            <div class="cap-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-cogs"></use></svg></div>
                             <h3>AI Integration</h3>
                             <p>LLMs, speech-to-text, text-to-speech, conversational AI, and production AI pipelines running under real-time constraints.</p>
                         </div>
 
                         <div class="capability-card">
-                            <div class="cap-icon"><i class="fa fa-terminal"></i></div>
+                            <div class="cap-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-terminal"></use></svg></div>
                             <h3>Developer Productivity</h3>
                             <p>CI/CD, automation, internal tooling, debugging, and observability for fast-moving engineering teams.</p>
                         </div>
 
                         <div class="capability-card">
-                            <div class="cap-icon"><i class="fa fa-users"></i></div>
+                            <div class="cap-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg></div>
                             <h3>Technical Leadership</h3>
                             <p>Architecture decisions, mentoring, cross-functional collaboration, and end-to-end project ownership.</p>
                         </div>
@@ -233,7 +256,7 @@
                         <!-- Possible additional case study: the WebRTC -> LiveKit streaming migration. Worth its own card if Joe owned or led that work (what drove the move, what it improved). Not written up here because his role in it is unconfirmed. -->
                         <details class="case-card">
                             <summary class="case-summary">Architected an On-Demand AI Simulation Platform</summary>
-                            <div class="thumb"><img src="./Data/images/Mursion_AI_Simulations.png" alt="On-demand AI-driven simulation product"></div>
+                            <div class="thumb"><img src="./Data/images/Mursion_AI_Simulations.png" alt="On-demand AI-driven simulation product" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Mursion's simulation platform was built entirely around live, human-led sessions. To expand into true 24/7 on-demand delivery, the business needed an architecture that could run realistic simulations autonomously &mdash; without displacing the existing human-led product.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The experience had to stay responsive enough to feel conversational, integrate with existing 3D avatar and scenario content, and ship alongside a live product the business still depended on.</p></div>
@@ -245,7 +268,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Diagnosed and Cut ~1.5s of AI Response Latency</summary>
-                            <div class="thumb"><img src="./Data/images/MursionLatency.png" alt="Reduced-latency AI avatar response pipeline"></div>
+                            <div class="thumb"><img src="./Data/images/MursionLatency.png" alt="Reduced-latency AI avatar response pipeline" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>On-demand simulations had a significant latency gap between a user finishing speaking and the AI avatar responding, which broke conversational flow and undermined the sense of immersion the product depends on.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The delay had no single obvious owner &mdash; it was distributed across the speech, AI, and avatar layers &mdash; and any fix had to hold up in a live production pipeline rather than a lab benchmark.</p></div>
@@ -257,7 +280,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Closed a WCAG Accessibility Gap Across a Streaming Boundary</summary>
-                            <div class="thumb"><img src="./Data/images/Mursion_Accessibility.png" alt="Keyboard-accessible simulation streaming"></div>
+                            <div class="thumb"><img src="./Data/images/Mursion_Accessibility.png" alt="Keyboard-accessible simulation streaming" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Mursion's streaming architecture created a browser security boundary that prevented keyboard input from reaching the simulation, blocking keyboard-only navigation entirely and leaving a significant accessibility gap in the product.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The blocker sat inside a third-party streaming layer we did not own, so the fix could not be implemented unilaterally &mdash; it required a vendor-side API change plus a client integration that preserved the existing security model.</p></div>
@@ -270,7 +293,7 @@
                         <!-- Potential metric: issue-resolution time before/after the pipeline, or number of simulation issues triaged per month through it -->
                         <details class="case-card">
                             <summary class="case-summary">Automated the Path from Reported Issue to Root Cause</summary>
-                            <div class="thumb"><img src="./Data/images/Mursion_QA.png" alt="In-simulation Jira reporting pipeline for AI simulation quality"></div>
+                            <div class="thumb"><img src="./Data/images/Mursion_QA.png" alt="In-simulation Jira reporting pipeline for AI simulation quality" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>As AI simulations moved past the prototype stage, problems with conversation quality, animation, latency, and simulation logic became increasingly hard to reproduce. There was no systematic way to connect a user-reported issue to the AI logs, video, and runtime data engineers needed to find the cause.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>Reports came from non-engineers mid-simulation, so capture had to be automatic and zero-friction. The system also had to be maintainable by QA rather than depending on me indefinitely.</p></div>
@@ -292,7 +315,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Reduced SDK Complexity from 40 Classes to 8</summary>
-                            <div class="thumb"><img src="./Data/images/leia_simple_architecture.png" alt="Diagram of the Leia Unity plugin architecture simplified from 40 classes to 8"></div>
+                            <div class="thumb"><img src="./Data/images/leia_simple_architecture.png" alt="Diagram of the Leia Unity plugin architecture simplified from 40 classes to 8" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>As Leia grew, the Unity SDK accumulated layers of logic to satisfy both legacy and new requirements. It had become increasingly difficult to extend, and technical debt was slowing every new feature.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The SDK was already shipping to external developers, so the rewrite had to preserve core functionality and avoid breaking existing integrations.</p></div>
@@ -304,7 +327,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Unified Two Device Platforms After an Acquisition</summary>
-                            <div class="thumb"><img src="./Data/images/leia_cross_compatible.png" alt="Diagram of the Leia plugin working across Windows and Android devices"></div>
+                            <div class="thumb"><img src="./Data/images/leia_cross_compatible.png" alt="Diagram of the Leia plugin working across Windows and Android devices" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>After Leia acquired Dimenco, the company needed a single plugin that worked across all displays on both Windows and Android &mdash; two separate device APIs and firmware stacks inherited from two separate companies.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>Maintaining two parallel codebases was not viable long term, and any unified design had to keep both product lines fully supported through the transition.</p></div>
@@ -317,7 +340,7 @@
                         <!-- Potential metric: release cycle time or defect escape rate, before vs. after standardizing the pipeline -->
                         <details class="case-card">
                             <summary class="case-summary">Standardized the SDK Release Pipeline and CI</summary>
-                            <div class="thumb"><img src="./Data/images/leia_release_pipeline.png" alt="Diagram of the standardized Leia Unity plugin release pipeline"></div>
+                            <div class="thumb"><img src="./Data/images/leia_release_pipeline.png" alt="Diagram of the standardized Leia Unity plugin release pipeline" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Unity SDK releases were ad-hoc. Breaking changes routinely shipped inside routine updates, and bugs were not caught before reaching developers.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The process had to work for a small team without dedicated release engineering, and had to be simple enough that any engineer could run a release unassisted.</p></div>
@@ -330,7 +353,7 @@
                         <!-- Potential metric: number of experimental displays / firmware configurations supported through this process -->
                         <details class="case-card">
                             <summary class="case-summary">Unblocked Prototyping on Unreleased Automotive Hardware</summary>
-                            <div class="thumb"><img src="./Data/images/leia_conti_prototype.png" alt="Prototype build running on experimental automotive display hardware"></div>
+                            <div class="thumb"><img src="./Data/images/leia_conti_prototype.png" alt="Prototype build running on experimental automotive display hardware" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Automotive partners needed to evaluate rendering on experimental displays, but those devices had no official firmware support in our SDK &mdash; so no builds could target them.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>Waiting on official firmware releases would have missed partner timelines, and the solution had to accommodate hardware configurations that changed between prototypes.</p></div>
@@ -342,7 +365,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Added URP, HDRP, and Post-Processing Pipeline Support</summary>
-                            <div class="thumb"><img src="./Data/images/leia_urp_hdrp.png" alt="Leia display content rendered with URP and HDRP post-processing pipelines"></div>
+                            <div class="thumb"><img src="./Data/images/leia_urp_hdrp.png" alt="Leia display content rendered with URP and HDRP post-processing pipelines" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>The Leia Unity SDK only supported Unity's default render pipeline. Any content built with URP, HDRP, or post-processing simply would not work on our displays &mdash; excluding a large share of modern Unity projects.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>Each render pipeline hooks into Unity differently, so support had to be added without forking the SDK per pipeline or regressing default-pipeline behavior.</p></div>
@@ -356,7 +379,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Led the Unity SDK Engineering Team</summary>
-                            <div class="thumb"><img src="./Data/images/leia_team_lead.png" alt="Joe leading the Leia Unity SDK plugin team"></div>
+                            <div class="thumb"><img src="./Data/images/leia_team_lead.png" alt="Joe leading the Leia Unity SDK plugin team" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Our plugins had several critical open issues that were affecting customer satisfaction and actively slowing adoption of the company's display technology.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The team had to clear the existing bug backlog, deliver client-requested features, and keep internal content releases moving &mdash; concurrently, with three engineers.</p></div>
@@ -368,7 +391,7 @@
 
                         <details class="case-card">
                             <summary class="case-summary">Owned Technical Partnership with Industry Stakeholders</summary>
-                            <div class="thumb"><img src="./Data/images/leia_continental.png" alt="Leia display prototype built for an automotive industry partner"></div>
+                            <div class="thumb"><img src="./Data/images/leia_continental.png" alt="Leia display prototype built for an automotive industry partner" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Industry partners and business stakeholders needed demos running on devices that were not available on the market, including experimental automotive hardware.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>Each request came with different hardware, different partners, and no established path to a working build.</p></div>
@@ -381,7 +404,7 @@
                         <!-- Potential metric: developer forum size or engagement growth under this process -->
                         <details class="case-card">
                             <summary class="case-summary">Built the Developer Communication Process</summary>
-                            <div class="thumb"><img src="./Data/images/leia_community.png" alt="Leia developer community engagement activity"></div>
+                            <div class="thumb"><img src="./Data/images/leia_community.png" alt="Leia developer community engagement activity" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Leia had no standardized way to tell external developers about SDK updates, and no reliable channel for their feedback to reach the engineering team.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>This had to run alongside my engineering work, so it needed to be a repeatable process rather than an ad-hoc time sink.</p></div>
@@ -394,7 +417,7 @@
                         <!-- Potential metric: total porting timeline, or defect rate at launch across the 40 titles -->
                         <details class="case-card">
                             <summary class="case-summary">Managed the Porting of 40+ Titles to a New Platform</summary>
-                            <div class="thumb"><img src="./Data/images/leia_port.png" alt="Leia marketstore game library ported across 40+ titles"></div>
+                            <div class="thumb"><img src="./Data/images/leia_port.png" alt="Leia marketstore game library ported across 40+ titles" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Leia set out to launch its marketstore with over 40 games. The titles varied widely in complexity, engine, and audience, each requiring its own approach to porting, testing, and release.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The work spanned multiple external publishing partners on a fixed launch timeline, with quality standards that had to hold across every title.</p></div>
@@ -825,10 +848,10 @@
                 <h2>Let's Connect</h2>
                 <p>I'm always interested in discussing new opportunities, hard technical problems, or connecting with other engineers and technical leaders.</p>
                 <div class="contact-ctas">
-                    <a href="mailto:heyjoelang@gmail.com" class="btn btn-primary"><i class="fa fa-envelope"></i> Email</a>
-                    <a href="https://github.com/HeyJoeLang/" target="_blank" class="btn btn-ghost"><i class="fa fa-github"></i> GitHub</a>
-                    <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="btn btn-ghost"><i class="fa fa-linkedin"></i> LinkedIn</a>
-                    <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><i class="fa fa-file-pdf-o"></i> Resume</a>
+                    <a href="mailto:heyjoelang@gmail.com" class="btn btn-primary"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-envelope"></use></svg> Email</a>
+                    <a href="https://github.com/HeyJoeLang/" target="_blank" class="btn btn-ghost"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-github"></use></svg> GitHub</a>
+                    <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="btn btn-ghost"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg> LinkedIn</a>
+                    <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a>
                 </div>
             </div>
         </section>

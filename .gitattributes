@@ -1,0 +1,6 @@
+# Raw gif captures live in Git LFS: large, rarely changed, and never requested
+# by the site. Only the top level matches -- Data/gifs/mini/ is deliberately
+# left in normal git, because GitHub Pages serves LFS-backed files as their
+# pointer text rather than the real bytes. Anything the site links to must stay
+# out of LFS.
+Data/gifs/*.gif filter=lfs diff=lfs merge=lfs -text
