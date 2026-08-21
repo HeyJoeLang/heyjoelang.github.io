@@ -773,7 +773,10 @@ section.content .wrap.about-single { max-width: 68ch; }
 }
 
 @media (min-width: 700px) {
-    .skills-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    /* 280px caps this at four columns on a full-width page, which splits the
+       eight cards 4+4. At the previous 220px it fitted five and left a ragged
+       row of three. Narrower viewports still step down to 3, 2 and 1. */
+    .skills-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 }
 
 /* ---------------------------- Capabilities ("What I Do") ---------------------------- */
