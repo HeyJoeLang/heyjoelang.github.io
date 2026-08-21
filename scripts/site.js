@@ -267,16 +267,63 @@ function initCaseCardHints()
         });
     }, { threshold: 0.9 });
 
+    /*
+        Second cue: the nudge above is spent after one showing, so a reader who
+        settles on a card gets nothing further. Track whichever card sits
+        nearest the middle of the viewport and mark just that one, so at most a
+        single card is ever animating.
+    */
+    const filled = new Map();
+    let dwelling = null;
+
+    const dwellObserver = new IntersectionObserver(function (entries)
+    {
+        entries.forEach(function (entry)
+        {
+            if (entry.isIntersecting) filled.set(entry.target, entry.intersectionRect.height);
+            else filled.delete(entry.target);
+        });
+
+        // Same tie-break as the scroll-spy: most of the band wins, and walking
+        // in document order sends a tie to the higher card.
+        let winner = null;
+        let mostFilled = 0;
+
+        cards.forEach(function (card)
+        {
+            const height = filled.get(card);
+            if (height === undefined || height <= mostFilled) return;
+
+            winner = card;
+            mostFilled = height;
+        });
+
+        setDwelling(winner);
+    }, { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.5, 1] });
+
+    function setDwelling(card)
+    {
+        if (retired || card === dwelling) return;
+
+        if (dwelling) dwelling.classList.remove("is-dwelling");
+        dwelling = card;
+        if (card) card.classList.add("is-dwelling");
+    }
+
     cards.forEach(function (card)
     {
         observer.observe(card);
+        dwellObserver.observe(card);
         card.addEventListener("toggle", retireHints);
 
         // Drop the class once the animation is done so a later hover or an
-        // open/close never fights a lingering animated transform.
+        // open/close never fights a lingering animated transform. Clearing the
+        // dwell class also keeps a hover in and out of the card from replaying
+        // the sweep, while a genuine return to the middle re-adds it.
         card.addEventListener("animationend", function (event)
         {
             if (event.animationName === "case-hint-nudge") card.classList.remove("hint-nudge");
+            if (event.animationName === "case-dwell-sweep") card.classList.remove("is-dwelling");
         });
     });
 
@@ -286,6 +333,13 @@ function initCaseCardHints()
         retired = true;
 
         observer.disconnect();
-        cards.forEach(function (card) { card.classList.remove("hint-nudge"); });
+        dwellObserver.disconnect();
+        dwelling = null;
+
+        cards.forEach(function (card)
+        {
+            card.classList.remove("hint-nudge");
+            card.classList.remove("is-dwelling");
+        });
     }
 }

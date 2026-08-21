@@ -1030,6 +1030,46 @@ section.content .wrap.about-single { max-width: 68ch; }
     animation: case-hint-nudge 1.6s ease var(--hint-delay, 0s) 2;
 }
 
+/* Dwell cue. The nudge above fires once per card and is then spent, so a
+   reader who stops on a card has nothing telling them it opens. site.js marks
+   whichever single card sits nearest the middle of the viewport, and it gets a
+   light sweep plus a spine that grows and retracts — a preview of the hover
+   state rather than a new visual idea. One card at a time, two cycles, then it
+   rests. Suppressed while the card is hovered, focused, open, or still
+   nudging, so the cues never overlap. */
+
+.case-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    background: linear-gradient(100deg, transparent, rgba(47, 95, 224, 0.14), transparent);
+    transform: translateX(-120%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes case-dwell-sweep {
+    0%   { transform: translateX(-120%); }
+    100% { transform: translateX(240%); }
+}
+
+/* Runs the spine up to full and back down, on the same clock as the sweep. */
+@keyframes case-dwell-spine {
+    0%, 100% { transform: scaleY(0); }
+    50%      { transform: scaleY(1); }
+}
+
+.case-card.is-dwelling:not([open]):not(:hover):not(:focus-within):not(.hint-nudge)::after {
+    animation: case-dwell-sweep 1.9s ease-in-out 2;
+}
+
+.case-card.is-dwelling:not([open]):not(:hover):not(:focus-within):not(.hint-nudge)::before {
+    animation: case-dwell-spine 1.9s ease-in-out 2;
+}
+
 @media (max-width: 620px) {
     .case-summary::before { display: none; }
     .case-card:hover > .case-summary,
@@ -1046,6 +1086,11 @@ section.content .wrap.about-single { max-width: 68ch; }
     .case-card:hover { transform: none; }
 
     .case-card.hint-nudge:not([open]):not(:hover) > .case-summary::after { animation: none; }
+
+    /* site.js never applies .is-dwelling under this preference; belt and braces. */
+    .case-card.is-dwelling::before,
+    .case-card.is-dwelling::after { animation: none; }
+    .case-card::after { display: none; }
 
     /* Trade the wipe and the slide for a straight appearance. */
     .case-card::before { transform: scaleY(1); opacity: 0; }
