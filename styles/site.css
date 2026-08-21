@@ -818,6 +818,8 @@ section.content .wrap.about-single { max-width: 68ch; }
     box-shadow: var(--shadow);
     overflow: hidden;
     margin-bottom: 0.75rem;
+    position: relative;
+    transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
 
 .case-summary {
@@ -831,6 +833,7 @@ section.content .wrap.about-single { max-width: 68ch; }
     font-weight: 700;
     color: var(--ink);
     list-style: none;
+    transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
 }
 
 .case-summary::-webkit-details-marker { display: none; }
@@ -838,10 +841,11 @@ section.content .wrap.about-single { max-width: 68ch; }
 .case-summary::after {
     content: '+';
     flex: none;
+    order: 2;
     font-size: 1.3rem;
     font-weight: 400;
     color: var(--accent);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .case-card[open] .case-summary::after { transform: rotate(45deg); }
@@ -891,6 +895,128 @@ section.content .wrap.about-single { max-width: 68ch; }
 }
 
 .case-block li { margin-bottom: 0.3rem; }
+
+/* Expand affordance.
+
+   Collapsed case cards read as flat headings, so nothing told a visitor there
+   was anything behind them. Three layered cues, cheapest first:
+     1. hover / keyboard focus — accent border, lift, an accent spine, and a
+        "Read" label that fades in beside the marker
+     2. a staggered nudge of the + marker the first time a card scrolls into
+        view, retired the moment the visitor opens anything
+     3. reduced-motion visitors get the same cues in color only, no movement */
+
+.case-card:hover,
+.case-card:focus-within {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lg);
+}
+
+.case-card:hover { transform: translateY(-2px); }
+
+/* Accent spine that wipes down the card edge; stays put while it's open. */
+.case-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.case-card:hover::before,
+.case-card:focus-within::before,
+.case-card[open]::before { transform: scaleY(1); }
+
+.case-card:hover > .case-summary,
+.case-card:focus-within > .case-summary {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    padding-left: 1.85rem;
+}
+
+.case-card:hover > .case-summary::after,
+.case-card:focus-within > .case-summary::after { color: var(--accent-ink); }
+
+.case-card:hover > .case-summary::after { transform: scale(1.22); }
+.case-card[open]:hover > .case-summary::after { transform: rotate(45deg) scale(1.22); }
+.case-card.is-closing:hover > .case-summary::after { transform: scale(1.22); }
+
+/* Spells out what the marker only implies. Sits between the title and the +
+   via flex order, so no extra markup in all thirteen summaries. */
+.case-summary::before {
+    content: 'Read';
+    order: 1;
+    margin-left: auto;
+    flex: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.case-card[open] > .case-summary::before { content: 'Close'; }
+.case-card.is-closing > .case-summary::before { content: 'Read'; }
+
+.case-card:hover > .case-summary::before,
+.case-card:focus-within > .case-summary::before {
+    opacity: 1;
+    transform: none;
+}
+
+/* Resting attention cue: the marker hops and deepens in color, twice, then
+   leaves the card alone. --hint-delay is set per card in site.js to stagger a
+   group as it comes into view. */
+@keyframes case-hint-nudge {
+    0%, 14%, 100% { transform: none; color: var(--accent); }
+    34%           { transform: translateY(-4px) scale(1.25); color: var(--accent-ink); }
+    54%           { transform: translateY(0) scale(1); color: var(--accent); }
+    70%           { transform: translateY(-2px) scale(1.12); color: var(--accent-ink); }
+}
+
+.case-card.hint-nudge:not([open]):not(:hover) > .case-summary::after {
+    animation: case-hint-nudge 1.6s ease var(--hint-delay, 0s) 2;
+}
+
+@media (max-width: 620px) {
+    .case-summary::before { display: none; }
+    .case-card:hover > .case-summary,
+    .case-card:focus-within > .case-summary { padding-left: 1.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .case-card,
+    .case-card::before,
+    .case-summary,
+    .case-summary::before,
+    .case-summary::after { transition: none; }
+
+    .case-card:hover { transform: none; }
+
+    .case-card.hint-nudge:not([open]):not(:hover) > .case-summary::after { animation: none; }
+
+    /* Trade the wipe and the slide for a straight appearance. */
+    .case-card::before { transform: scaleY(1); opacity: 0; }
+    .case-card:hover::before,
+    .case-card:focus-within::before,
+    .case-card[open]::before { opacity: 1; }
+
+    .case-summary::before { transform: none; }
+    .case-card:hover > .case-summary,
+    .case-card:focus-within > .case-summary { padding-left: 1.6rem; }
+    .case-card:hover > .case-summary::after { transform: none; }
+    .case-card[open]:hover > .case-summary::after { transform: rotate(45deg); }
+}
 
 /* Awards */
 

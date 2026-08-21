@@ -38,6 +38,13 @@ document.addEventListener("DOMContentLoaded", function ()
     */
     initCaseCardAnimation();
 
+    /*
+        Collapsed cards look like plain headings, so visitors miss that there's
+        a case study behind each one. Nudge the +/- marker as a group scrolls
+        into view — see the "Expand affordance" block in site.css.
+    */
+    initCaseCardHints();
+
     const sections = Array.from(document.querySelectorAll("main section[id]"));
     const navLinks = Array.from(document.querySelectorAll(".nav-links a, #mobile-nav a"));
 
@@ -157,4 +164,59 @@ function initCaseCardAnimation()
             isExpanding = false;
         }
     });
+}
+
+function initCaseCardHints()
+{
+    const cards = Array.from(document.querySelectorAll("details.case-card"));
+    if (!cards.length) return;
+
+    if (typeof IntersectionObserver !== "function") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // Once the visitor opens anything they've understood the pattern, so every
+    // remaining hint is just noise. Hover and focus styling carries on.
+    let retired = false;
+
+    const observer = new IntersectionObserver(function (entries)
+    {
+        // Cards in one viewport arrive in a single callback, so index within
+        // the batch to stagger them rather than firing thirteen at once.
+        let position = 0;
+
+        entries.forEach(function (entry)
+        {
+            if (!entry.isIntersecting) return;
+
+            observer.unobserve(entry.target);
+            if (retired) return;
+
+            const card = entry.target;
+            card.style.setProperty("--hint-delay", (position * 0.11).toFixed(2) + "s");
+            card.classList.add("hint-nudge");
+            position += 1;
+        });
+    }, { threshold: 0.9 });
+
+    cards.forEach(function (card)
+    {
+        observer.observe(card);
+        card.addEventListener("toggle", retireHints);
+
+        // Drop the class once the animation is done so a later hover or an
+        // open/close never fights a lingering animated transform.
+        card.addEventListener("animationend", function (event)
+        {
+            if (event.animationName === "case-hint-nudge") card.classList.remove("hint-nudge");
+        });
+    });
+
+    function retireHints()
+    {
+        if (retired) return;
+        retired = true;
+
+        observer.disconnect();
+        cards.forEach(function (card) { card.classList.remove("hint-nudge"); });
+    }
 }
