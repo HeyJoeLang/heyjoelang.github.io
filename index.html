@@ -82,10 +82,16 @@
         <link rel="stylesheet" type="text/css" href="styles/site.css?v=19">
 
         <!-- Icon -->
-        <link rel="icon" type="image/png" href="./Data/images/icon_trans.png">
+        <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
+             light backgrounds, iconDark a black one. The media queries cover
+             the no-JS case, but they answer to the OS setting rather than to
+             data-theme, so site.js overrides them and the icon follows the
+             site's own switch instead. -->
+        <link rel="icon" type="image/png" id="favicon-light" href="./Data/images/iconLight.png" media="(prefers-color-scheme: light)">
+        <link rel="icon" type="image/png" id="favicon-dark" href="./Data/images/iconDark.png" media="(prefers-color-scheme: dark)">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=11" defer></script>
+        <script src="scripts/site.js?v=12" defer></script>
     </head>
 
     <body>

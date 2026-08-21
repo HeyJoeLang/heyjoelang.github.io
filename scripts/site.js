@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function ()
         script in the document head; this only wires the control up.
     */
     initThemeToggle();
+    syncFavicon(document.documentElement.getAttribute("data-theme") === "dark");
 
     /*
         Case-study cards are native <details>, which jump open/closed with no
@@ -85,6 +86,25 @@ document.addEventListener("DOMContentLoaded", function ()
 });
 
 /*
+    Point the tab icon at whichever artwork suits the active theme.
+
+    The two <link rel="icon"> tags in the head carry prefers-color-scheme
+    queries, which is the right fallback with no JS but answers to the OS rather
+    than to this site's toggle — someone running a light desktop who switches
+    the page to dark would otherwise keep the light icon. Overriding media to
+    all / not all leaves the original queries in charge until this runs.
+*/
+function syncFavicon(isDark)
+{
+    const light = document.getElementById("favicon-light");
+    const dark = document.getElementById("favicon-dark");
+    if (!light || !dark) return;
+
+    light.media = isDark ? "not all" : "all";
+    dark.media = isDark ? "all" : "not all";
+}
+
+/*
     Theme switch.
 
     The head script has already put data-theme on <html>, so there is nothing
@@ -114,6 +134,7 @@ function initThemeToggle()
 
         root.setAttribute("data-theme", isDark ? "dark" : "light");
         control.setAttribute("aria-checked", isDark ? "true" : "false");
+        syncFavicon(isDark);
 
         if (remember)
         {
