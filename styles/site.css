@@ -380,6 +380,20 @@ footer :focus-visible {
     padding: 4.5rem 0 3.5rem;
 }
 
+/*
+    Phone budget. At 390x844 the CTA row used to bottom out at y=842 — clipped
+    to the pixel — so the first screen offered no action at all. Trimming the
+    hero padding, the grid gap and the portrait buys back ~150px and lands the
+    buttons well clear of the fold.
+*/
+@media (max-width: 899px) {
+    #hero { padding: 2.25rem 0 2.5rem; }
+    .hero-grid { gap: 1.25rem; }
+    .hero-eyebrow { margin-bottom: 0.6rem; }
+    .hero-role { margin-bottom: 0.7rem; }
+    .hero-proof { margin-bottom: 1.1rem; }
+}
+
 .hero-grid {
     display: flex;
     flex-direction: column;
@@ -427,35 +441,60 @@ footer :focus-visible {
     margin-bottom: 1rem;
 }
 
-.hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    font-weight: 800;
+/*
+    Hero title. Note the old rule here was `.hero h1` — the element is
+    <header id="hero">, and nothing on the page carries a bare `hero` class, so
+    that selector never matched and the h1 fell back to the browser default.
+    The name and the claim are two spans inside one h1: the h1 keeps the name
+    for SEO and the Person schema, while the type scale goes to the claim.
+*/
+.hero-title {
+    margin: 0 0 0.6rem;
     letter-spacing: -0.02em;
-    margin: 0 0 0.5rem;
 }
 
-.hero-role {
-    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-    color: var(--hero-ink);
+.hero-name {
+    display: block;
+    font-size: clamp(0.9rem, 1.4vw, 1rem);
     font-weight: 600;
-    margin: 0 0 0.4rem;
-}
-
-.hero-tagline {
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
-    font-size: clamp(0.82rem, 1.4vw, 0.95rem);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent-2);
-    margin: 0 0 1.2rem;
+    margin-bottom: 0.45rem;
 }
 
-.hero-blurb {
-    color: var(--hero-ink-soft);
-    max-width: 80ch;
-    margin: 0 0 1.6rem;
-    font-size: 1rem;
+.hero-claim {
+    display: block;
+    font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+    font-weight: 800;
+    line-height: 1.1;
+    text-wrap: balance;
 }
+
+/* Demoted from a headline to a support line: one readable sentence under the
+   claim, capped so it breaks to two lines rather than running the full column. */
+.hero-role {
+    font-size: clamp(0.98rem, 1.5vw, 1.1rem);
+    color: var(--hero-ink-soft);
+    font-weight: 500;
+    max-width: 56ch;
+    margin: 0 0 0.9rem;
+}
+
+@media (min-width: 900px) {
+    .hero-role { margin-left: 0; margin-right: 0; }
+}
+
+.hero-proof {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: clamp(0.78rem, 1.3vw, 0.9rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--hero-ink);
+    margin: 0 0 1.5rem;
+}
+
+.hero-proof span { color: var(--hero-ink-soft); margin: 0 0.15rem; }
 
 .dot {
     width: 7px;
@@ -463,6 +502,26 @@ footer :focus-visible {
     border-radius: 50%;
     background: #3ddc84;
     display: inline-block;
+}
+
+/* GitHub and LinkedIn as icon-only affordances, so the two real actions keep
+   the visual weight. Sized to the same 44px touch target as the buttons. */
+.hero-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--hero-border);
+    color: var(--hero-ink-soft);
+    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-social:hover {
+    color: var(--hero-ink);
+    border-color: var(--hero-ink-soft);
+    transform: translateY(-2px);
 }
 
 .hero-ctas {
@@ -517,11 +576,11 @@ footer :focus-visible {
     justify-content: center;
     gap: 0.5rem;
     max-width: 960px;
-    margin: 1.4rem auto 0;
+    margin: 0 auto;
 }
 
 @media (min-width: 900px) {
-    .mini-arcade { justify-content: flex-start; margin: 1.4rem 0 0; }
+    .mini-arcade { justify-content: flex-start; margin: 0; }
 }
 
 .mini-arcade img {
@@ -549,6 +608,49 @@ footer :focus-visible {
 
 .mini-arcade img.fit-contain { object-fit: contain; }
 
+/*
+    The strip is the biggest visual element on the first screen, so it needs to
+    say what it is — unlabelled motion next to a headline reads as decoration
+    and pulls the eye off the copy that actually converts.
+*/
+.mini-arcade-figure {
+    margin: 0;
+}
+
+.mini-arcade-figure figcaption {
+    margin-top: 1.4rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.82rem;
+    color: var(--hero-ink-soft);
+}
+
+.mini-arcade-figure figcaption a {
+    color: var(--accent-2);
+    font-weight: 600;
+}
+
+/*
+    On a phone the strip wrapped into four rows and stood ~1130px tall, burying
+    everything under it more than a screen down. Below 900px it becomes a single
+    swipeable row instead, costing ~150px.
+*/
+@media (max-width: 899px) {
+    .mini-arcade {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.5rem;
+        scrollbar-width: thin;
+    }
+
+    .mini-arcade img {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+}
+
 .hero-portrait {
     order: 1;
 }
@@ -562,31 +664,10 @@ footer :focus-visible {
     margin: 0 auto;
 }
 
-.status-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--hero-border);
-    border-left: 3px solid var(--accent-2);
-    border-radius: var(--radius-md);
-    padding: 0.9rem 1.1rem;
-    text-align: center;
-}
-
-@media (min-width: 900px) {
-    .status-card { text-align: right; }
-}
-
-.status-card .current-role {
-    margin: 0 0 0.25rem;
-    font-weight: 700;
-    color: var(--hero-ink);
-    font-size: 0.95rem;
-}
-
-.status-card .location {
-    margin: 0;
-    color: var(--accent-2);
-    font-weight: 600;
-    font-size: 0.85rem;
+/* Part of the phone budget above — kept here rather than in that media block
+   because at equal specificity the rule above would otherwise win on order. */
+@media (max-width: 899px) {
+    .hero-portrait img { width: 96px; height: 96px; }
 }
 
 .hero-stats {

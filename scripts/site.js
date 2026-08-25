@@ -36,6 +36,14 @@ document.addEventListener("DOMContentLoaded", function ()
     */
     initCaseCardCascade();
 
+    /*
+        Both case-study videos are several screens down but used to carry
+        `autoplay`, so the browser pulled ~4.9MB of MP4 on first load and the
+        hero competed with it for bandwidth. They now start at preload="none"
+        and only fetch once they scroll into view.
+    */
+    initLazyVideos();
+
     const sections = Array.from(document.querySelectorAll("main section[id]"));
     const navLinks = Array.from(document.querySelectorAll(".nav-links a, #mobile-nav a"));
 
@@ -425,4 +433,61 @@ function initCaseCardCascade()
             if (event.animationName === "case-cascade-sweep") card.classList.remove("cascade");
         });
     });
+}
+
+/*
+    Lazy video playback.
+
+    A muted autoplay video is fetched eagerly regardless of its position in the
+    document, which on this page meant the two case-study clips (2.9MB and
+    2.0MB, sitting at roughly y=2400 and y=3500) downloaded before the visitor
+    had read the hero. Dropping `autoplay` for preload="none" plus an observer
+    moves that cost to the moment the clip is actually on screen.
+
+    Playback is also paused on the way out, so a clip in a section the visitor
+    has scrolled past is not decoding frames nobody is watching.
+*/
+function initLazyVideos()
+{
+    const videos = Array.from(document.querySelectorAll("video[data-lazy-video]"));
+    if (!videos.length) return;
+
+    // No observer support: fall back to loading and playing everything, which
+    // is the behavior these clips had before this function existed.
+    if (typeof IntersectionObserver !== "function")
+    {
+        videos.forEach(function (video)
+        {
+            video.preload = "auto";
+            video.play().catch(function () {});
+        });
+        return;
+    }
+
+    const observer = new IntersectionObserver(function (entries)
+    {
+        entries.forEach(function (entry)
+        {
+            const video = entry.target;
+
+            if (!entry.isIntersecting)
+            {
+                if (!video.paused) video.pause();
+                return;
+            }
+
+            /*
+                preload="none" means there are no frames yet on the first pass,
+                so lift it before asking for playback. Leaving it at "none"
+                lets some browsers refuse the play() outright.
+            */
+            if (video.preload === "none") video.preload = "auto";
+
+            // play() rejects if the browser declines the gesture-free start.
+            // Nothing to recover from — the poster frame stays put.
+            video.play().catch(function () {});
+        });
+    }, { rootMargin: "200px 0px" });
+
+    videos.forEach(function (video) { observer.observe(video); });
 }

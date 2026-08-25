@@ -79,7 +79,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=20">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=23">
 
         <!-- Icon -->
         <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
@@ -91,7 +91,7 @@
         <link rel="icon" type="image/png" id="favicon-dark" href="./Data/images/iconDark.png" media="(prefers-color-scheme: dark)">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=12" defer></script>
+        <script src="scripts/site.js?v=13" defer></script>
     </head>
 
     <body>
@@ -99,11 +99,9 @@
              Stroked symbols inherit stroke/fill from .icon in site.css. -->
         <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
             <symbol id="i-bars" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
-            <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M2 12h20"/></symbol>
             <symbol id="i-cogs" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></symbol>
             <symbol id="i-envelope" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6.5 9 7 9-7"/></symbol>
             <symbol id="i-file-pdf-o" viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></symbol>
-            <symbol id="i-map-marker" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></symbol>
             <symbol id="i-sitemap" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6.5M5 17v-3.5h14V17"/></symbol>
             <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m7 9.5 2.5 2.5L7 14.5M13 15h4"/></symbol>
             <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7" r="3.5"/><path d="M17 4.2a3.5 3.5 0 0 1 0 6.6M22 20v-1.5a4 4 0 0 0-3-3.8"/></symbol>
@@ -164,53 +162,83 @@
         <header id="hero">
             <div class="wrap hero-grid">
                 <div class="hero-portrait">
-                    <img src="./Data/images/profile_square.png" alt="Portrait of Joe Lang">
+                    <img src="./Data/images/profile_square.webp" alt="Portrait of Joe Lang"
+                         width="150" height="150" fetchpriority="high" decoding="async">
                 </div>
 
                 <div class="hero-main">
-                    <span class="hero-eyebrow"><span class="dot"></span> Open to new opportunities</span>
-                    <h1>Joe Lang</h1>
-                    <p class="hero-role">Senior Software Engineer &amp; Technical Lead</p>
-                    <p class="hero-tagline">Real-Time Systems &bull; AI &bull; Scalable Solutions</p>
-                    <p class="hero-blurb">I take ambiguous, technically demanding problems from first investigation through production &mdash; across real-time systems, AI integration, and infrastructure &mdash; and build solutions that scale.</p>
+                    <span class="hero-eyebrow"><span class="dot"></span> Open to new opportunities &middot; NYC</span>
+
+                    <!-- The claim carries the type scale, not the name. A visitor who
+                         lands here for five seconds does not know "Joe Lang" yet, so the
+                         largest words on the page have to say what I do. The name stays
+                         inside the h1 for SEO and for the Person schema above.
+
+                         The claim deliberately leads on the arc from ambiguity to ship
+                         rather than on AI: AI is the most recent two years of a
+                         twelve-year run, and every case study below is the same shape —
+                         an unattributed latency stall, a vendor-side streaming boundary,
+                         post-acquisition firmware, unreleased hardware — an unclear
+                         problem taken all the way to something delivered.
+
+                         Kept short on purpose. The claim is the abstract half and the
+                         support line under it carries the concrete detail; putting the
+                         specifics in both made the first screen read twice. -->
+                    <h1 class="hero-title">
+                        <span class="hero-name">Joe Lang</span>
+                        <span class="hero-claim">From ambiguity to shipped products.</span>
+                    </h1>
+
+                    <p class="hero-role">Senior Software Engineer &amp; Technical Lead &mdash; real-time 3D, platform SDKs, AI integration. 12 years, six industries.</p>
+
+                    <!-- Recognizable names beat prose for fast credibility: this is the
+                         one line that does in five seconds what About does in sixty. -->
+                    <p class="hero-proof">Mursion <span aria-hidden="true">&middot;</span> Leia Inc <span aria-hidden="true">&middot;</span> Stanford University</p>
+
+                    <!-- One primary action, one secondary. GitHub and LinkedIn drop to
+                         icons; they are already in the nav, and five equal buttons gave a
+                         five-second visitor a choice they had no time to make. -->
                     <div class="hero-ctas">
-                        <a href="#work" class="btn btn-primary">View My Work</a>
-                        <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-ghost"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a>
-                        <a href="https://github.com/HeyJoeLang/" target="_blank" class="btn btn-ghost"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-github"></use></svg> GitHub</a>
-                        <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="btn btn-ghost"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg> LinkedIn</a>
-                        <a href="#contact" class="btn btn-ghost">Contact</a>
+                        <a href="./Data/cv/JosephLangCV.pdf" target="_blank" class="btn btn-primary"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a>
+                        <a href="#work" class="btn btn-ghost">View My Work</a>
+                        <a href="https://github.com/HeyJoeLang/" target="_blank" class="hero-social" aria-label="GitHub profile"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-github"></use></svg></a>
+                        <a href="https://www.linkedin.com/in/heyjoelang/" target="_blank" class="hero-social" aria-label="LinkedIn profile"><svg class="icon icon-solid" aria-hidden="true" focusable="false"><use href="#i-linkedin"></use></svg></a>
                     </div>
-                    <div class="mini-arcade" aria-label="Motion previews of past work">
-                        <img src="./Data/gifs/mini/AIConversation.gif" alt="AI-powered conversation simulation demo" loading="lazy" class="fit-contain">
-                        <img src="./Data/gifs/mini/image10.gif" alt="Remote AR video-call demo on a laptop screen" loading="lazy">
-                        <img src="./Data/gifs/mini/BuildingAI.gif" alt="Animated illustration of an engineer configuring an AI system" loading="lazy" class="fit-contain">
-                        <img src="./Data/gifs/mini/image14.gif" alt="Medical staff walking a hospital hallway in a VR lecture scene" loading="lazy">
-                        <img src="./Data/gifs/mini/image9.gif" alt="AR portal effect overlaying a colorful landscape into a room" loading="lazy">
-                        <img src="./Data/gifs/mini/image12.gif" alt="AR character overlay demo by a fireplace" loading="lazy">
-                        <!-- <img src="./Data/gifs/mini/image13.gif" alt="Oculus Launchpad 2018 Recipient title card for NeuroExplorer VR" loading="lazy"> -->
-                        <img src="./Data/gifs/mini/image11.gif" alt="3D character turntable render test" loading="lazy">
-                        <!-- <img src="./Data/gifs/mini/image15.gif" alt="Connect 4 HoloLens game board physics simulation" loading="lazy"> -->
-                        <img src="./Data/gifs/mini/image16.gif" alt="Smart City Futures Edmonton VR flythrough with score UI" loading="lazy">
+
+                    <!-- Animated WebP rather than GIF: same frames, same 240x160, about a
+                         quarter of the bytes. These sit above the fold, so they keep
+                         explicit dimensions to reserve layout and avoid a reflow. -->
+                    <figure class="mini-arcade-figure">
+                        <figcaption>Shipped work &mdash; real-time 3D, AR and VR, AI simulation. <a href="#work">See the case studies</a></figcaption>
+                        <div class="mini-arcade">
+                            <img src="./Data/gifs/mini/AIConversation.webp" alt="AI-powered conversation simulation demo" width="200" height="134" decoding="async" class="fit-contain">
+                            <img src="./Data/gifs/mini/image10.webp" alt="Remote AR video-call demo on a laptop screen" width="200" height="134" decoding="async">
+                            <img src="./Data/gifs/mini/BuildingAI.webp" alt="Animated illustration of an engineer configuring an AI system" width="200" height="134" loading="lazy" decoding="async" class="fit-contain">
+                            <img src="./Data/gifs/mini/image14.webp" alt="Medical staff walking a hospital hallway in a VR lecture scene" width="200" height="134" loading="lazy" decoding="async">
+                            <img src="./Data/gifs/mini/image9.webp" alt="AR portal effect overlaying a colorful landscape into a room" width="200" height="134" loading="lazy" decoding="async">
+                            <img src="./Data/gifs/mini/image12.webp" alt="AR character overlay demo by a fireplace" width="200" height="134" loading="lazy" decoding="async">
+                            <img src="./Data/gifs/mini/image11.webp" alt="3D character turntable render test" width="200" height="134" loading="lazy" decoding="async">
+                            <img src="./Data/gifs/mini/image16.webp" alt="Smart City Futures Edmonton VR flythrough with score UI" width="200" height="134" loading="lazy" decoding="async">
                         </div>
+                    </figure>
                 </div>
 
                 <div class="hero-side">
-                    <div class="status-card">
-                        <p class="current-role"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-briefcase"></use></svg> Open To New Opportunities</p>
-                        <p class="location"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-map-marker"></use></svg> NYC, New York</p>
-                    </div>
+                    <!-- Outcomes, not inventory. "25+ projects" and "6 industries"
+                         described the website; these three are pulled from the case
+                         studies below and describe the work. -->
                     <div class="hero-stats">
                         <div class="stat">
                             <span class="stat-num">12+</span>
                             <span class="stat-label">Years Experience</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-num">25+</span>
-                            <span class="stat-label">Projects &amp; Case Studies</span>
+                            <span class="stat-num">1.5s</span>
+                            <span class="stat-label">AI Latency Cut</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-num">6</span>
-                            <span class="stat-label">Industries Shipped In</span>
+                            <span class="stat-num">80%</span>
+                            <span class="stat-label">SDK Complexity Cut</span>
                         </div>
                     </div>
                 </div>
@@ -289,7 +317,7 @@
                         <h3 class="subsection-title">AI Systems &amp; Real-Time Integration &mdash; Mursion</h3>
 
                         <figure class="proj-card" style="margin-bottom:1.5rem;">
-                            <div class="thumb"><video src="./Data/images/MursionOverview.mp4" autoplay loop muted playsinline aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
+                            <div class="thumb"><video src="./Data/images/MursionOverview.mp4" loop muted playsinline preload="none" data-lazy-video aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
                         </figure>
 
                         <!-- Possible additional case study: the WebRTC -> LiveKit streaming migration. Worth its own card if Joe owned or led that work (what drove the move, what it improved). Not written up here because his role in it is unconfirmed. -->
@@ -349,7 +377,7 @@
                         <p class="subsection-intro"><a href="https://www.leiainc.com/">Leia Inc</a> (now Immersity) builds 3D displays that work without glasses. I led the Unity SDK for five years, across an acquisition and a full architecture rewrite.</p>
 
                         <figure class="proj-card" style="margin-bottom:1.5rem;">
-                            <div class="thumb"><video src="./Data/images/Hardware_Desktop_compressed.mp4" autoplay loop muted playsinline aria-label="Leia Inc glasses-free 3D display devices"></video></div>
+                            <div class="thumb"><video src="./Data/images/Hardware_Desktop_compressed.mp4" loop muted playsinline preload="none" data-lazy-video aria-label="Leia Inc glasses-free 3D display devices"></video></div>
                         </figure>
 
                         <details class="case-card">
@@ -481,7 +509,7 @@
                     <div class="card-grid cols-3">
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_wallabe.png" alt="Wallabe Sky AR customizable furniture viewer"></div>
+                            <div class="thumb"><img src="./Data/images/futures_wallabe.png" alt="Wallabe Sky AR customizable furniture viewer" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Wallabe Sky</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Cross-Platform</span><span class="chip chip-sm">Single Codebase</span></div>
@@ -491,7 +519,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_valeo.png" alt="Valeo Voyage XR VR teleportation experience in a self-driving car"></div>
+                            <div class="thumb"><img src="./Data/images/futures_valeo.png" alt="Valeo Voyage XR VR teleportation experience in a self-driving car" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Valeo Voyage XR</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Sensor Integration</span><span class="chip chip-sm">Real-Time 3D</span></div>
@@ -501,7 +529,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_avatar_medic.png" alt="Avatar Medic AR disaster relief training application"></div>
+                            <div class="thumb"><img src="./Data/images/futures_avatar_medic.png" alt="Avatar Medic AR disaster relief training application" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Avatar Medic</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">AI Integration</span><span class="chip chip-sm">IBM Watson</span></div>
@@ -511,7 +539,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_sonder.png" alt="Sonder, one of the first animated films rendered in Unity"></div>
+                            <div class="thumb"><img src="./Data/images/futures_sonder.png" alt="Sonder, one of the first animated films rendered in Unity" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Sonder</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Tooling</span><span class="chip chip-sm">Pipeline R&amp;D</span></div>
@@ -521,7 +549,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_dance_hall.png" alt="IFTF Future 50 Hologram Dance Hall 3D scanned dancer"></div>
+                            <div class="thumb"><img src="./Data/images/futures_dance_hall.png" alt="IFTF Future 50 Hologram Dance Hall 3D scanned dancer" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>IFTF Future 50: Hologram Dance Hall</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Content Pipeline</span><span class="chip chip-sm">Live Deadline</span></div>
@@ -531,7 +559,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/medical_anatomy_tool.png" alt="Stanford Anatomy Visualization Tool showing an interactive 3D viewer"></div>
+                            <div class="thumb"><img src="./Data/images/medical_anatomy_tool.png" alt="Stanford Anatomy Visualization Tool showing an interactive 3D viewer" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Stanford Anatomy Visualization Tool</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Real-Time 3D</span><span class="chip chip-sm">End-to-End Ownership</span></div>
@@ -541,7 +569,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/medical_rodin.png" alt="Inside Rodin's Hands holographic AR exhibit at the Cantor Museum"></div>
+                            <div class="thumb"><img src="./Data/images/medical_rodin.png" alt="Inside Rodin's Hands holographic AR exhibit at the Cantor Museum" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Inside Rodin's Hands</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Computer Vision</span><span class="chip chip-sm">Image Tracking</span></div>
@@ -551,7 +579,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/medical_anatomy.png" alt="Interactive VR anatomy lecture built for Stanford Clinical Anatomy"></div>
+                            <div class="thumb"><img src="./Data/images/medical_anatomy.png" alt="Interactive VR anatomy lecture built for Stanford Clinical Anatomy" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Stanford VR Lectures</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Real-Time 3D</span><span class="chip chip-sm">End-to-End Ownership</span></div>
@@ -561,7 +589,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/medical_sevo.png" alt="Sevo The Dragon pre-surgery anxiety reduction game character"></div>
+                            <div class="thumb"><img src="./Data/images/medical_sevo.png" alt="Sevo The Dragon pre-surgery anxiety reduction game character" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Sevo The Dragon</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Full Ownership</span><span class="chip chip-sm">Healthcare</span></div>
@@ -571,7 +599,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/medical_neuroexplorer.png" alt="NeuroExplorer VR educational neuroscience experience"></div>
+                            <div class="thumb"><img src="./Data/images/medical_neuroexplorer.png" alt="NeuroExplorer VR educational neuroscience experience" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>NeuroExplorer VR</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Cross-Disciplinary Team</span><span class="chip chip-sm">Award-Winning</span></div>
@@ -581,7 +609,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_simtainer.png" alt="Simtainer VR experience showing a repurposed shipping container"></div>
+                            <div class="thumb"><img src="./Data/images/futures_simtainer.png" alt="Simtainer VR experience showing a repurposed shipping container" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Simtainer</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Simulation Logic</span><span class="chip chip-sm">Real-Time 3D</span></div>
@@ -591,7 +619,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/futures_smart_city.png" alt="Smart City Futures Edmonton VR community engagement tool"></div>
+                            <div class="thumb"><img src="./Data/images/futures_smart_city.png" alt="Smart City Futures Edmonton VR community engagement tool" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Smart City Futures Edmonton</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Public Sector</span><span class="chip chip-sm">Stakeholder Collaboration</span></div>
@@ -600,7 +628,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/community_blaze_of_trust.png" alt="Blaze Of Trust Burning Man VR art project"></div>
+                            <div class="thumb"><img src="./Data/images/community_blaze_of_trust.png" alt="Blaze Of Trust Burning Man VR art project" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Blaze Of Trust</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Sole Engineer</span><span class="chip chip-sm">On-Site Deployment</span></div>
@@ -622,7 +650,7 @@
                     <div class="card-grid cols-2">
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/GCHV.jpg" alt="Game Creators Hudson Valley community meetup"></div>
+                            <div class="thumb"><img src="./Data/images/GCHV.jpg" alt="Game Creators Hudson Valley community meetup" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>Game Creators Hudson Valley</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Organizer</span><span class="chip chip-sm">Community Building</span></div>
@@ -632,7 +660,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/SFVR.jpg" alt="SFVR community meetup for VR and AR developers"></div>
+                            <div class="thumb"><img src="./Data/images/SFVR.jpg" alt="SFVR community meetup for VR and AR developers" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>SFVR &mdash; San Francisco VR Meetup</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Event Lead</span><span class="chip chip-sm">XR Community</span></div>
@@ -641,7 +669,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/community_armory.png" alt="Students in the Newburgh Armory Unity Center VR class"></div>
+                            <div class="thumb"><img src="./Data/images/community_armory.png" alt="Students in the Newburgh Armory Unity Center VR class" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>VR Class: Newburgh Armory Unity Center</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Instructor</span><span class="chip chip-sm">Curriculum</span></div>
@@ -651,7 +679,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/community_satu_steam.png" alt="SATU STEAM summer program students in West Oakland"></div>
+                            <div class="thumb"><img src="./Data/images/community_satu_steam.png" alt="SATU STEAM summer program students in West Oakland" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>SATU STEAM Summer Program</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Program Creator</span><span class="chip chip-sm">Mentorship</span></div>
@@ -673,42 +701,42 @@
                     <div class="card-grid cols-3">
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_coyote.png" alt="Coyote Automobile Awards trophy">
+                            <img src="./Data/images/awards_coyote.png" alt="Coyote Automobile Awards trophy" decoding="async" loading="lazy">
                             <figcaption>Valeo Voyage XR &ndash; Techno Innovation 3rd Place</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_ibm_watson.png" alt="IBM Watson Award badge">
+                            <img src="./Data/images/awards_ibm_watson.png" alt="IBM Watson Award badge" decoding="async" loading="lazy">
                             <figcaption>Avatar Medic &ndash; Best Use of IBM Watson</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_oculus_launchpad.png" alt="Oculus Launchpad Award badge">
+                            <img src="./Data/images/awards_oculus_launchpad.png" alt="Oculus Launchpad Award badge" decoding="async" loading="lazy">
                             <figcaption>NeuroExplorer VR &ndash; Oculus Launchpad Winner</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_project_tango.png" alt="Project Tango Award badge">
+                            <img src="./Data/images/awards_project_tango.png" alt="Project Tango Award badge" decoding="async" loading="lazy">
                             <figcaption>Dino Labs &ndash; Most Useful Application</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_zspace.png" alt="ZSpace Award badge">
+                            <img src="./Data/images/awards_zspace.png" alt="ZSpace Award badge" decoding="async" loading="lazy">
                             <figcaption>Escape! &ndash; Winner</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_high_fidelity.png" alt="High Fidelity Award badge">
+                            <img src="./Data/images/awards_high_fidelity.png" alt="High Fidelity Award badge" decoding="async" loading="lazy">
                             <figcaption>Attack On Titan VR Showdown &ndash; 2nd Place</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_microsoft_hololens.png" alt="Microsoft Hololens Award badge">
+                            <img src="./Data/images/awards_microsoft_hololens.png" alt="Microsoft Hololens Award badge" decoding="async" loading="lazy">
                             <figcaption>Connect 4 &ndash; 2nd Place</figcaption>
                         </figure>
 
                         <figure class="award-card">
-                            <img src="./Data/images/awards_devry.png" alt="DeVry University Award badge">
+                            <img src="./Data/images/awards_devry.png" alt="DeVry University Award badge" decoding="async" loading="lazy">
                             <figcaption>TrakKart &ndash; Planning, Technical Merit, Best Presentation, Judges Choice</figcaption>
                         </figure>
 
