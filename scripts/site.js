@@ -44,8 +44,22 @@ document.addEventListener("DOMContentLoaded", function ()
     */
     initLazyVideos();
 
-    const sections = Array.from(document.querySelectorAll("main section[id]"));
-    const navLinks = Array.from(document.querySelectorAll(".nav-links a, #mobile-nav a"));
+    /*
+        The page runs about 13,700px. Two things were missing for that length:
+        any sense of how much is left, and any marker for the two sections the
+        top bar has no room for. See initScrollProgress and the section rail.
+    */
+    initScrollProgress();
+
+    /*
+        #contact lives outside <main>, so the original "main section[id]" query
+        skipped it — the last section of the page could never light up in the
+        nav. The rail links are picked up here too, so one scroll-spy drives the
+        top bar, the hamburger menu, and the rail together rather than three
+        observers disagreeing about where the reader is.
+    */
+    const sections = Array.from(document.querySelectorAll("main section[id], #contact"));
+    const navLinks = Array.from(document.querySelectorAll(".nav-links a, #mobile-nav a, #section-rail a"));
 
     if (!sections.length || !navLinks.length) return;
 
@@ -53,7 +67,20 @@ document.addEventListener("DOMContentLoaded", function ()
     {
         navLinks.forEach(function (link)
         {
-            link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+            const isActive = link.getAttribute("href") === "#" + id;
+            link.classList.toggle("active", isActive);
+
+            /*
+                The rail is a list of ten near-identical dots, so the active one
+                has to be announced rather than only drawn. Only the rail gets
+                aria-current: the same section is marked in three menus at once,
+                and three "current" links would be three claims about one place.
+            */
+            if (link.closest("#section-rail"))
+            {
+                if (isActive) link.setAttribute("aria-current", "true");
+                else link.removeAttribute("aria-current");
+            }
         });
     }
 
@@ -92,6 +119,86 @@ document.addEventListener("DOMContentLoaded", function ()
 
     sections.forEach(function (section) { observer.observe(section); });
 });
+
+/*
+    Reading progress, and keeping the rail legible over the dark bands.
+
+    Both answer to scroll position, so they share one rAF-throttled listener
+    rather than each adding their own. Scroll fires far faster than the display
+    refreshes; without the gate this would recompute layout several times per
+    painted frame and do it on the main thread, which is exactly where the
+    smooth-scroll animation lives.
+*/
+function initScrollProgress()
+{
+    const bar = document.querySelector("#scroll-progress span");
+    const rail = document.getElementById("section-rail");
+    if (!bar && !rail) return;
+
+    /*
+        The rail is vertically centred, so whatever sits at the viewport's
+        midpoint is what it is drawn on top of. These are the page's dark
+        bands in both themes; the rail's resting dots are near-invisible
+        against them, so it switches to the light palette while over one.
+    */
+    const darkBands = ["#hero", "#contact", "footer"]
+        .map(function (selector) { return document.querySelector(selector); })
+        .filter(Boolean);
+
+    let queued = false;
+
+    function measure()
+    {
+        queued = false;
+
+        if (bar)
+        {
+            /*
+                A page shorter than the viewport has nothing to scroll, and the
+                division would be 0/0. Show it as complete rather than as NaN,
+                which would silently drop the transform and leave a full bar
+                anyway — the same pixels, but only by accident.
+            */
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 1;
+
+            bar.style.transform = "scaleX(" + ratio + ")";
+        }
+
+        if (rail)
+        {
+            const midpoint = window.innerHeight / 2;
+
+            const onDark = darkBands.some(function (band)
+            {
+                const box = band.getBoundingClientRect();
+                return box.top <= midpoint && box.bottom >= midpoint;
+            });
+
+            rail.classList.toggle("on-dark", onDark);
+        }
+    }
+
+    function schedule()
+    {
+        if (queued) return;
+        queued = true;
+        window.requestAnimationFrame(measure);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+
+    // Resizing changes both the scrollable distance and the midpoint, and
+    // opening a case card changes scrollHeight without any scroll at all.
+    window.addEventListener("resize", schedule);
+
+    if (typeof ResizeObserver === "function")
+    {
+        new ResizeObserver(schedule).observe(document.body);
+    }
+
+    measure();
+}
 
 /*
     Point the tab icon at whichever artwork suits the active theme.

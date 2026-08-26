@@ -372,6 +372,172 @@ footer :focus-visible {
     #mobile-nav { display: none !important; }
 }
 
+/* ---------------------- Reading progress ---------------------- */
+
+/* Pinned to the nav's own bottom edge, sitting on top of its 1px border so it
+   reads as the border filling in rather than as a second rule below it. */
+#scroll-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    pointer-events: none;
+}
+
+#scroll-progress span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+
+    /* Driven by scaleX rather than width: width would relayout and repaint the
+       bar on every scroll frame, transform stays on the compositor. The origin
+       has to be explicit or it scales from the centre outward. */
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+}
+
+/* ------------------------ Section rail ------------------------ */
+
+/* Below this the top bar and the hamburger are the whole story, and a fixed
+   column in the margin would crowd the content rather than sit beside it. */
+#section-rail { display: none; }
+
+@media (min-width: 1200px) {
+    #section-rail {
+        display: block;
+        position: fixed;
+        left: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 45;
+    }
+
+    /*
+        There is no free gutter at this width to drop the rail into: .wrap is
+        capped at 1400px, so from 1200px up to about 1470px the column is still
+        the full viewport minus its own 1.5rem padding, and the resting dots
+        landed on top of the first few pixels of text.
+
+        So the content yields the space rather than the rail overlapping it.
+        Padded on both sides, not just the left, so the column stays centred —
+        an asymmetric pad would shift every section of the page sideways the
+        moment the rail appeared. Costs 2.5rem a side on wide screens; above
+        the 1400px cap it is free, since the extra room comes out of margin
+        that was empty anyway.
+    */
+    .wrap { padding: 0 4rem; }
+}
+
+#section-rail ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+#section-rail a {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.28rem 0.45rem;
+    border-radius: 999px;
+    text-decoration: none;
+
+    /* Deliberately no max-width here. The rail is position:fixed with no width
+       of its own, so it shrink-to-fits its content — and a max-width on the row
+       would resolve against that collapsed width and pin the label shut even
+       when the rule below tries to open it. Keeping the resting footprint small
+       is the label's job (max-width:0 + overflow:hidden), not the row's. */
+}
+
+/* The dot. Hollow at rest, filled once it is the section you are in, so the
+   active marker differs by more than colour alone. */
+.rail-dot {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-faint);
+    background: transparent;
+    transition: border-color 0.2s ease, background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+.rail-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--ink-soft);
+
+    /* Collapsed to zero width rather than display:none, so it can transition
+       and so it never contributes to the rail's resting footprint. */
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-width 0.24s ease, opacity 0.2s ease;
+}
+
+/* Hovering anywhere on the rail opens every label, not just the one under the
+   cursor: with 10 rows at ~22px each, revealing them one at a time made the
+   column jitter as the pointer travelled down it. 9rem is comfortably clear of
+   the widest label, "Community" at 70px. */
+#section-rail:hover .rail-label,
+#section-rail a:focus-visible .rail-label {
+    max-width: 9rem;
+    opacity: 1;
+}
+
+/*
+    The active label is the one that would be on screen permanently, and a
+    fully open row reaches 116px — past the 65px where body copy starts at
+    1200px. So it is held back until the viewport is wide enough to pay for it
+    out of margin instead of out of the text column.
+
+    .wrap caps at 1400px, so above 1560px the page has (1560-1400)/2 = 80px of
+    real margin on top of the 4rem padding, putting body copy at 144px and
+    leaving the open row 28px of clearance. Below that the active section is
+    still marked — a filled, accent, slightly larger dot, plus aria-current —
+    it just says so without the word.
+*/
+@media (min-width: 1560px) {
+    #section-rail a.active .rail-label {
+        max-width: 9rem;
+        opacity: 1;
+    }
+}
+
+#section-rail:hover a,
+#section-rail a:focus-visible,
+#section-rail a.active {
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+#section-rail a:hover .rail-dot { border-color: var(--accent); }
+#section-rail a:hover .rail-label { color: var(--ink); }
+
+#section-rail a.active .rail-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    transform: scale(1.15);
+}
+
+#section-rail a.active .rail-label { color: var(--accent); }
+
+/* The contact band is a dark section in both themes, and the rail sits on top
+   of it. Lift the resting dots so they do not vanish into it. */
+#section-rail.on-dark .rail-dot { border-color: var(--hero-ink-soft); }
+#section-rail.on-dark .rail-label { color: var(--hero-ink-soft); }
+
+/* The rail is a fixed overlay, so it never sits inside #contact and does not
+   inherit that band's light focus ring. Match it here instead. */
+#section-rail.on-dark :focus-visible { outline-color: #fff; }
+
 /* ---------------------------- Hero ---------------------------- */
 
 #hero {
@@ -411,10 +577,26 @@ footer :focus-visible {
     }
 }
 
+/*
+    width:100% is load-bearing on phones, not cosmetic. Below 900px .hero-grid
+    is a *column* flex container with align-items:center, so each item is sized
+    shrink-to-fit across the axis — and the arcade grid wants 616px (three 200px
+    columns and two gaps) all on its own. Left to itself the whole main column
+    rendered at that width, centred, hanging off both edges of a 375px screen:
+    the page picked up a horizontal scroll, and every vertical swipe over the
+    hero drifted sideways with it. min-width:0 does not help here
+    — in a column container that constrains the main axis, not the width.
+    .hero-side already carries the same pair of rules for the same reason.
+*/
 .hero-main {
     order: 2;
     flex: 1 1 auto;
     min-width: 0;
+    width: 100%;
+}
+
+@media (min-width: 900px) {
+    .hero-main { width: auto; }
 }
 
 .hero-side {
@@ -570,22 +752,35 @@ footer :focus-visible {
 }
 .btn-ghost:hover { background: rgba(255, 255, 255, 0.08); color: var(--hero-ink); transform: translateY(-2px); }
 
+/*
+    Nine tiles, three across, at every width. The columns cap at the 200px the
+    art is authored for and shrink together below that, so this is the same 3x3
+    block on a desktop and on a phone rather than reflowing through 4-3-1 rows
+    on the way down. minmax(0, …) rather than a bare 200px: the lower bound has
+    to be 0 or the tracks refuse to shrink past their content and the grid
+    pushes out of the column.
+*/
 .mini-arcade {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 200px));
     gap: 0.5rem;
-    max-width: 960px;
+    justify-content: center;
     margin: 0 auto;
 }
 
 @media (min-width: 900px) {
-    .mini-arcade { justify-content: flex-start; margin: 0; }
+    .mini-arcade { justify-content: start; margin: 0; }
 }
 
 .mini-arcade img {
-    width: 200px;
-    height: 134px;
+    width: 100%;
+    height: auto;
+
+    /* The tiles are authored to a 200x134 box and the columns are fluid below
+       600px, so the box has to carry that ratio itself. Without it height:auto
+       follows each source's own aspect — 240x160, 240x130, 240x96 — and the
+       three rows come out ragged. */
+    aspect-ratio: 100 / 67;
     object-fit: cover;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.06);
@@ -627,28 +822,6 @@ footer :focus-visible {
 .mini-arcade-figure figcaption a {
     color: var(--accent-2);
     font-weight: 600;
-}
-
-/*
-    On a phone the strip wrapped into four rows and stood ~1130px tall, burying
-    everything under it more than a screen down. Below 900px it becomes a single
-    swipeable row instead, costing ~150px.
-*/
-@media (max-width: 899px) {
-    .mini-arcade {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        overflow-x: auto;
-        scroll-snap-type: x proximity;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 0.5rem;
-        scrollbar-width: thin;
-    }
-
-    .mini-arcade img {
-        flex: 0 0 auto;
-        scroll-snap-align: start;
-    }
 }
 
 .hero-portrait {

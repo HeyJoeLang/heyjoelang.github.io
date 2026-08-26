@@ -79,7 +79,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=23">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=26">
 
         <!-- Icon -->
         <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
@@ -91,7 +91,7 @@
         <link rel="icon" type="image/png" id="favicon-dark" href="./Data/images/iconDark.png" media="(prefers-color-scheme: dark)">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=13" defer></script>
+        <script src="scripts/site.js?v=14" defer></script>
     </head>
 
     <body>
@@ -141,6 +141,13 @@
                 </button>
                 </div>
             </div>
+
+            <!-- Reading progress. Sits on the nav's bottom edge rather than
+                 floating on its own so it reads as part of the bar, and so it
+                 cannot cover content. Purely informational: aria-hidden keeps
+                 it out of the accessibility tree, where a percentage that
+                 changes on every scroll frame is noise, not help. -->
+            <div id="scroll-progress" aria-hidden="true"><span></span></div>
         </nav>
 
         <div id="mobile-nav">
@@ -158,6 +165,40 @@
                 <li><a href="./Data/cv/JosephLangCV.pdf" target="_blank"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-pdf-o"></use></svg> Resume</a></li>
             </ul>
         </div>
+
+        <!-- Section rail.
+
+             The page runs about 13,700px, and the top bar only has room for
+             eight of the ten sections at a width most laptops actually have.
+             Community and Awards were the two left out, which meant the scroll
+             highlight blanked for ~2,000px and a reader lost their place in the
+             middle of the page.
+
+             The rail carries all ten instead. It is supplementary, not a
+             replacement: everything here is reachable from the top bar or the
+             hamburger already, so it only appears at >=1200px where there is
+             dead gutter to put it in. It is a real labelled nav landmark and
+             its ten links are ten real tab stops — the duplication is the cost
+             of it being reachable without a mouse, and landmark navigation is
+             what lets a screen-reader user skip past it.
+
+             Labels stay hidden until hover, focus, or active, so at rest this
+             is a column of dots in the margin rather than a second menu
+             competing with the bar. -->
+        <nav id="section-rail" aria-label="Jump to section">
+            <ul>
+                <li><a href="#about"><span class="rail-dot"></span><span class="rail-label">About</span></a></li>
+                <li><a href="#what-i-do"><span class="rail-dot"></span><span class="rail-label">What I Do</span></a></li>
+                <li><a href="#work"><span class="rail-dot"></span><span class="rail-label">Work</span></a></li>
+                <li><a href="#projects"><span class="rail-dot"></span><span class="rail-label">Projects</span></a></li>
+                <li><a href="#community"><span class="rail-dot"></span><span class="rail-label">Community</span></a></li>
+                <li><a href="#awards"><span class="rail-dot"></span><span class="rail-label">Awards</span></a></li>
+                <li><a href="#skills"><span class="rail-dot"></span><span class="rail-label">Skills</span></a></li>
+                <li><a href="#education"><span class="rail-dot"></span><span class="rail-label">Education</span></a></li>
+                <li><a href="#experience"><span class="rail-dot"></span><span class="rail-label">Experience</span></a></li>
+                <li><a href="#contact"><span class="rail-dot"></span><span class="rail-label">Contact</span></a></li>
+            </ul>
+        </nav>
 
         <header id="hero">
             <div class="wrap hero-grid">
@@ -214,6 +255,7 @@
                             <img src="./Data/gifs/mini/AIConversation.webp" alt="AI-powered conversation simulation demo" width="200" height="134" decoding="async" class="fit-contain">
                             <img src="./Data/gifs/mini/image10.webp" alt="Remote AR video-call demo on a laptop screen" width="200" height="134" decoding="async">
                             <img src="./Data/gifs/mini/BuildingAI.webp" alt="Animated illustration of an engineer configuring an AI system" width="200" height="134" loading="lazy" decoding="async" class="fit-contain">
+                            <img src="./Data/gifs/mini/LeiaOverview.webp" alt="Glasses-free 3D display assembling a lightfield image from depth layers" width="200" height="134" loading="lazy" decoding="async" class="fit-contain">
                             <img src="./Data/gifs/mini/image14.webp" alt="Medical staff walking a hospital hallway in a VR lecture scene" width="200" height="134" loading="lazy" decoding="async">
                             <img src="./Data/gifs/mini/image9.webp" alt="AR portal effect overlaying a colorful landscape into a room" width="200" height="134" loading="lazy" decoding="async">
                             <img src="./Data/gifs/mini/image12.webp" alt="AR character overlay demo by a fireplace" width="200" height="134" loading="lazy" decoding="async">
