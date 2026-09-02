@@ -1182,6 +1182,87 @@ section.content .wrap.about-single { max-width: 68ch; }
     .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 }
 
+/*
+    aspect-ratio is measured off the card's own width, so the same thumb rule
+    produces a much taller image in a two-column grid than in a three-column
+    one -- the community cards were rendering 350px thumbs against the project
+    cards' 228px. Capping the height instead would letterbox them sideways
+    (again, object-fit: contain), so narrow the grid rather than the image: at
+    880px the two cards land at project-card width and their thumbs match.
+*/
+.card-grid.cols-2 {
+    max-width: 880px;
+    margin-inline: auto;
+}
+
+/*
+    Clamped grids ("Show all 13 projects").
+
+    Thirteen always-open project cards ran 2,870px on a desktop viewport and
+    7.8 screens on a phone -- over a quarter of the whole page for the section
+    that supports the case studies rather than carrying them. Six cards fill
+    two clean rows at three columns and three rows at two, so the clamp never
+    leaves a half-empty row behind.
+
+    The attribute is set in the HTML but only acted on once site.js adds
+    .is-clamped, so a scripting failure shows all thirteen instead of hiding
+    seven behind a button that cannot open.
+*/
+.card-grid[data-clamp].is-clamped > .proj-card.is-beyond-clamp {
+    display: none;
+}
+
+.grid-more {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.btn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-soft);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-more:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Chevron: down while collapsed, flipped once the rest is showing. */
+.btn-more::after {
+    content: '';
+    width: 0.5em;
+    height: 0.5em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-0.15em) rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.btn-more[aria-expanded="true"]::after {
+    transform: translateY(0.1em) rotate(225deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-more,
+    .btn-more::after { transition: none; }
+    .btn-more:hover { transform: none; }
+}
+
 .proj-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -1210,11 +1291,26 @@ section.content .wrap.about-single { max-width: 68ch; }
     border-color: var(--accent);
 }
 
+/*
+    The artwork behind these cards is authored at 600x300, so a 16/9 box left a
+    band of --surface-alt above and below every thumb -- object-fit is
+    `contain`, which fits the image inside the box rather than filling it. 2/1
+    matches the source, which removes the banding and takes ~25px off each card
+    at three columns and ~22px at one, i.e. ~285px off the phone layout.
+*/
 .proj-card .thumb {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2 / 1;
     background: var(--surface-alt);
     overflow: hidden;
 }
+
+/*
+    Three of the nineteen thumbs are authored 16/9 rather than 600x300 -- the
+    two case-study videos and the SFVR photo. On those the 2/1 default trades
+    the old bands above and below for narrower ones at the sides, so they keep
+    the original ratio and fill their box.
+*/
+.proj-card .thumb.is-16x9 { aspect-ratio: 16 / 9; }
 
 .proj-card .thumb img,
 .proj-card .thumb video {

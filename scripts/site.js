@@ -45,6 +45,14 @@ document.addEventListener("DOMContentLoaded", function ()
     initLazyVideos();
 
     /*
+        Thirteen open project cards were over a quarter of the page's height on
+        a phone. Clamp that grid to its first six and put the rest behind a
+        button. Runs before initScrollProgress so the progress bar's first
+        measurement is taken against the clamped height.
+    */
+    initClampedGrids();
+
+    /*
         The page runs about 13,700px. Two things were missing for that length:
         any sense of how much is left, and any marker for the two sections the
         top bar has no room for. See initScrollProgress and the section rail.
@@ -597,4 +605,88 @@ function initLazyVideos()
     }, { rootMargin: "200px 0px" });
 
     videos.forEach(function (video) { observer.observe(video); });
+}
+
+/*
+    Grids that show a first run of cards and hold the rest behind a button.
+
+    Marked up as data-clamp="6" on the grid plus a hidden .grid-more sibling
+    holding the button. Nothing is hidden until this runs, so with scripting
+    off the visitor gets the full grid and never sees the control -- which is
+    also why the button's label is written here rather than in the HTML: there
+    is no correct static text for a button that might not be needed.
+
+    The cards get a class rather than being hidden by :nth-child so the cutoff
+    stays where the markup says it is; a CSS nth-child rule would have to be
+    kept in sync with the attribute by hand.
+*/
+function initClampedGrids()
+{
+    const grids = Array.from(document.querySelectorAll(".card-grid[data-clamp]"));
+
+    grids.forEach(function (grid)
+    {
+        const limit = parseInt(grid.getAttribute("data-clamp"), 10);
+        if (!Number.isFinite(limit) || limit < 1) return;
+
+        const cards = Array.from(grid.children);
+        const hidden = cards.length - limit;
+
+        // Nothing worth collapsing: leave the grid open and the button hidden.
+        if (hidden < 1) return;
+
+        const shell = grid.parentElement
+            ? grid.parentElement.querySelector(".grid-more")
+            : null;
+        const button = shell ? shell.querySelector(".btn-more") : null;
+        if (!button) return;
+
+        cards.slice(limit).forEach(function (card)
+        {
+            card.classList.add("is-beyond-clamp");
+        });
+
+        const noun = hidden === 1 ? "project" : "projects";
+
+        function render(expanded)
+        {
+            grid.classList.toggle("is-clamped", !expanded);
+            button.setAttribute("aria-expanded", expanded ? "true" : "false");
+            button.textContent = expanded
+                ? "Show fewer " + noun
+                : "Show " + hidden + " more " + noun;
+        }
+
+        render(false);
+        shell.hidden = false;
+
+        button.addEventListener("click", function ()
+        {
+            const expanded = button.getAttribute("aria-expanded") === "true";
+
+            /*
+                Collapsing deletes rows above the button, so the page shortens
+                under the reader and everything below the cut jumps up the
+                viewport -- from the bottom of an open grid that is a fall of
+                several screens. Note where the button sits, then put it back
+                there once the rows are gone, so the control stays under the
+                pointer rather than the reader having to work out where the
+                page went. scrollIntoView was the first attempt and is the
+                wrong tool: html has scroll-behavior: smooth, so it animates
+                across that whole distance and lands late.
+            */
+            const anchor = expanded ? button.getBoundingClientRect().top : null;
+
+            render(!expanded);
+
+            if (anchor !== null)
+            {
+                // Instant: this is correcting a layout shift, not travelling.
+                window.scrollTo({
+                    top: window.scrollY + button.getBoundingClientRect().top - anchor,
+                    behavior: "instant"
+                });
+            }
+        });
+    });
 }

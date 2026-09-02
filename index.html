@@ -79,7 +79,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=26">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=28">
 
         <!-- Icon -->
         <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
@@ -91,7 +91,7 @@
         <link rel="icon" type="image/png" id="favicon-dark" href="./Data/images/iconDark.png" media="(prefers-color-scheme: dark)">
 
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=14" defer></script>
+        <script src="scripts/site.js?v=16" defer></script>
     </head>
 
     <body>
@@ -359,7 +359,7 @@
                         <h3 class="subsection-title">AI Systems &amp; Real-Time Integration &mdash; Mursion</h3>
 
                         <figure class="proj-card" style="margin-bottom:1.5rem;">
-                            <div class="thumb"><video src="./Data/images/MursionOverview.mp4" loop muted playsinline preload="none" data-lazy-video aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
+                            <div class="thumb is-16x9"><video src="./Data/images/MursionOverview.mp4" loop muted playsinline preload="none" data-lazy-video aria-label="Mursion AI-powered immersive upskilling platform overview"></video></div>
                         </figure>
 
                         <!-- Possible additional case study: the WebRTC -> LiveKit streaming migration. Worth its own card if Joe owned or led that work (what drove the move, what it improved). Not written up here because his role in it is unconfirmed. -->
@@ -419,7 +419,7 @@
                         <p class="subsection-intro"><a href="https://www.leiainc.com/">Leia Inc</a> (now Immersity) builds 3D displays that work without glasses. I led the Unity SDK for five years, across an acquisition and a full architecture rewrite.</p>
 
                         <figure class="proj-card" style="margin-bottom:1.5rem;">
-                            <div class="thumb"><video src="./Data/images/Hardware_Desktop_compressed.mp4" loop muted playsinline preload="none" data-lazy-video aria-label="Leia Inc glasses-free 3D display devices"></video></div>
+                            <div class="thumb is-16x9"><video src="./Data/images/Hardware_Desktop_compressed.mp4" loop muted playsinline preload="none" data-lazy-video aria-label="Leia Inc glasses-free 3D display devices"></video></div>
                         </figure>
 
                         <details class="case-card">
@@ -548,7 +548,7 @@
                         <h2>Over a decade of shipping across domains</h2>
                         <p>Games, healthcare, education, enterprise simulation, automotive, and public sector &mdash; different industries, the same engineering approach.</p>
                     </div>
-                    <div class="card-grid cols-3">
+                    <div class="card-grid cols-3" id="project-grid" data-clamp="6">
 
                         <article class="proj-card">
                             <div class="thumb"><img src="./Data/images/futures_wallabe.png" alt="Wallabe Sky AR customizable furniture viewer" decoding="async" loading="lazy"></div>
@@ -679,6 +679,13 @@
                         </article>
 
                     </div>
+                    <!--
+                        Hidden until site.js clamps the grid, so with scripting off
+                        the visitor gets all thirteen cards and no dead control.
+                    -->
+                    <div class="grid-more" hidden>
+                        <button type="button" class="btn-more" aria-controls="project-grid" aria-expanded="false"></button>
+                    </div>
                 </div>
             </section>
 
@@ -702,7 +709,7 @@
                         </article>
 
                         <article class="proj-card">
-                            <div class="thumb"><img src="./Data/images/SFVR.jpg" alt="SFVR community meetup for VR and AR developers" decoding="async" loading="lazy"></div>
+                            <div class="thumb is-16x9"><img src="./Data/images/SFVR.jpg" alt="SFVR community meetup for VR and AR developers" decoding="async" loading="lazy"></div>
                             <div class="proj-body">
                                 <h3>SFVR &mdash; San Francisco VR Meetup</h3>
                                 <div class="chip-row left"><span class="chip chip-sm">Event Lead</span><span class="chip chip-sm">XR Community</span></div>
