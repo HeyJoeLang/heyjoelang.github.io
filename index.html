@@ -79,7 +79,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=31">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=36">
 
         <!-- Icon -->
         <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
@@ -364,7 +364,12 @@
 
                         <!-- Possible additional case study: the WebRTC -> LiveKit streaming migration. Worth its own card if Joe owned or led that work (what drove the move, what it improved). Not written up here because his role in it is unconfirmed. -->
                         <details class="case-card">
-                            <summary class="case-summary">Architected an On-Demand AI Simulation Platform</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Architected an On-Demand AI Simulation Platform</span>
+                                    <span class="case-outcome">New 24/7 delivery model &mdash; now a core product shipped to customers globally.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/Mursion_AI_Simulations.png" alt="On-demand AI-driven simulation product" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Mursion's simulation platform was built entirely around live, human-led sessions. To expand into true 24/7 on-demand delivery, the business needed an architecture that could run realistic simulations autonomously &mdash; without displacing the existing human-led product.</p></div>
@@ -375,20 +380,72 @@
                             </div>
                         </details>
 
-                        <details class="case-card">
-                            <summary class="case-summary">Diagnosed and Cut ~1.5s of AI Response Latency</summary>
+                        <details class="case-card" open>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Diagnosed and Cut ~1.5s of AI Response Latency</span>
+                                    <span class="case-outcome">A consistently responsive, conversational simulation experience in production.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/MursionLatency.png" alt="Reduced-latency AI avatar response pipeline" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>On-demand simulations had a significant latency gap between a user finishing speaking and the AI avatar responding, which broke conversational flow and undermined the sense of immersion the product depends on.</p></div>
                                 <div class="case-block"><span class="case-label">Constraints</span><p>The delay had no single obvious owner &mdash; it was distributed across the speech, AI, and avatar layers &mdash; and any fix had to hold up in a live production pipeline rather than a lab benchmark.</p></div>
                                 <div class="case-block"><span class="case-label">My Contribution</span><p>I analyzed timestamped logs across the pipeline to isolate a 1.2-second delay caused by Voice Activity Detection settings. I first optimized that to 0.5 seconds, then migrated the speech-to-text stack to Deepgram Flux to take advantage of integrated VAD rather than carrying our own detection step.</p></div>
-                                <div class="case-block"><span class="case-label">Impact</span><p>Cut total response time by roughly 1.5 seconds, producing a consistently more responsive and conversational simulation experience for end users.</p></div>
+                                <figure class="latency-figure">
+                                    <div class="latency-scroll">
+                                    <svg viewBox="0 0 700 300" role="img" aria-labelledby="lat-t lat-d" class="latency-chart">
+                                        <title id="lat-t">Voice Activity Detection latency, before and after</title>
+                                        <desc id="lat-d">The Voice Activity Detection step cost 1.2 seconds before the work, 0.5 seconds after tuning, and was eliminated entirely by migrating to Deepgram Flux, whose integrated VAD removed the separate detection step. Total end-to-end response time fell by roughly 1.5 seconds.</desc>
+
+                                        <!-- gridlines: 0, 0.5s, 1.0s -->
+                                        <g class="lat-grid">
+                                            <line x1="195" y1="46" x2="195" y2="232"/>
+                                            <line x1="341" y1="46" x2="341" y2="232" stroke-dasharray="3 4"/>
+                                            <line x1="488" y1="46" x2="488" y2="232" stroke-dasharray="3 4"/>
+                                        </g>
+
+                                        <!-- row 1: before -->
+                                        <text class="lat-label" x="175" y="72">Before</text>
+                                        <rect class="lat-bar lat-bar-before" x="195" y="56" width="351" height="26" rx="4"/>
+                                        <text class="lat-val" x="205" y="74">1.2 s</text>
+                                        <text class="lat-note" x="558" y="74">baseline</text>
+
+                                        <!-- row 2: after tuning the VAD settings -->
+                                        <text class="lat-label" x="175" y="132">VAD tuned</text>
+                                        <rect class="lat-bar lat-bar-tuned" x="195" y="116" width="146" height="26" rx="4"/>
+                                        <text class="lat-val" x="205" y="134">0.5 s</text>
+                                        <text class="lat-note lat-note-win" x="353" y="134">&#8722;0.7 s</text>
+
+                                        <!-- row 3: step removed by the Flux migration -->
+                                        <text class="lat-label" x="175" y="192">Deepgram Flux</text>
+                                        <rect class="lat-ghost" x="195" y="176" width="351" height="26" rx="4"/>
+                                        <text class="lat-gone" x="205" y="194">step eliminated &#8212; VAD integrated into STT</text>
+
+                                        <!-- axis -->
+                                        <line class="lat-axis" x1="195" y1="232" x2="605" y2="232"/>
+                                        <text class="lat-tick" x="195" y="250">0</text>
+                                        <text class="lat-tick" x="341" y="250">0.5 s</text>
+                                        <text class="lat-tick" x="488" y="250">1.0 s</text>
+                                        <text class="lat-axis-title" x="605" y="250">time spent detecting end of speech</text>
+
+                                        <text class="lat-total" x="195" y="284">Total end-to-end response time cut by <tspan class="lat-total-num">~1.5 s</tspan></text>
+                                    </svg>
+                                    </div>
+                                    <figcaption>The delay had no single owner. Timestamped logs across the speech, reasoning and avatar layers isolated it to one Voice Activity Detection setting. Only the detection step is charted here &mdash; the remaining pipeline stages were not the bottleneck.</figcaption>
+                                </figure>
+                                                                <div class="case-block"><span class="case-label">Impact</span><p>Cut total response time by roughly 1.5 seconds, producing a consistently more responsive and conversational simulation experience for end users.</p></div>
                                 <div class="case-block"><span class="case-label">Technologies</span><div class="chip-row left"><span class="chip chip-sm">Speech-to-Text</span><span class="chip chip-sm">Deepgram Flux</span><span class="chip chip-sm">Voice Activity Detection</span><span class="chip chip-sm">Performance Profiling</span><span class="chip chip-sm">Observability</span></div></div>
                             </div>
                         </details>
 
                         <details class="case-card">
-                            <summary class="case-summary">Closed a WCAG Accessibility Gap Across a Streaming Boundary</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Closed a WCAG Accessibility Gap Across a Streaming Boundary</span>
+                                    <span class="case-outcome">Keyboard-only interaction across every streamed simulation, aligned to WCAG 2.1.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/Mursion_Accessibility.png" alt="Keyboard-accessible simulation streaming" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Mursion's streaming architecture created a browser security boundary that prevented keyboard input from reaching the simulation, blocking keyboard-only navigation entirely and leaving a significant accessibility gap in the product.</p></div>
@@ -401,7 +458,12 @@
 
                         <!-- Potential metric: issue-resolution time before/after the pipeline, or number of simulation issues triaged per month through it -->
                         <details class="case-card">
-                            <summary class="case-summary">Automated the Path from Reported Issue to Root Cause</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Automated the Path from Reported Issue to Root Cause</span>
+                                    <span class="case-outcome">A repeatable capture-to-diagnosis loop; QA now owns AI simulation quality.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/Mursion_QA.png" alt="In-simulation Jira reporting pipeline for AI simulation quality" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>As AI simulations moved past the prototype stage, problems with conversation quality, animation, latency, and simulation logic became increasingly hard to reproduce. There was no systematic way to connect a user-reported issue to the AI logs, video, and runtime data engineers needed to find the cause.</p></div>
@@ -423,7 +485,12 @@
                         </figure>
 
                         <details class="case-card">
-                            <summary class="case-summary">Reduced SDK Complexity from 40 Classes to 8</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Reduced SDK Complexity from 40 Classes to 8</span>
+                                    <span class="case-outcome">An SDK reshapeable without old assumptions &mdash; enabled the unification below.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_simple_architecture.png" alt="Diagram of the Leia Unity plugin architecture simplified from 40 classes to 8" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>As Leia grew, the Unity SDK accumulated layers of logic to satisfy both legacy and new requirements. It had become increasingly difficult to extend, and technical debt was slowing every new feature.</p></div>
@@ -435,7 +502,12 @@
                         </details>
 
                         <details class="case-card">
-                            <summary class="case-summary">Unified Two Device Platforms After an Acquisition</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Unified Two Device Platforms After an Acquisition</span>
+                                    <span class="case-outcome">One logic flow for every supported device on both operating systems.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_cross_compatible.png" alt="Diagram of the Leia plugin working across Windows and Android devices" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>After Leia acquired Dimenco, the company needed a single plugin that worked across all displays on both Windows and Android &mdash; two separate device APIs and firmware stacks inherited from two separate companies.</p></div>
@@ -448,7 +520,12 @@
 
                         <!-- Potential metric: release cycle time or defect escape rate, before vs. after standardizing the pipeline -->
                         <details class="case-card">
-                            <summary class="case-summary">Standardized the SDK Release Pipeline and CI</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Standardized the SDK Release Pipeline and CI</span>
+                                    <span class="case-outcome">Bugs caught earlier, and release capability no longer held by one person.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_release_pipeline.png" alt="Diagram of the standardized Leia Unity plugin release pipeline" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Unity SDK releases were ad-hoc. Breaking changes routinely shipped inside routine updates, and bugs were not caught before reaching developers.</p></div>
@@ -461,7 +538,12 @@
 
                         <!-- Potential metric: number of experimental displays / firmware configurations supported through this process -->
                         <details class="case-card">
-                            <summary class="case-summary">Unblocked Prototyping on Unreleased Automotive Hardware</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Unblocked Prototyping on Unreleased Automotive Hardware</span>
+                                    <span class="case-outcome">Automotive partner demos that were otherwise blocked on firmware.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_conti_prototype.png" alt="Prototype build running on experimental automotive display hardware" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Automotive partners needed to evaluate rendering on experimental displays, but those devices had no official firmware support in our SDK &mdash; so no builds could target them.</p></div>
@@ -473,7 +555,12 @@
                         </details>
 
                         <details class="case-card">
-                            <summary class="case-summary">Added URP, HDRP, and Post-Processing Pipeline Support</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Added URP, HDRP, and Post-Processing Pipeline Support</span>
+                                    <span class="case-outcome">Leia displays work out of the box with every supported Unity render path.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_urp_hdrp.png" alt="Leia display content rendered with URP and HDRP post-processing pipelines" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>The Leia Unity SDK only supported Unity's default render pipeline. Any content built with URP, HDRP, or post-processing simply would not work on our displays &mdash; excluding a large share of modern Unity projects.</p></div>
@@ -487,7 +574,12 @@
                         <h3 class="subsection-title">Leadership Highlights</h3>
 
                         <details class="case-card">
-                            <summary class="case-summary">Led the Unity SDK Engineering Team</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Led the Unity SDK Engineering Team</span>
+                                    <span class="case-outcome">Every identified bug resolved on schedule, plus new SDK features shipped.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_team_lead.png" alt="Joe leading the Leia Unity SDK plugin team" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Our plugins had several critical open issues that were affecting customer satisfaction and actively slowing adoption of the company's display technology.</p></div>
@@ -499,7 +591,12 @@
                         </details>
 
                         <details class="case-card">
-                            <summary class="case-summary">Owned Technical Partnership with Industry Stakeholders</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Owned Technical Partnership with Industry Stakeholders</span>
+                                    <span class="case-outcome">Sustained support for experimental devices Leia could not otherwise demo.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_continental.png" alt="Leia display prototype built for an automotive industry partner" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Industry partners and business stakeholders needed demos running on devices that were not available on the market, including experimental automotive hardware.</p></div>
@@ -512,7 +609,12 @@
 
                         <!-- Potential metric: developer forum size or engagement growth under this process -->
                         <details class="case-card">
-                            <summary class="case-summary">Built the Developer Communication Process</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Built the Developer Communication Process</span>
+                                    <span class="case-outcome">Turned the developer community into a real input to product direction.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_community.png" alt="Leia developer community engagement activity" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Leia had no standardized way to tell external developers about SDK updates, and no reliable channel for their feedback to reach the engineering team.</p></div>
@@ -525,7 +627,12 @@
 
                         <!-- Potential metric: total porting timeline, or defect rate at launch across the 40 titles -->
                         <details class="case-card">
-                            <summary class="case-summary">Managed the Porting of 40+ Titles to a New Platform</summary>
+                            <summary class="case-summary">
+                                <span class="case-summary-text">
+                                    <span class="case-summary-title">Managed the Porting of 40+ Titles to a New Platform</span>
+                                    <span class="case-outcome">All 40+ titles ported, tested and launched within the projected timeline.</span>
+                                </span>
+                            </summary>
                             <div class="thumb"><img src="./Data/images/leia_port.png" alt="Leia marketstore game library ported across 40+ titles" loading="lazy" decoding="async"></div>
                             <div class="case-body">
                                 <div class="case-block"><span class="case-label">Problem</span><p>Leia set out to launch its marketstore with over 40 games. The titles varied widely in complexity, engine, and audience, each requiring its own approach to porting, testing, and release.</p></div>

@@ -72,6 +72,14 @@
     --accent-on: #fff;          /* text and icons sitting on an --accent fill */
     --ink-prose: #434e5e;       /* body copy on --surface-alt; see .about-text p */
     --sweep-tint: rgba(47, 95, 224, 0.14);
+
+    /*
+        A text-safe companion to --accent-2. The bright green is tuned for
+        gradients and large fills; at 12-13px on a --surface card it manages
+        only 3.11:1. This is the same hue taken to 7.28:1. Use it wherever the
+        success green carries words rather than pixels.
+    */
+    --accent-2-ink: #0d6344;
 }
 
 /* ================================================================
@@ -133,6 +141,9 @@
     --accent-on: #0b1120;
     --ink-prose: #b7c2d4;
     --sweep-tint: rgba(111, 155, 255, 0.10);
+
+    /* On the dark surfaces the bright green already reads at 9.83:1. */
+    --accent-2-ink: #3ddc9a;
 }
 
 * { box-sizing: border-box; }
@@ -1412,6 +1423,136 @@ section.content .wrap.about-single { max-width: 68ch; }
     font-weight: 600;
 }
 
+/*
+    Latency diagram (the VAD case study).
+
+    Inline SVG rather than an exported image for two reasons: it has to answer
+    to the theme like everything else, and the type has to stay crisp at any
+    width. All colour comes from the existing tokens, so it follows a palette
+    change without being touched.
+
+    Only the detection step is plotted. The copy quantifies that step (1.2s,
+    then 0.5s, then removed) and the total saving; it does not break down the
+    speech, reasoning, voice and avatar stages, so those are deliberately not
+    drawn to a scale that would imply numbers nobody measured.
+*/
+.latency-figure {
+    /* Bottom margin matters: without it the caption ran straight into the
+       Impact label below. */
+    margin: 1.1rem 0 1.4rem;
+}
+
+/*
+    A viewBox scales its text along with the drawing, which is the wrong
+    behaviour for a chart: at `width: 100%` the 11px ticks rendered near 20px
+    in a full-width card and near 7px on a phone. Font-size breakpoints do not
+    fix it either, because what drives the scale is the CONTAINER width and
+    media queries only know the viewport.
+
+    So the chart holds its authored size instead. min-width keeps it close to
+    1:1, max-width stops it inflating, and the wrapper takes the overflow --
+    on a narrow screen the reader swipes the chart rather than squinting at it.
+*/
+.latency-scroll {
+    overflow-x: auto;
+    /* Room for the focus ring and the scrollbar on the platforms that reserve it. */
+    padding-bottom: 0.25rem;
+}
+
+.latency-chart {
+    display: block;
+    width: 100%;
+    min-width: 640px;
+    max-width: 700px;
+    height: auto;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: visible;
+}
+
+.lat-grid line { stroke: var(--border); stroke-width: 1; }
+.lat-axis { stroke: var(--border); stroke-width: 1; }
+
+.lat-label {
+    fill: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    text-anchor: end;
+}
+
+/*
+    The before bar is deliberately neutral: it is the problem, not an accent.
+    --ink-soft rather than --ink-faint because the value label sits inside the
+    bar -- on --ink-faint that pairing was 3.63:1, under AA for 12px bold.
+*/
+.lat-bar-before { fill: var(--ink-soft); }
+.lat-bar-tuned { fill: var(--accent); }
+
+/* Value sits inside its bar, so it has to read against the fill, not the card. */
+.lat-val {
+    fill: var(--accent-on);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.lat-ghost {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+
+.lat-gone {
+    fill: var(--ink-soft);
+    font-size: 12px;
+    font-style: italic;
+}
+
+/*
+    --ink-soft, not --ink-faint: these are chart labels, so they carry meaning
+    and have to clear AA. --ink-faint is only 3.63:1 on a --surface card.
+    Hierarchy below .lat-label comes from size and weight instead of colour.
+*/
+.lat-note {
+    fill: var(--ink-soft);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.lat-note-win { fill: var(--accent-2-ink); }
+
+.lat-tick {
+    fill: var(--ink-soft);
+    font-size: 11px;
+    text-anchor: middle;
+}
+
+.lat-axis-title {
+    fill: var(--ink-soft);
+    font-size: 11px;
+    text-anchor: end;
+}
+
+.lat-total {
+    fill: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lat-total-num { fill: var(--accent-2-ink); font-weight: 800; }
+
+.latency-figure figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+/*
+    No font-size breakpoints needed: min-width holds the chart between 640 and
+    700 units wide, so the type never renders below about 0.91 of its authored
+    size whatever the container does.
+*/
+
 /* Case-study cards (Plugins section) */
 
 .case-card {
@@ -1425,9 +1566,19 @@ section.content .wrap.about-single { max-width: 68ch; }
     transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
 
+/*
+    The closed state used to show the title alone, so thirteen collapsed cards
+    read as thirteen identical grey rows and the reader had to click each one
+    to find out whether it was worth reading. The outcome line now rides along
+    in the summary: the payoff is legible without opening anything, and the
+    body stays behind the click.
+
+    align-items: flex-start rather than center -- the marker should sit against
+    the title, not float to the middle of a two-line block.
+*/
 .case-summary {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
     padding: 0.9rem 1.6rem;
@@ -1438,6 +1589,37 @@ section.content .wrap.about-single { max-width: 68ch; }
     list-style: none;
     transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
 }
+
+.case-summary-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.case-summary-title { display: block; }
+
+/*
+    Regular weight and --ink-soft so it reads as support under the title rather
+    than competing with it. text-wrap: pretty keeps a one-word last line from
+    dangling off the end of the clause.
+*/
+.case-outcome {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+}
+
+/*
+    Deliberately NOT hidden when the card is open, even though the body repeats
+    the full Impact below it. initCaseCardAnimation measures summary.offsetHeight
+    as the collapsed target while the card is still [open], so hiding this on
+    [open] made the close tween aim at a one-line height and then jump when the
+    line came back. It also reads fine left in place -- a dek under the title.
+*/
 
 .case-summary::-webkit-details-marker { display: none; }
 
