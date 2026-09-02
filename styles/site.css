@@ -19,11 +19,43 @@
     --accent: #2f5fe0;
     --accent-ink: #1c3fa8;
     --accent-soft: #e7edfc;
-    --hero-bg: #0b1120;
-    --hero-bg-alt: #131c33;
-    --hero-ink: #eef1f8;
-    --hero-ink-soft: #a7b2c6;
-    --hero-border: rgba(255, 255, 255, 0.12);
+    /*
+        The always-dark bands: the nav, the mobile menu, the award cards, the
+        contact band and the footer. These hold the values --hero-* used to
+        carry, and they do NOT follow the theme -- they are the page's fixed
+        rhythm, dark on a light page and dark on a dark one.
+    */
+    --band-bg: #0b1120;
+    --band-bg-alt: #131c33;
+    --band-ink: #eef1f8;
+    --band-ink-soft: #a7b2c6;
+    --band-border: rgba(255, 255, 255, 0.12);
+
+    /*
+        The hero, which now DOES follow the theme. It used to share the tokens
+        above, which made it a permanently dark slab -- and since the hero plus
+        the nav fill the whole first screen, the theme toggle sitting in that
+        nav appeared to do nothing at all until you scrolled 274px. The band
+        stays visually distinct by being tinted and slightly darker than --bg
+        rather than by being inverted.
+    */
+    --hero-bg: #e2eaf8;
+    --hero-bg-alt: #d0dcf1;
+    --hero-ink: #101828;
+    --hero-ink-soft: #4b5768;
+    --hero-border: rgba(16, 24, 40, 0.14);
+    --hero-wash: rgba(16, 24, 40, 0.045);
+    --hero-wash-strong: rgba(16, 24, 40, 0.10);
+
+    /*
+        --accent-2 is the green used for the name and the arcade caption link.
+        It only ever had to read against the old dark hero, so on the pale band
+        it drops to 2.56:1 -- below AA for text this size. This is the same
+        green taken dark enough to clear 4.5:1 against the further gradient
+        stop with headroom to spare. --accent-2 itself is untouched: its other
+        five uses are all decorative gradients.
+    */
+    --hero-accent: #0d6344;
     --accent-2: #1ea672;
     --radius-lg: 16px;
     --radius-md: 10px;
@@ -71,11 +103,27 @@
     --accent-2: #3ddc9a;
 
     /* Elevated above --bg rather than sunk below it. */
+    --band-bg: #101a30;
+    --band-bg-alt: #17223c;
+    --band-ink: #eef1f8;
+    --band-ink-soft: #a7b2c6;
+    --band-border: rgba(255, 255, 255, 0.14);
+
+    /*
+        In dark mode the hero and the bands land on the same palette, which is
+        the old behaviour -- the difference is that light mode now separates
+        them.
+    */
     --hero-bg: #101a30;
     --hero-bg-alt: #17223c;
     --hero-ink: #eef1f8;
     --hero-ink-soft: #a7b2c6;
     --hero-border: rgba(255, 255, 255, 0.14);
+    --hero-wash: rgba(255, 255, 255, 0.05);
+    --hero-wash-strong: rgba(255, 255, 255, 0.15);
+
+    /* On the dark band the bright green already reads at 8.95:1. */
+    --hero-accent: #3ddc9a;
 
     /* Needs more spread to register against a dark ground. */
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -139,10 +187,16 @@ a:hover { color: var(--accent-ink); }
     border-radius: var(--radius-sm);
 }
 
-/* On the dark surfaces the blue ring has too little contrast; go light. */
+/*
+    On the dark surfaces the blue ring has too little contrast; go light.
+
+    #hero used to be on this list and no longer is: it follows the theme now,
+    so a white ring would vanish against the light-mode band. It falls back to
+    the --accent ring, which works on both -- #2f5fe0 on the pale band and the
+    lighter #6f9bff on the dark one.
+*/
 #site-nav :focus-visible,
 #mobile-nav :focus-visible,
-#hero :focus-visible,
 #contact :focus-visible,
 .award-card :focus-visible,
 footer :focus-visible {
@@ -181,7 +235,7 @@ footer :focus-visible {
     z-index: 50;
     background: var(--nav-bg);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--hero-border);
+    border-bottom: 1px solid var(--band-border);
 }
 
 #site-nav .wrap {
@@ -192,7 +246,7 @@ footer :focus-visible {
 }
 
 .nav-logo {
-    color: var(--hero-ink);
+    color: var(--band-ink);
     font-weight: 700;
     font-size: 1.05rem;
     letter-spacing: -0.01em;
@@ -208,7 +262,7 @@ footer :focus-visible {
 }
 
 .nav-links a {
-    color: var(--hero-ink-soft);
+    color: var(--band-ink-soft);
     font-size: 0.88rem;
     font-weight: 600;
     padding: 0.4rem 0.7rem;
@@ -219,12 +273,12 @@ footer :focus-visible {
 }
 
 .nav-links a:hover, .nav-links a.active {
-    color: var(--hero-ink);
+    color: var(--band-ink);
     background: rgba(255, 255, 255, 0.08);
-    border-color: var(--hero-border);
+    border-color: var(--band-border);
     transform: translateY(-2px);
 }
-#mobile-nav a.active { color: var(--hero-ink); }
+#mobile-nav a.active { color: var(--band-ink); }
 
 .nav-cta {
     display: inline-flex;
@@ -248,22 +302,22 @@ footer :focus-visible {
     height: 34px;
     padding: 0;
     border-radius: 50%;
-    color: var(--hero-ink-soft);
+    color: var(--band-ink-soft);
     font-size: 1rem;
 }
 
 .nav-icon:hover {
-    color: var(--hero-ink);
+    color: var(--band-ink);
     background: rgba(255, 255, 255, 0.08);
-    border-color: var(--hero-border);
+    border-color: var(--band-border);
 }
 
 .nav-toggle {
     display: inline-flex;
     background: none;
-    border: 1px solid var(--hero-border);
+    border: 1px solid var(--band-border);
     border-radius: var(--radius-sm);
-    color: var(--hero-ink);
+    color: var(--band-ink);
     padding: 0.4rem 0.6rem;
     font-size: 0.85rem;
     cursor: pointer;
@@ -295,7 +349,7 @@ footer :focus-visible {
     display: inline-flex;
     align-items: center;
     padding: 0;
-    border: 1px solid var(--hero-border);
+    border: 1px solid var(--band-border);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.06);
     cursor: pointer;
@@ -317,7 +371,7 @@ footer :focus-visible {
     height: 26px;
     padding: 0 0.32rem;
     font-size: 0.78rem;
-    color: var(--hero-ink-soft);
+    color: var(--band-ink-soft);
 }
 
 .theme-toggle-knob {
@@ -327,7 +381,7 @@ footer :focus-visible {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: var(--hero-ink);
+    background: var(--band-ink);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
@@ -347,8 +401,8 @@ footer :focus-visible {
     position: sticky;
     top: 64px;
     z-index: 49;
-    background: var(--hero-bg-alt);
-    border-bottom: 1px solid var(--hero-border);
+    background: var(--band-bg-alt);
+    border-bottom: 1px solid var(--band-border);
 }
 
 #mobile-nav.open { display: block; }
@@ -363,7 +417,7 @@ footer :focus-visible {
 }
 
 #mobile-nav a {
-    color: var(--hero-ink-soft);
+    color: var(--band-ink-soft);
     font-size: 0.95rem;
     font-weight: 500;
 }
@@ -531,8 +585,8 @@ footer :focus-visible {
 
 /* The contact band is a dark section in both themes, and the rail sits on top
    of it. Lift the resting dots so they do not vanish into it. */
-#section-rail.on-dark .rail-dot { border-color: var(--hero-ink-soft); }
-#section-rail.on-dark .rail-label { color: var(--hero-ink-soft); }
+#section-rail.on-dark .rail-dot { border-color: var(--band-ink-soft); }
+#section-rail.on-dark .rail-label { color: var(--band-ink-soft); }
 
 /* The rail is a fixed overlay, so it never sits inside #contact and does not
    inherit that band's light focus ring. Match it here instead. */
@@ -641,7 +695,7 @@ footer :focus-visible {
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent-2);
+    color: var(--hero-accent);
     margin-bottom: 0.45rem;
 }
 
@@ -682,7 +736,7 @@ footer :focus-visible {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #3ddc84;
+    background: var(--hero-accent);
     display: inline-block;
 }
 
@@ -747,10 +801,26 @@ footer :focus-visible {
 
 .btn-ghost {
     background: transparent;
+    color: var(--band-ink);
+    border-color: var(--band-border);
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.08); color: var(--band-ink); transform: translateY(-2px); }
+
+/*
+    .btn-ghost is shared: one in the hero, three in the dark contact band. The
+    base rule above dresses it for the dark band, so the hero -- which is now
+    light in light mode -- restates it against the hero palette. Without this
+    the CTA rendered as near-white text on a pale ground.
+*/
+#hero .btn-ghost {
     color: var(--hero-ink);
     border-color: var(--hero-border);
 }
-.btn-ghost:hover { background: rgba(255, 255, 255, 0.08); color: var(--hero-ink); transform: translateY(-2px); }
+
+#hero .btn-ghost:hover {
+    background: var(--hero-wash-strong);
+    color: var(--hero-ink);
+}
 
 /*
     Nine tiles, three across, at every width. The columns cap at the 200px the
@@ -783,7 +853,7 @@ footer :focus-visible {
     aspect-ratio: 100 / 67;
     object-fit: cover;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--hero-wash);
     border: 3px solid var(--arcade-color);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
     transition: transform 0.2s ease;
@@ -820,7 +890,7 @@ footer :focus-visible {
 }
 
 .mini-arcade-figure figcaption a {
-    color: var(--accent-2);
+    color: var(--hero-accent);
     font-weight: 600;
 }
 
@@ -833,7 +903,7 @@ footer :focus-visible {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(255, 255, 255, 0.15);
+    border: 3px solid var(--hero-wash-strong);
     margin: 0 auto;
 }
 
@@ -854,7 +924,7 @@ footer :focus-visible {
 }
 
 .stat {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--hero-wash);
     border: 1px solid var(--hero-border);
     border-radius: var(--radius-md);
     padding: 0.7rem 0.5rem;
@@ -1600,8 +1670,8 @@ section.content .wrap.about-single { max-width: 68ch; }
     align-items: center;
     text-align: center;
     gap: 0.6rem;
-    background: linear-gradient(160deg, var(--hero-bg) 0%, var(--hero-bg-alt) 100%);
-    border: 1px solid var(--hero-border);
+    background: linear-gradient(160deg, var(--band-bg) 0%, var(--band-bg-alt) 100%);
+    border: 1px solid var(--band-border);
     border-radius: var(--radius-md);
     padding: 1.3rem 1rem;
     box-shadow: var(--shadow);
@@ -1609,13 +1679,13 @@ section.content .wrap.about-single { max-width: 68ch; }
 
 .award-card img { max-height: 90px; width: auto; margin: 0 auto; }
 
-.award-card figcaption { font-size: 0.85rem; color: var(--hero-ink-soft); }
+.award-card figcaption { font-size: 0.85rem; color: var(--band-ink-soft); }
 
 /* ---------------------------- Contact ---------------------------- */
 
 #contact {
-    background: linear-gradient(160deg, var(--hero-bg) 0%, var(--hero-bg-alt) 100%);
-    color: var(--hero-ink);
+    background: linear-gradient(160deg, var(--band-bg) 0%, var(--band-bg-alt) 100%);
+    color: var(--band-ink);
     padding: 4rem 0;
     text-align: center;
 }
@@ -1627,7 +1697,7 @@ section.content .wrap.about-single { max-width: 68ch; }
 }
 
 #contact p {
-    color: var(--hero-ink-soft);
+    color: var(--band-ink-soft);
     max-width: 46ch;
     margin: 0 auto 1.8rem;
 }
@@ -1644,22 +1714,22 @@ footer {
     text-align: center;
     color: var(--ink-faint);
     font-size: 0.82rem;
-    background: var(--hero-bg);
+    background: var(--band-bg);
 }
 
 /* The footer sits on a dark band in both themes, so the credit link uses the
    hero token family rather than --accent, which is too dark on it in light
    mode. Brighter than the surrounding --ink-faint so it reads as a link. */
 footer a {
-    color: var(--hero-ink-soft);
+    color: var(--band-ink-soft);
     text-decoration: underline;
-    text-decoration-color: var(--hero-border);
+    text-decoration-color: var(--band-border);
     text-underline-offset: 2px;
     transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
 footer a:hover {
-    color: var(--hero-ink);
+    color: var(--band-ink);
     text-decoration-color: currentColor;
 }
 

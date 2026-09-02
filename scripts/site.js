@@ -145,13 +145,30 @@ function initScrollProgress()
 
     /*
         The rail is vertically centred, so whatever sits at the viewport's
-        midpoint is what it is drawn on top of. These are the page's dark
-        bands in both themes; the rail's resting dots are near-invisible
-        against them, so it switches to the light palette while over one.
+        midpoint is what it is drawn on top of. The rail's resting dots are
+        near-invisible against a dark band, so it switches to the light palette
+        while over one.
+
+        #contact and the footer are dark in both themes. The hero is not: it
+        follows the theme now, so it only counts as a dark band while the dark
+        theme is active. Keeping it in the unconditional list drew a light rail
+        over the pale light-mode hero, which was the one place it disappeared.
     */
-    const darkBands = ["#hero", "#contact", "footer"]
+    const fixedDarkBands = ["#contact", "footer"]
         .map(function (selector) { return document.querySelector(selector); })
         .filter(Boolean);
+
+    const hero = document.querySelector("#hero");
+
+    function darkBands()
+    {
+        if (hero && document.documentElement.getAttribute("data-theme") === "dark")
+        {
+            return fixedDarkBands.concat(hero);
+        }
+
+        return fixedDarkBands;
+    }
 
     let queued = false;
 
@@ -177,7 +194,7 @@ function initScrollProgress()
         {
             const midpoint = window.innerHeight / 2;
 
-            const onDark = darkBands.some(function (band)
+            const onDark = darkBands().some(function (band)
             {
                 const box = band.getBoundingClientRect();
                 return box.top <= midpoint && box.bottom >= midpoint;
@@ -199,6 +216,13 @@ function initScrollProgress()
     // Resizing changes both the scrollable distance and the midpoint, and
     // opening a case card changes scrollHeight without any scroll at all.
     window.addEventListener("resize", schedule);
+
+    /*
+        Switching theme moves no geometry, so neither scroll nor resize fires --
+        but it does change whether the hero counts as a dark band. initThemeToggle
+        emits this once the new data-theme is on the root element.
+    */
+    window.addEventListener("themechange", schedule);
 
     if (typeof ResizeObserver === "function")
     {
@@ -258,6 +282,13 @@ function initThemeToggle()
         root.setAttribute("data-theme", isDark ? "dark" : "light");
         control.setAttribute("aria-checked", isDark ? "true" : "false");
         syncFavicon(isDark);
+
+        /*
+            The hero is only a dark band in the dark theme, and the section rail
+            draws itself differently over one. Nothing else observes the theme,
+            so announce the change rather than having the rail poll for it.
+        */
+        window.dispatchEvent(new Event("themechange"));
 
         if (remember)
         {
