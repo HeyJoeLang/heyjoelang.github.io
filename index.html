@@ -79,7 +79,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=38">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=39">
 
         <!-- Icon -->
         <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
@@ -258,7 +258,7 @@
                             <img src="./Data/gifs/mini/LeiaOverview.webp" alt="Glasses-free 3D display assembling a lightfield image from depth layers" width="200" height="134" loading="lazy" decoding="async" class="fit-contain">
                             <img src="./Data/gifs/mini/image14.webp" alt="Medical staff walking a hospital hallway in a VR lecture scene" width="200" height="134" loading="lazy" decoding="async">
                             <img src="./Data/gifs/mini/image9.webp" alt="AR portal effect overlaying a colorful landscape into a room" width="200" height="134" loading="lazy" decoding="async">
-                            <img src="./Data/gifs/mini/image12.webp" alt="AR character overlay demo by a fireplace" width="200" height="134" loading="lazy" decoding="async">
+                            <img src="./Data/gifs/mini/image12.webp" alt="VR body-tracking skeleton mapped onto a driver in a car interior" width="200" height="134" loading="lazy" decoding="async">
                             <img src="./Data/gifs/mini/image11.webp" alt="3D character turntable render test" width="200" height="134" loading="lazy" decoding="async">
                             <img src="./Data/gifs/mini/image16.webp" alt="Smart City Futures Edmonton VR flythrough with score UI" width="200" height="134" loading="lazy" decoding="async">
                         </div>
@@ -293,11 +293,16 @@
                 <div class="wrap about-single">
                     <div class="about-text">
                         <span class="eyebrow">About</span>
-                        <h2>Turning ambiguous business needs into systems that are maintainable, scalable, and impactful.</h2>
-                        <p>I'm a Senior Software Engineer and Technical Lead. My most recent work is production real-time AI: speech-to-text, LLM reasoning, and voice synthesis stitched into one conversational pipeline under a hard latency budget.</p>
-                        <p>That builds on twelve years in real-time 3D, Unity, and C++ &mdash; which is precisely why I could find 1.5 seconds in it. The engine changes; the discipline of holding a frame budget doesn't. I approach engineering pragmatically: understand the problem, identify the constraints that matter, choose the right technology, and get a reliable solution into people's hands.</p>
-                        <p>I've worked across client architecture, AI integration, real-time communication, developer tooling, CI/CD, systems integration, and production infrastructure. I'm comfortable moving between unfamiliar problems, collaborating across disciplines, and taking projects from early prototypes through production and scale.</p>
-                        <p>I do my best work in fast-moving environments where engineers are expected to take ownership, make sound technical decisions, and turn ambiguous business needs into systems that are maintainable, scalable, and useful.</p>
+                        <!-- Written for a hiring manager scanning for AI depth in under a
+                             minute: named vendors, a measured latency win, and the shape of
+                             the work, in that order. The prior version opened on philosophy
+                             and reached the AI pipeline in the second clause of sentence two. -->
+                        <h2>Production AI systems, shipped under a real-time latency budget.</h2>
+                        <p>I'm a Senior Software Engineer and Technical Lead. Twelve years shipping production software, the last two on real-time AI.</p>
+                        <p>At Mursion I architected the integration layer for an on-demand AI simulation platform: Deepgram speech-to-text, OpenAI reasoning, ElevenLabs voice synthesis, simulation logic, and responsive 3D avatars running as one pipeline. I then cut roughly 1.5 seconds of response latency. Timestamped logs across the speech, reasoning, and avatar layers isolated a Voice Activity Detection setting, which I tuned from 1.2s to 0.5s before migrating the speech stack to Deepgram Flux to remove the step. The platform now ships to customers globally.</p>
+                        <p>I build the tooling around AI too. My in-simulation reporting pipeline attaches simulation video, AI traces, and runtime data to a Jira ticket automatically, so QA owns AI simulation quality without an engineer in the loop.</p>
+                        <p>The AI work builds on a decade in real-time 3D, Unity, and C++, where holding a frame budget is the job. Same discipline, different pipeline. I led the Leia Unity SDK for five years, cut 40 classes down to 8, and unified two device platforms after an acquisition.</p>
+                        <p>You get an engineer who works in ambiguity, finds the constraint worth solving, and ships systems people use in production.</p>
                     </div>
                 </div>
             </section>

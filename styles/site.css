@@ -725,15 +725,11 @@ footer :focus-visible {
     color: var(--hero-ink-soft);
     font-weight: 500;
     max-width: 56ch;
-    margin: 0 auto 0.9rem;
+    margin: 0 0 0.9rem;
 }
 
-/* Centred. The auto side margins are the load-bearing half: the block is capped
-   at 56ch and the hero column is wider, so text-align alone would centre the
-   lines inside a box still flush to the left edge — visibly off-centre between
-   about 700px and 899px. Below 900px .hero-grid supplies the text-align. */
 @media (min-width: 900px) {
-    .hero-role { text-align: center; }
+    .hero-role { margin-left: 0; margin-right: 0; }
 }
 
 .hero-proof {
