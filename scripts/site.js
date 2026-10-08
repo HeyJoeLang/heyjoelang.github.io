@@ -60,6 +60,12 @@ document.addEventListener("DOMContentLoaded", function ()
     initScrollProgress();
 
     /*
+        The WebGL background behind About and What I Do. Last of the inits and
+        entirely optional: the page is complete without it.
+    */
+    initRunnerBand();
+
+    /*
         #contact lives outside <main>, so the original "main section[id]" query
         skipped it — the last section of the page could never light up in the
         nav. The rail links are picked up here too, so one scroll-spy drives the
@@ -129,6 +135,44 @@ document.addEventListener("DOMContentLoaded", function ()
 });
 
 /*
+    Runner band.
+
+    The scene is three.js plus a 1.8MB model, which has no business on the
+    critical path of a page whose hero is text. So nothing is fetched until the
+    band is within a screen or so of the viewport, and it is not fetched at all
+    for a visitor who asked for less motion or less data: for them the two
+    sections stay the plain panels they already are.
+
+    The module is the same one runner.html runs. It reads data-mode="ambient"
+    off the canvas and turns itself down accordingly, then marks the band
+    .runner-live, which is the only thing the band's CSS keys off.
+*/
+function initRunnerBand()
+{
+    const band = document.getElementById("runner-band");
+    if (!band || typeof IntersectionObserver !== "function") return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (navigator.connection && navigator.connection.saveData) return;
+
+    const observer = new IntersectionObserver(function (entries)
+    {
+        if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+
+        observer.disconnect();
+
+        // Resolved against the page, not this file, so the path reads the
+        // same here as it does in runner.html's script tag.
+        import(new URL("scripts/runner/scene.js?v=4", document.baseURI).href).catch(function (error)
+        {
+            console.warn("Runner band could not load; leaving the sections static.", error);
+        });
+    }, { rootMargin: "600px 0px" });
+
+    observer.observe(band);
+}
+
+/*
     Reading progress, and keeping the rail legible over the dark bands.
 
     Both answer to scroll position, so they share one rAF-throttled listener
@@ -162,12 +206,18 @@ function initScrollProgress()
 
     function darkBands()
     {
+        let bands = fixedDarkBands;
+
         if (hero && document.documentElement.getAttribute("data-theme") === "dark")
         {
-            return fixedDarkBands.concat(hero);
+            bands = bands.concat(hero);
         }
 
-        return fixedDarkBands;
+        // Dark in both themes, but only once the scene is actually showing.
+        const runnerBand = document.querySelector("#runner-band.runner-live");
+        if (runnerBand) bands = bands.concat(runnerBand);
+
+        return bands;
     }
 
     let queued = false;
@@ -223,6 +273,9 @@ function initScrollProgress()
         emits this once the new data-theme is on the root element.
     */
     window.addEventListener("themechange", schedule);
+
+    // Likewise the runner band turning dark when its scene comes up.
+    window.addEventListener("runnerready", schedule);
 
     if (typeof ResizeObserver === "function")
     {

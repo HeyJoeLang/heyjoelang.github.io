@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Metadata -->
+        <meta charset="utf-8">
+
+        <!-- Mobile Specific Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Runner+: an endless runner on the inside of a tunnel, built with three.js by Joe Lang. Steer round the wall and stay clear of the blocks." />
+        <link rel="canonical" href="https://heyjoelang.github.io/runnerPlus.html">
+
+        <title>Runner+ &ndash; Tunnel Runner | Joe Lang</title>
+
+        <!-- Same pre-paint theme script as index.html, so the nav's tokens
+             match the bar the visitor just left. The game itself is dark in
+             both themes. -->
+        <script>
+            (function () {
+                var dark = false;
+                try {
+                    var stored = localStorage.getItem("theme");
+                    dark = stored
+                        ? stored === "dark"
+                        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+                } catch (e) {
+                    dark = window.matchMedia
+                        && window.matchMedia("(prefers-color-scheme: dark)").matches;
+                }
+                document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+            })();
+        </script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=41">
+        <link rel="stylesheet" type="text/css" href="styles/runnerPlus.css?v=2">
+
+        <!-- Icon -->
+        <link rel="icon" type="image/png" id="favicon-light" href="./Data/images/iconLight.png" media="(prefers-color-scheme: light)">
+        <link rel="icon" type="image/png" id="favicon-dark" href="./Data/images/iconDark.png" media="(prefers-color-scheme: dark)">
+
+        <!-- three.js, pinned. Keep in step with runner.html and index.html. -->
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+        <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+            }
+        }
+        </script>
+
+        <script src="scripts/site.js?v=19" defer></script>
+        <script type="module" src="scripts/runner/plus/game.js?v=2"></script>
+    </head>
+
+    <body class="rp-page">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+            <symbol id="i-bars" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+        </svg>
+
+        <nav id="site-nav" aria-label="Site sections">
+            <div class="wrap">
+                <a href="index.html" class="nav-logo">Joe Lang</a>
+                <ul class="nav-links">
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#work">Work</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="runner.html">Runner</a></li>
+                    <li><a href="runnerPlus.html" class="active" aria-current="page">Runner+</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-bars"></use></svg> Menu
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="mobile-nav">
+            <ul>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#work">Featured Work</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="runner.html">Runner</a></li>
+                <li><a href="runnerPlus.html" class="active" aria-current="page">Runner+</a></li>
+            </ul>
+        </div>
+
+        <!-- The whole game. Holding either half of this area steers on touch
+             screens; the canvas is decoration as far as assistive tech is
+             concerned, and the score and overlay are real text beside it. -->
+        <main id="rp-stage">
+            <canvas id="rp-canvas" aria-hidden="true"></canvas>
+
+            <div class="rp-hud">
+                <div class="rp-stat">
+                    <span class="rp-label">Distance</span>
+                    <span class="rp-value" id="rp-score">0 m</span>
+                </div>
+                <div class="rp-stat">
+                    <span class="rp-label">Best</span>
+                    <span class="rp-value" id="rp-best">0 m</span>
+                </div>
+            </div>
+
+            <!-- Milestone callouts. Hidden from assistive tech for the same
+                 reason the running score is not live: it is decoration on a
+                 number the final result already reports. -->
+            <div id="rp-toast" class="rp-toast" aria-hidden="true"></div>
+
+            <!-- aria-live so the result of a run is announced; the running
+                 score is deliberately not live, it changes many times a second. -->
+            <div id="rp-overlay" class="rp-overlay" aria-live="polite">
+                <h1 id="rp-title">Runner+</h1>
+                <p id="rp-message">Loading&hellip;</p>
+                <button id="rp-start" class="btn btn-primary" type="button" disabled>Start</button>
+                <p class="rp-hint">
+                    <span class="rp-hint-keys"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>A</kbd> <kbd>D</kbd> to run round the wall. <kbd>Space</kbd> to start.</span>
+                    <span class="rp-hint-touch">Hold the left or right side of the screen to run round the wall.</span>
+                </p>
+            </div>
+        </main>
+    </body>
+</html>

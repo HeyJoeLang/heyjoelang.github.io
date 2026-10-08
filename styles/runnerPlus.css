@@ -1,0 +1,183 @@
+/* ================================================================
+   Runner+ — the tunnel game.
+   Loaded after site.css, which supplies the nav, .btn and the tokens.
+   One screen, no scroll: the nav, then a stage filling the rest.
+   ================================================================ */
+
+:root {
+    /* Both are overwritten by game.js from the active palette; these match
+       the default one so nothing flashes on load. */
+    --rp-bg: #07060d;
+    --rp-accent: #3bffe6;
+    --rp-ink: #eef1f8;
+    --rp-ink-soft: #a7b2c6;
+    --rp-nav-height: 65px;
+}
+
+html, body.rp-page {
+    height: 100%;
+    background: var(--rp-bg);
+}
+
+body.rp-page {
+    display: flex;
+    flex-direction: column;
+    color: var(--rp-ink);
+    overflow: hidden;
+}
+
+#rp-stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0;
+
+    /* A held finger steers; it must not also pan, zoom or select. */
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#rp-canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.rp-ready #rp-canvas { opacity: 1; }
+
+/* ---------------------- Score ---------------------- */
+
+.rp-hud {
+    position: absolute;
+    top: 1rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+}
+
+.rp-stat { display: flex; flex-direction: column; }
+.rp-stat:last-child { text-align: right; }
+
+.rp-label {
+    color: var(--rp-ink-soft);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.rp-value {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 500;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.rp-stat:last-child .rp-value {
+    color: var(--rp-ink-soft);
+    font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+/* ---------------------- Milestone callout ---------------------- */
+
+/* Sits in the upper third: the runner and the blocks worth watching are in
+   the lower half, and a number over those would cost the player a run. */
+.rp-toast {
+    position: absolute;
+    top: 16%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    color: var(--rp-accent);
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 24px var(--rp-accent);
+}
+
+.rp-toast.is-showing { animation: rp-toast 1.4s ease-out both; }
+
+@keyframes rp-toast {
+    0%   { opacity: 0; transform: scale(0.8); }
+    12%  { opacity: 1; transform: scale(1); }
+    60%  { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes rp-toast {
+        0%, 100% { opacity: 0; }
+        12%, 60% { opacity: 1; }
+    }
+}
+
+/* ---------------------- Start / game over ---------------------- */
+
+.rp-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 1.5rem;
+    text-align: center;
+    background: radial-gradient(ellipse at center, rgba(7, 6, 13, 0.82) 0%, rgba(7, 6, 13, 0.35) 70%);
+}
+
+/* The class sets display, which would otherwise beat the hidden attribute. */
+.rp-overlay[hidden] { display: none; }
+
+.rp-overlay h1 {
+    margin: 0;
+    font-size: clamp(2.75rem, 10vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.rp-overlay p { margin: 0; max-width: 30rem; }
+
+#rp-message { color: var(--rp-ink); font-size: 1.05rem; }
+
+.rp-hint {
+    color: var(--rp-ink-soft);
+    font-size: 0.85rem;
+}
+
+.rp-hint kbd {
+    display: inline-block;
+    min-width: 1.6em;
+    padding: 0.05em 0.4em;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 5px;
+    font: 500 0.82em 'JetBrains Mono', 'Consolas', monospace;
+    color: var(--rp-ink);
+}
+
+/* Shown to whichever kind of device can actually use it. */
+.rp-hint-touch { display: none; }
+
+@media (pointer: coarse) {
+    .rp-hint-keys { display: none; }
+    .rp-hint-touch { display: inline; }
+}
+
+#rp-start { margin-top: 0.4rem; min-width: 10rem; }
+
+@media (prefers-reduced-motion: reduce) {
+    #rp-canvas { transition: none; }
+}
