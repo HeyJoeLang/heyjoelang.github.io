@@ -79,7 +79,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="styles/site.css?v=41">
+        <link rel="stylesheet" type="text/css" href="styles/site.css?v=42">
 
         <!-- Icon -->
         <!-- Tab icon, paired to the theme: iconLight has a white fill meant for
@@ -90,21 +90,8 @@
         <link rel="icon" type="image/png" id="favicon-light" href="./Data/images/iconLight.png" media="(prefers-color-scheme: light)">
         <link rel="icon" type="image/png" id="favicon-dark" href="./Data/images/iconDark.png" media="(prefers-color-scheme: dark)">
 
-        <!-- Resolves "three" for the runner band's scene modules. Declaring
-             the map costs nothing: no request is made until site.js imports
-             the scene, which it only does when the band nears the viewport.
-             Keep the version in step with runner.html. -->
-        <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-            }
-        }
-        </script>
-
         <!-- Bump ?v= when editing site.js so returning visitors don't run a cached copy -->
-        <script src="scripts/site.js?v=20" defer></script>
+        <script src="scripts/site.js?v=21" defer></script>
     </head>
 
     <body>
@@ -303,19 +290,6 @@
         </header>
 
         <main>
-            <!-- Runner band: About and What I Do share one live WebGL
-                 background (the scene from runner.html, in its "ambient"
-                 mode). Progressive enhancement: site.js only loads the scene
-                 when this band nears the viewport, and until the scene reports
-                 ready (or if it never does) both sections render exactly as
-                 the plain panels they are without it. The canvas wrapper is
-                 sticky, so it stays pinned behind the panels for as long as
-                 the band is on screen and leaves with it. -->
-            <div id="runner-band">
-            <div class="runner-bg" aria-hidden="true">
-                <canvas id="runner-canvas" data-track="runner-band" data-mode="ambient"></canvas>
-            </div>
-
             <!-- ============================= ABOUT ============================= -->
             <section id="about" class="content alt">
                 <div class="wrap about-single">
@@ -377,7 +351,6 @@
                     </div>
                 </div>
             </section>
-            </div><!-- /#runner-band -->
 
             <!-- ============================= FEATURED ENGINEERING WORK ============================= -->
             <section id="work" class="content">

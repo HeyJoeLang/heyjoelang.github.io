@@ -30,26 +30,9 @@ const mobile = window.matchMedia("(max-width: 768px), (pointer: coarse)").matche
 const reducedMotion = query.has("still")
     || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/*
-    The canvas names the element it scrolls against (data-track) and how it is
-    being used (data-mode):
-
-      default   the Runner page's hero. Progress runs 0 -> 1 as the track
-                scrolls off the top, through all four camera keyframes.
-      ambient   a background behind page content (index.html). Progress runs
-                over the track's whole pass through the viewport, mapped onto
-                a short, calm stretch of the camera path, and everything that
-                costs fill rate or pulls the eye is turned down.
-*/
+const hero = document.getElementById("runner-hero");
 const canvas = document.getElementById("runner-canvas");
-const hero = document.getElementById(canvas.dataset.track || "runner-hero");
-const ambient = canvas.dataset.mode === "ambient";
 const statusEl = document.getElementById("runner-status");
-
-// Slice of the keyframe path the ambient camera travels: a low three-quarter
-// view that keeps the runner to one side, clear of the centred text column,
-// and stops well short of the swing behind it and the grey-out.
-const AMBIENT_RANGE = [0.13, 0.4];
 
 const MAX_DT = 0.04;
 
@@ -63,17 +46,16 @@ const params = {
     emitInterval: 0.25,
 
     // Spec amplitudes are the 1.0 point; see the note in the hand-off.
-    shake: ambient ? 0.2 : 0.4,
+    shake: 0.4,
     // Scales the keyframes' off-centre offsets; 1 is the spec, 0 centres.
-    // Ambient pulls the runner in a little so it clears the viewport edge.
-    framing: ambient ? 0.8 : 1,
+    framing: 1,
     mouseLook: false,
     useScroll: true,
     scrub: 0,
 
     // The spec's starting point (1.2 / threshold 0) whites out the frame with
     // UnrealBloomPass, which sums five blur levels; these keep the neon read.
-    bloomStrength: ambient ? 0.3 : 0.4,
+    bloomStrength: 0.4,
     bloomRadius: 0.3,
     bloomThreshold: 0.1,
 
@@ -244,7 +226,7 @@ function finishHandoff()
 
 const playLink = document.querySelector(".runner-play");
 
-if (playLink && !ambient)
+if (playLink)
 {
     playLink.addEventListener("click", function (event)
     {
@@ -263,16 +245,6 @@ if (playLink && !ambient)
 function scrollProgress()
 {
     if (!params.useScroll) return params.scrub;
-
-    if (ambient)
-    {
-        // 0 as the track's top edge enters at the bottom of the viewport,
-        // 1 as its bottom edge leaves at the top.
-        const rect = hero.getBoundingClientRect();
-        const through = clamp((window.innerHeight - rect.top) / (rect.height + window.innerHeight), 0, 1);
-
-        return AMBIENT_RANGE[0] + (AMBIENT_RANGE[1] - AMBIENT_RANGE[0]) * through;
-    }
 
     return clamp(window.scrollY / heroHeight, 0, 1);
 }
@@ -443,10 +415,7 @@ function resize()
     const width = canvas.clientWidth || window.innerWidth;
     const height = canvas.clientHeight || window.innerHeight;
 
-    // Behind a scrim nobody can see the extra pixels, so ambient runs lean.
-    const cap = ambient ? (mobile ? 1 : 1.25) : (mobile ? 1.5 : 2);
-
-    pixelRatio = Math.min(window.devicePixelRatio || 1, cap) * stats.quality;
+    pixelRatio = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2) * stats.quality;
     heroHeight = Math.max(1, hero.offsetHeight);
 
     renderer.setPixelRatio(pixelRatio);
@@ -590,7 +559,7 @@ async function init()
 
     if (stage >= 4)
     {
-        streaks = createStreaks({ count: (mobile ? 192 : 384) * (ambient ? 0.4 : 1) });
+        streaks = createStreaks({ count: mobile ? 192 : 384 });
         scene.add(streaks.object);
     }
 
@@ -612,7 +581,7 @@ async function init()
 
         particles = createParticles({
             meshes: runner.meshes,
-            count: Math.round(clamp(1.25 * shortSide, 800, 2500) * (mobile || ambient ? 0.6 : 1))
+            count: Math.round(clamp(1.25 * shortSide, 800, 2500) * (mobile ? 0.6 : 1))
         });
 
         scene.add(particles.object);
@@ -623,7 +592,7 @@ async function init()
         scene: scene,
         camera: camera,
         mobile: mobile,
-        smaa: !mobile && !ambient,
+        smaa: !mobile,
         enabled: stage >= 8
     });
 
@@ -661,11 +630,7 @@ async function init()
     if (debug) await initDebug();
 
     document.documentElement.classList.add("runner-ready");
-    hero.classList.add("runner-live");
     if (statusEl) statusEl.textContent = "";
-
-    // For anything on the page that cares the scene is now showing.
-    window.dispatchEvent(new Event("runnerready"));
 }
 
 init().catch(function (error)
