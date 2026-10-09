@@ -47,6 +47,9 @@ try
             $path = [IO.Path]::GetFullPath((Join-Path $rootFull $rel))
             if ((Test-Path $path -PathType Container)) { $path = Join-Path $path "index.html" }
 
+            # GitHub Pages serves /runner from runner.html; do the same here.
+            if (-not (Test-Path $path -PathType Leaf) -and (Test-Path "$path.html" -PathType Leaf)) { $path = "$path.html" }
+
             # Refuse anything that resolves outside the site root.
             if (-not $path.StartsWith($rootFull, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path $path -PathType Leaf))
             {

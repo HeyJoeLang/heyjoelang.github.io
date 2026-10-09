@@ -141,7 +141,7 @@ function beginHandoff()
         height: position.y,
         lookFrom: lookFrom,
         fov: camera.fov,
-        floorStrength: floor ? floor.material.uniforms.u_strength.value : 0,
+        floorStrength: floor && floor.material ? floor.material.uniforms.u_strength.value : 0,
         game: null
     };
 
@@ -150,13 +150,8 @@ function beginHandoff()
 
     Promise.all([import("./plus/game.js"), prepareGameDom()]).then(function (loaded)
     {
-        handoff.game = { module: loaded[0], dom: loaded[1] };
-    }).catch(function (error)
-    {
-        // Anything wrong with the seamless route: take the ordinary one.
-        console.warn("Runner+ hand-off failed; navigating instead.", error);
-        window.location.href = "runnerPlus.html";
-    });
+        if (handoff) handoff.game = { module: loaded[0], dom: loaded[1] };
+    }).catch(abandonHandoff);
 }
 
 function updateHandoffCamera(rawDt)
@@ -193,9 +188,21 @@ function updateHandoffCamera(rawDt)
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
 
-    // What the game has no use for leaves as the camera arrives.
-    if (floor) floor.material.uniforms.u_strength.value = handoff.floorStrength * (1 - e);
-    if (streaks) streaks.material.uniforms.u_fade.value = 1 - e;
+    // What the game has no use for leaves as the camera arrives. The fades
+    // are optional: a browser can pair this file with an older cached copy
+    // of streaks.js or floor.js that exposes no material, and a fade that
+    // cannot happen must not stop the fly-through.
+    if (floor && floor.material) floor.material.uniforms.u_strength.value = handoff.floorStrength * (1 - e);
+    if (streaks && streaks.material) streaks.material.uniforms.u_fade.value = 1 - e;
+}
+
+// Anything wrong with the seamless route: take the ordinary one.
+function abandonHandoff(error)
+{
+    console.warn("Runner+ hand-off failed; navigating instead.", error);
+
+    handoff = null;
+    window.location.href = playLink.href;
 }
 
 function finishHandoff()
@@ -305,7 +312,10 @@ function draw(rawDt)
 
     if (handoff)
     {
-        updateHandoffCamera(rawDt);
+        // An error here would otherwise repeat every frame with the page
+        // stuck mid-flight; one failure is enough to give up and navigate.
+        try { updateHandoffCamera(rawDt); }
+        catch (error) { abandonHandoff(error); }
     }
     else
     {

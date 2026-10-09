@@ -12,7 +12,10 @@
     a reload or a shared link lands on the real page.
 */
 
-const GAME_PAGE = "runnerPlus.html";
+// Root-absolute, like the links to it in runner.html: the Runner page is
+// reachable as /runner, /runner.html or /runner/, and a relative path would
+// resolve differently under the last of those.
+const GAME_PAGE = "/runnerPlus.html";
 
 // Fetches the game page and returns what the Runner page needs from it. The
 // stylesheet is in place and loaded by the time this resolves.
