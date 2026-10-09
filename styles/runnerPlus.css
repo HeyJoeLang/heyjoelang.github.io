@@ -141,6 +141,16 @@ body.rp-page {
 /* The class sets display, which would otherwise beat the hidden attribute. */
 .rp-overlay[hidden] { display: none; }
 
+/* Eases in each time it is shown, so it arrives rather than appears. */
+@media (prefers-reduced-motion: no-preference) {
+    .rp-overlay { animation: rp-overlay-in 0.45s ease both; }
+}
+
+@keyframes rp-overlay-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .rp-overlay h1 {
     margin: 0;
     font-size: clamp(2.75rem, 10vw, 5.5rem);

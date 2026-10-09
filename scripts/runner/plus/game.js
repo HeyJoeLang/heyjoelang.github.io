@@ -24,6 +24,7 @@ import { createTunnel } from "./tunnel.js";
 import { createObstacles } from "./obstacles.js";
 import { createInput } from "./input.js";
 import { createHud } from "./hud.js";
+import { GAME_CAMERA, gameFov } from "./view.js";
 
 const ASSETS = "assets/runner/";
 
@@ -33,8 +34,9 @@ const debug = query.has("debug");
 const mobile = window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const stage = document.getElementById("rp-stage");
-const canvas = document.getElementById("rp-canvas");
+// Set in boot(): the standalone page's own elements, or the ones the Runner
+// page hands over.
+let stage, canvas;
 
 const basePalette = applyPalette(query.get("palette"));
 
@@ -291,6 +293,9 @@ function advance(dt)
         if (tunnel.uniforms.u_shock.value > 150) tunnel.uniforms.u_shock.value = -1000;
     }
 
+    // After a hand-over the wall is still being drawn out from the runner.
+    if (tunnel.uniforms.u_reveal.value < 500) tunnel.uniforms.u_reveal.value += dt * 110;
+
     shake *= Math.pow(0.01, dt);
 }
 
@@ -303,11 +308,11 @@ function draw()
     runner.group.rotation.z = rollRate * 0.09;
 
     camera.position.set(
-        (Math.random() - 0.5) * shake * 0.25,
-        1.55 + (Math.random() - 0.5) * shake * 0.25,
-        -3.6
+        GAME_CAMERA.position[0] + (Math.random() - 0.5) * shake * 0.25,
+        GAME_CAMERA.position[1] + (Math.random() - 0.5) * shake * 0.25,
+        GAME_CAMERA.position[2]
     );
-    camera.lookAt(0, 1.15, 8);
+    camera.lookAt(GAME_CAMERA.target[0], GAME_CAMERA.target[1], GAME_CAMERA.target[2]);
     camera.rotateZ(-rollRate * 0.035);
 
     post.render(grey);
@@ -378,9 +383,7 @@ function resize()
 
     camera.aspect = width / height;
 
-    // Hold the horizontal view on tall screens, or a phone in portrait would
-    // see so little of the wall that blocks arrive without warning.
-    camera.fov = camera.aspect < 1 ? clamp(62 / camera.aspect, 62, 95) : 62;
+    camera.fov = gameFov(camera.aspect);
     camera.updateProjectionMatrix();
 
     post.setSize(width, height, pixelRatio);
@@ -389,16 +392,36 @@ function resize()
     if (!frameId && state !== "loading") draw();
 }
 
-async function init()
+/*
+    shared, when given, is a scene that is already running: the Runner page
+    passes its renderer, scene, camera, runner, particles and post chain, with
+    its camera already flown to GAME_CAMERA, plus the stage element it built
+    for the HUD. The game then only adds what is its own, and the tunnel grows
+    outward from the runner instead of simply being there.
+*/
+async function init(shared)
 {
+    stage = shared ? shared.stage : document.getElementById("rp-stage");
+    canvas = shared ? shared.renderer.domElement : document.getElementById("rp-canvas");
+
     hud = createHud({ onGo: go });
 
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, powerPreference: "high-performance" });
-    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
-    syncColours();
+    if (shared)
+    {
+        renderer = shared.renderer;
+        scene = shared.scene;
+        camera = shared.camera;
+    }
+    else
+    {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, powerPreference: "high-performance" });
+        renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(62, 1, 0.05, 300);
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(62, 1, 0.05, 300);
+    }
+
+    syncColours();
 
     // Everything that rolls when the player steers. Its origin is the tunnel
     // axis, one radius above the runner's feet.
@@ -412,20 +435,32 @@ async function init()
     obstacles = createObstacles({ radius: RADIUS });
     world.add(obstacles.object);
 
-    runner = await loadRunner({ url: ASSETS + "runner.glb", strands: mobile ? 128 : 256 });
-    scene.add(runner.group);
+    if (shared)
+    {
+        runner = shared.runner;
+        particles = shared.particles;
+        post = shared.post;
 
-    particles = createParticles({ meshes: runner.meshes, count: mobile ? 700 : 1200 });
-    scene.add(particles.object);
+        // Start with no tunnel at all; advance() runs it out to the horizon.
+        tunnel.uniforms.u_reveal.value = 0;
+    }
+    else
+    {
+        runner = await loadRunner({ url: ASSETS + "runner.glb", strands: mobile ? 128 : 256 });
+        scene.add(runner.group);
 
-    post = createPost({
-        renderer: renderer,
-        scene: scene,
-        camera: camera,
-        mobile: mobile,
-        smaa: !mobile,
-        enabled: true
-    });
+        particles = createParticles({ meshes: runner.meshes, count: mobile ? 700 : 1200 });
+        scene.add(particles.object);
+
+        post = createPost({
+            renderer: renderer,
+            scene: scene,
+            camera: camera,
+            mobile: mobile,
+            smaa: !mobile,
+            enabled: true
+        });
+    }
 
     post.bloom.strength = 0.4;
     post.bloom.radius = 0.3;
@@ -437,7 +472,8 @@ async function init()
     resize();
 
     // Open with particles already in flight rather than an empty first frame.
-    for (let i = 0; i < 40; i++) advance(0.033);
+    // A handed-over scene is mid-stride already and must not jump.
+    if (!shared) for (let i = 0; i < 40; i++) advance(0.033);
 
     draw();
     hud.showReady();
@@ -472,9 +508,14 @@ async function init()
     document.documentElement.classList.add("rp-ready");
 }
 
-init().catch(function (error)
+// Resolves once the start screen is up. Never rejects: a failure is reported
+// on the page, where the player is looking.
+export function boot(shared)
 {
-    console.error("Runner+ failed to start:", error);
+    return init(shared).catch(function (error)
+    {
+        console.error("Runner+ failed to start:", error);
 
-    if (hud) hud.showFailed();
-});
+        if (hud) hud.showFailed();
+    });
+}

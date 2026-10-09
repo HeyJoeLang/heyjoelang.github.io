@@ -91,6 +91,33 @@ body.runner-page { color: var(--runner-ink); }
 
 .runner-play { margin-top: 0.5rem; }
 
+/* ---------------------- Hand-off to Runner+ ----------------------
+   .runner-leaving is on <html> while the camera flies round behind the
+   runner; .runner-handed-off once the game has the canvas. See handoff.js. */
+
+.runner-leaving { overflow: hidden; }
+
+.runner-leaving .runner-copy,
+.runner-leaving .runner-scroll-cue {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.runner-leaving #runner-notes,
+.runner-leaving footer { visibility: hidden; }
+
+.runner-handed-off main:not(#rp-stage),
+.runner-handed-off footer { display: none; }
+
+/* On runnerPlus.html the stage is a flex child under the nav. Here it is laid
+   over the Runner page's fixed canvas instead. */
+.runner-handed-off #rp-stage {
+    position: fixed;
+    inset: var(--runner-nav-height) 0 0 0;
+    z-index: 2;
+}
+
 .runner-scroll-cue {
     position: absolute;
     left: 50%;

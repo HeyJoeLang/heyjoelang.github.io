@@ -163,7 +163,7 @@ function initRunnerBand()
 
         // Resolved against the page, not this file, so the path reads the
         // same here as it does in runner.html's script tag.
-        import(new URL("scripts/runner/scene.js?v=4", document.baseURI).href).catch(function (error)
+        import(new URL("scripts/runner/scene.js?v=5", document.baseURI).href).catch(function (error)
         {
             console.warn("Runner band could not load; leaving the sections static.", error);
         });

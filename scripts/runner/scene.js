@@ -10,13 +10,15 @@
 */
 
 import * as THREE from "three";
-import { COLORS, PALETTES, applyPalette, clamp } from "./common.js";
+import { COLORS, PALETTES, applyPalette, clamp, smoothstep } from "./common.js";
 import { loadRunner } from "./runner.js";
 import { createParticles } from "./particles.js";
 import { createStreaks } from "./streaks.js";
 import { createFloor } from "./floor.js";
 import { createCameraRig } from "./cameraRig.js";
 import { createPost } from "./post.js";
+import { prepareGameDom, showGameDom } from "./handoff.js";
+import { GAME_CAMERA, gameFov } from "./plus/view.js";
 
 const ASSETS = "assets/runner/";
 
@@ -121,6 +123,143 @@ function setPalette(name)
     syncPalette();
 }
 
+/*
+    Hand-off to Runner+.
+
+    Play does not navigate. This scene keeps running while its camera swings
+    round to the game's view from behind the runner, the floor and streaks
+    fade out, and the game's modules and markup load in the background. When
+    both are done the game is given the renderer, scene, runner, particles and
+    post chain and carries on in the same canvas, building its tunnel outward
+    from the runner. The figure never stops running and no frame is dropped.
+*/
+const HANDOFF_SECONDS = 1.6;
+
+let handoff = null;         // set while the camera is flying
+let handedOff = false;      // true once the game owns the scene
+
+const handoffLook = new THREE.Vector3();
+const gameTarget = new THREE.Vector3().fromArray(GAME_CAMERA.target);
+const runnerCentre = new THREE.Vector3(0, 0.9, 0);
+
+function beginHandoff()
+{
+    const position = camera.position;
+
+    // Where the camera is looking now, as a point about as far away as the
+    // runner, so the aim can be eased from it to the game's target.
+    const lookFrom = camera.getWorldDirection(new THREE.Vector3())
+        .multiplyScalar(position.distanceTo(rig.target))
+        .add(position);
+
+    handoff = {
+        time: 0,
+        angle: Math.atan2(position.x, position.z),
+        radius: Math.hypot(position.x, position.z),
+        height: position.y,
+        lookFrom: lookFrom,
+        fov: camera.fov,
+        floorStrength: floor ? floor.material.uniforms.u_strength.value : 0,
+        game: null
+    };
+
+    document.documentElement.classList.add("runner-leaving");
+    window.scrollTo({ top: 0, behavior: "instant" });
+
+    Promise.all([import("./plus/game.js"), prepareGameDom()]).then(function (loaded)
+    {
+        handoff.game = { module: loaded[0], dom: loaded[1] };
+    }).catch(function (error)
+    {
+        // Anything wrong with the seamless route: take the ordinary one.
+        console.warn("Runner+ hand-off failed; navigating instead.", error);
+        window.location.href = "runnerPlus.html";
+    });
+}
+
+function updateHandoffCamera(rawDt)
+{
+    handoff.time += rawDt;
+
+    const e = smoothstep(0, HANDOFF_SECONDS, handoff.time);
+    const lerp = function (a, b) { return a + (b - a) * e; };
+
+    // Round the runner rather than straight through it: the angle about the
+    // vertical axis runs to directly behind, by whichever side is nearer.
+    const endAngle = handoff.angle >= 0 ? Math.PI : -Math.PI;
+    const endRadius = Math.hypot(GAME_CAMERA.position[0], GAME_CAMERA.position[2]);
+
+    const angle = lerp(handoff.angle, endAngle);
+    const radius = lerp(handoff.radius, endRadius);
+
+    camera.position.set(
+        Math.sin(angle) * radius,
+        lerp(handoff.height, GAME_CAMERA.position[1]),
+        Math.cos(angle) * radius
+    );
+
+    // Aim in two overlapping moves: first settle on the runner, so the figure
+    // stays in frame for the whole swing, then lift to the game's target down
+    // the tunnel, which from behind lies almost straight past it.
+    const t = handoff.time / HANDOFF_SECONDS;
+
+    handoffLook.lerpVectors(handoff.lookFrom, runnerCentre, smoothstep(0, 0.35, t));
+    handoffLook.lerp(gameTarget, smoothstep(0.55, 1, t));
+
+    camera.lookAt(handoffLook);
+    camera.fov = lerp(handoff.fov, gameFov(camera.aspect));
+    camera.updateProjectionMatrix();
+    camera.updateMatrixWorld();
+
+    // What the game has no use for leaves as the camera arrives.
+    if (floor) floor.material.uniforms.u_strength.value = handoff.floorStrength * (1 - e);
+    if (streaks) streaks.material.uniforms.u_fade.value = 1 - e;
+}
+
+function finishHandoff()
+{
+    const game = handoff.game;
+
+    handedOff = true;
+    handoff = null;
+
+    window.cancelAnimationFrame(frameId);
+    frameId = 0;
+
+    if (floor) scene.remove(floor.object);
+    if (streaks) scene.remove(streaks.object);
+
+    showGameDom(game.dom);
+
+    game.module.boot({
+        renderer: renderer,
+        scene: scene,
+        camera: camera,
+        runner: runner,
+        particles: particles,
+        post: post,
+        stage: game.dom.stage
+    });
+}
+
+const playLink = document.querySelector(".runner-play");
+
+if (playLink && !ambient)
+{
+    playLink.addEventListener("click", function (event)
+    {
+        // Not ours to intercept: a new-tab click, a scene that never came
+        // up, a visitor who asked for less motion, or a fly-through already
+        // under way. All of those just follow the link.
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (!ready || !frameId || reducedMotion || stage < 8) return;
+
+        event.preventDefault();
+
+        if (!handoff) beginHandoff();
+    });
+}
+
 function scrollProgress()
 {
     if (!params.useScroll) return params.scrub;
@@ -189,13 +328,21 @@ function advance(rawDt)
 
 function draw(rawDt)
 {
-    const progress = scrollProgress();
+    // Scroll position is frozen at the top for the length of the fly-through.
+    const progress = handoff ? 0 : scrollProgress();
 
-    rig.update(progress, rawDt, {
-        shake: reducedMotion ? 0 : params.shake,
-        framing: params.framing,
-        mouseLook: params.mouseLook
-    });
+    if (handoff)
+    {
+        updateHandoffCamera(rawDt);
+    }
+    else
+    {
+        rig.update(progress, rawDt, {
+            shake: reducedMotion ? 0 : params.shake,
+            framing: params.framing,
+            mouseLook: params.mouseLook
+        });
+    }
 
     renderer.info.reset();
 
@@ -244,6 +391,9 @@ function frame(now)
 
     advance(rawDt);
     draw(rawDt);
+
+    // Camera in place and the game loaded: this was the last frame drawn here.
+    if (handoff && handoff.game && handoff.time >= HANDOFF_SECONDS) finishHandoff();
 }
 
 /*
@@ -254,6 +404,8 @@ function frame(now)
 */
 function syncLoop()
 {
+    if (handedOff) return;
+
     const shouldRun = ready && heroVisible && !document.hidden && !reducedMotion;
 
     if (shouldRun && !frameId)
@@ -272,7 +424,7 @@ let stillQueued = false;
 
 function requestStill()
 {
-    if (!ready || frameId || stillQueued) return;
+    if (!ready || frameId || stillQueued || handedOff) return;
 
     stillQueued = true;
 
@@ -285,6 +437,9 @@ function requestStill()
 
 function resize()
 {
+    // The game sizes the renderer once it owns it.
+    if (handedOff) return;
+
     const width = canvas.clientWidth || window.innerWidth;
     const height = canvas.clientHeight || window.innerHeight;
 

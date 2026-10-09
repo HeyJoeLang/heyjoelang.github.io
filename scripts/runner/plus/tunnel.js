@@ -29,6 +29,7 @@ const fragmentShader = GLSL_PALETTE + /* glsl */ `
     uniform float u_time;
     uniform float u_intensity;  // 0 at the start of a run, 1 deep into one
     uniform float u_shock;      // how far ahead the milestone ring has got
+    uniform float u_reveal;     // the wall exists only this far from the runner
 
     varying vec3 vPosition;
 
@@ -79,6 +80,13 @@ const fragmentShader = GLSL_PALETTE + /* glsl */ `
         // Lose the wall into the dark with distance.
         float visible = smoothstep(${AHEAD.toFixed(1)}, 25.0, vPosition.z);
 
+        // Growing outward in both directions from where the runner stands,
+        // with a bright rim on the leading edge. Normally far past the end
+        // of the wall, where it changes nothing.
+        float reach = abs(vPosition.z);
+        visible *= smoothstep(u_reveal, u_reveal - 6.0, reach);
+        color += mix(u_tintB, vec3(1.0), 0.4) * exp(-pow((reach - u_reveal + 6.0) / 2.5, 2.0)) * 0.6;
+
         gl_FragColor = vec4(mix(u_bg, color, visible), 1.0);
     }
 `;
@@ -99,7 +107,8 @@ export function createTunnel(options)
             u_time: { value: 0 },
             u_intensity: { value: 0 },
             // Parked far behind the runner, where the ring contributes nothing.
-            u_shock: { value: -1000 }
+            u_shock: { value: -1000 },
+            u_reveal: { value: 1000 }
         }, paletteUniforms),
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,

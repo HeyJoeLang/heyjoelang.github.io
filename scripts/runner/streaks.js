@@ -52,6 +52,7 @@ const vertexShader = /* glsl */ `
 
 const fragmentShader = GLSL_PALETTE + /* glsl */ `
     uniform float u_reflect;
+    uniform float u_fade;
 
     varying vec3 vViewNormal;
     varying float vPick;
@@ -67,7 +68,7 @@ const fragmentShader = GLSL_PALETTE + /* glsl */ `
 
         // Fade into the background with distance, and in from it at spawn so
         // a bar never pops into existence.
-        float visible = smoothstep(-20.0, -15.0, vWorldZ) * vFadeIn;
+        float visible = smoothstep(-20.0, -15.0, vWorldZ) * vFadeIn * u_fade;
 
         gl_FragColor = vec4(mix(u_bg, color, visible), 1.0);
     }
@@ -112,6 +113,8 @@ export function createStreaks(options)
     const material = new THREE.ShaderMaterial({
         uniforms: Object.assign({
             u_time: { value: 0 },
+            // 1 normally; the hand-off to Runner+ fades the streaks out with it.
+            u_fade: { value: 1 },
             u_reflect: reflectPass
         }, paletteUniforms),
         vertexShader: vertexShader,
@@ -123,6 +126,7 @@ export function createStreaks(options)
 
     return {
         object: mesh,
+        material: material,
         update: function (dt)
         {
             material.uniforms.u_time.value += dt;
